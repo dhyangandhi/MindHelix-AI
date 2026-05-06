@@ -1,0 +1,161 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Open Sans", sans-serif;
+}
+
+body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    width: 100%;
+    padding: 0 10px;
+    position: relative;
+    overflow: hidden; /* Prevents scrollbars */
+}
+
+body::before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: url('https://t4.ftcdn.net/jpg/05/61/14/81/360_F_561148117_gtEwt3nIjA2cy5OA1cJbBnT5cyv45FAH.jpg') no-repeat center center fixed;
+    background-size: cover;
+    z-index: -1; /* Background behind the content */
+}
+
+.container {
+    width: 400px;
+    max-width: 90%; /* Ensures responsiveness */
+    border-radius: 8px;
+    padding: 30px;
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(15px);
+    position: relative; /* Stacking context */
+    z-index: 1; /* Container above the background */
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+h2 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+    color: #fff;
+}
+
+.input-text {
+    position: relative;
+    border-bottom: 2px solid #b73fe3;
+    margin: 15px 0;
+}
+
+.input-text label {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    color: #7601a1;
+    font-size: 16px;
+    pointer-events: none;
+    transition: 0.15s ease;
+}
+
+.input-text input {
+    width: 100%;
+    height: 40px;
+    background: transparent;
+    border: none;
+    outline: none;
+    font-size: 16px;
+    color: #fff;
+}
+
+.input-text input:focus ~ label,
+.input-text input:valid ~ label {
+    font-size: 0.8rem;
+    top: 10px;
+    transform: translateY(-120%);
+}
+
+.forget {
+    display: flex;
+    align-items: center;
+    margin: 25px 0 30px 0;
+    color: #fff;
+}
+
+#remember {
+    accent-color: #7601a1; /* For supported browsers */
+}
+
+.forget label {
+    display: flex;
+    align-items: center;
+}
+
+.forget p {
+    margin-left: 8px;
+}
+
+.container a {
+    color: #fff;
+    text-decoration: none;
+}
+
+.container a:hover {
+    text-decoration: underline;
+    color: #b73fe3;
+}
+
+button {
+    background: #b73fe3;
+    color: #fff;
+    font-weight: 600;
+    border: none;
+    padding: 12px 20px;
+    cursor: pointer;
+    border-radius: 3px;
+    font-size: 16px;
+    border: 2px solid transparent;
+    transition: 0.3s ease;
+}
+
+button:hover {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.15);
+    border-color: #fff;
+}
+
+.register {
+    text-align: center;
+    margin-top: 30px;
+    color: #fff;
+}
+
+.go-top-btn {
+    position: fixed;
+    bottom: 35px;
+    right: 35px;
+    border-radius: 50%;
+    cursor: pointer;
+    height: 100px;
+    width: 100px;
+    background: #fff;
+    border: 3px solid #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.go-top-btn img {
+    width: 50px;
+    height: 50px;
+}
