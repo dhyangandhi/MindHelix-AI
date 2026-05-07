@@ -15,23 +15,36 @@ const secretKey = crypto
 
 function encrypt(text) {
 
-  const iv = crypto.randomBytes(16);
+  const iv =
+    crypto.randomBytes(16);
 
-  const cipher = crypto.createCipheriv(
-    algorithm,
-    secretKey,
-    iv
+  const cipher =
+    crypto.createCipheriv(
+
+      algorithm,
+      secretKey,
+      iv
+    );
+
+  let encrypted =
+    cipher.update(
+
+      text,
+      "utf8",
+      "hex"
+    );
+
+  encrypted +=
+    cipher.final("hex");
+
+  return (
+
+    iv.toString("hex") +
+
+    ":" +
+
+    encrypted
   );
-
-  let encrypted = cipher.update(
-    text,
-    "utf8",
-    "hex"
-  );
-
-  encrypted += cipher.final("hex");
-
-  return iv.toString("hex") + ":" + encrypted;
 }
 
 
@@ -41,18 +54,22 @@ function encrypt(text) {
 
 function decrypt(hash) {
 
-  const parts = hash.split(":");
+  const parts =
+    hash.split(":");
 
-  const iv = Buffer.from(
-    parts.shift(),
-    "hex"
-  );
+  const iv =
+    Buffer.from(
+
+      parts.shift(),
+      "hex"
+    );
 
   const encryptedText =
     parts.join(":");
 
   const decipher =
     crypto.createDecipheriv(
+
       algorithm,
       secretKey,
       iv
@@ -60,16 +77,34 @@ function decrypt(hash) {
 
   let decrypted =
     decipher.update(
+
       encryptedText,
       "hex",
       "utf8"
     );
 
-  decrypted += decipher.final(
-    "utf8"
-  );
+  decrypted +=
+    decipher.final("utf8");
 
   return decrypted;
+}
+
+
+// ======================
+// HASH EMAIL FUNCTION
+// ======================
+
+function hashEmail(email) {
+
+  return crypto
+
+    .createHash("sha256")
+
+    .update(
+      email.toLowerCase()
+    )
+
+    .digest("hex");
 }
 
 
@@ -81,4 +116,5 @@ module.exports = {
 
   encrypt,
   decrypt,
+  hashEmail,
 };

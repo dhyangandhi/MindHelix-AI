@@ -1,30 +1,65 @@
 console.log("FORM JS LOADED");
 
-
 window.registerUser = async function () {
 
+    // GET VALUES
+
     const fullname =
-        document.getElementById("fullname").value;
+        document.getElementById(
+            "fullname"
+        ).value;
 
     const username =
-        document.getElementById("username").value;
+        document.getElementById(
+            "username"
+        ).value;
 
     const email =
-        document.getElementById("email").value;
+        document.getElementById(
+            "email"
+        ).value;
 
     const phone =
-        document.getElementById("phone").value;
+        document.getElementById(
+            "phone"
+        ).value;
 
     const password =
-        document.getElementById("password").value;
+        document.getElementById(
+            "password"
+        ).value;
 
     const confirmPassword =
-        document.getElementById("confirmPassword").value;
+        document.getElementById(
+            "confirmPassword"
+        ).value;
 
+
+    // PASSWORD CHECK
 
     if (password !== confirmPassword) {
 
-        alert("Passwords do not match");
+        alert(
+            "Passwords do not match"
+        );
+
+        return;
+    }
+
+
+    // EMPTY FIELD CHECK
+
+    if (
+        !fullname ||
+        !username ||
+        !email ||
+        !phone ||
+        !password
+    ) {
+
+        alert(
+            "All fields are required"
+        );
 
         return;
     }
@@ -32,34 +67,64 @@ window.registerUser = async function () {
 
     try {
 
-        const response = await fetch("/register", {
+        // SEND DATA
 
-            method: "POST",
+        const response =
+            await fetch(
+                "/register",
+                {
 
-            headers: {
-                "Content-Type": "application/json",
-            },
+                    method: "POST",
 
-            body: JSON.stringify({
-                fullname,
-                username,
-                email,
-                phone,
-                password,
-            }),
-        });
+                    headers: {
+                        "Content-Type":
+                            "application/json",
+                    },
+
+                    body: JSON.stringify({
+
+                        fullname,
+                        username,
+                        email,
+                        phone,
+                        password,
+                    }),
+                }
+            );
 
 
-        const data = await response.json();
-
-        alert(data.message);
+        const data =
+            await response.json();
 
         console.log(data);
+
+
+        // SUCCESS
+
+        if (data.success) {
+
+            alert(
+                "Registration Successful"
+            );
+
+            // REDIRECT TO LOGIN
+            window.location.href =
+                "login.html";
+        }
+
+        // ERROR
+
+        else {
+
+            alert(data.error);
+        }
 
     } catch (error) {
 
         console.log(error);
 
-        alert("Registration failed");
+        alert(
+            "Registration failed"
+        );
     }
-}
+};
