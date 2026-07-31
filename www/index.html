@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MindHelix AI | Next-Gen Intelligent AI Platform</title>
+    <title>MindHelix AI</title>
     <meta name="description" content="Experience the power of MindHelix AI. Conversational AI, intelligent automation, smart analytics, and seamless workflows.">
     
     <!-- Google Fonts & FontAwesome / Boxicons -->
@@ -293,7 +293,6 @@
             <div class="demo-preview-card">
                 <div class="preview-tabs">
                     <button class="tab-btn active" onclick="switchTab(this, 'chat')">AI Assistant</button>
-                    <button class="tab-btn" onclick="switchTab(this, 'stats')">Live Stats</button>
                     <button class="tab-btn" onclick="switchTab(this, 'security')">Security</button>
                 </div>
 
@@ -403,8 +402,6 @@
                     <li><a href="index.html">Home</a></li>
                     <li><a href="login.html">Login</a></li>
                     <li><a href="register.html">Register</a></li>
-                    <li><a href="ai.html">AI Assistant</a></li>
-                    <li><a href="dashbord.html">Dashboard</a></li>
                 </ul>
             </div>
 
@@ -469,22 +466,6 @@
                     <div class="prompt-bar" style="margin-top: 15px;">
                         <span>Type your prompt here...</span>
                         <div class="send-icon"><i class="fa-solid fa-paper-plane"></i></div>
-                    </div>
-                `;
-            } else if (tabName === 'stats') {
-                content.innerHTML = `
-                    <div style="padding: 10px; display: flex; flex-direction: column; gap: 12px;">
-                        <div style="display:flex; justify-content:space-between; align-items:center;">
-                            <span style="font-size:14px; color:#94a3b8;">System Latency</span>
-                            <span style="font-weight:700; color:#10b981;">18ms (Optimal)</span>
-                        </div>
-                        <div style="width:100%; height:8px; background:rgba(255,255,255,0.1); border-radius:4px; overflow:hidden;">
-                            <div style="width:95%; height:100%; background:linear-gradient(90deg, #ff5e36, #10b981);"></div>
-                        </div>
-                        <div style="display:flex; justify-content:space-between; align-items:center; margin-top:6px;">
-                            <span style="font-size:14px; color:#94a3b8;">Active Model API</span>
-                            <span style="font-weight:700; color:#c084fc;">MindHelix-v2.0 Neural Engine</span>
-                        </div>
                     </div>
                 `;
             } else if (tabName === 'security') {
