@@ -2,8 +2,11 @@
   "name": "html-pages",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "main.js",
   "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "electron": "electron .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -11,17 +14,22 @@
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
+    "@capacitor/android": "^8.3.3",
+    "@capacitor/cli": "^8.3.3",
+    "@capacitor/core": "^8.3.3",
     "@prisma/client": "^7.8.0",
     "bcrypt": "^6.0.0",
     "cors": "^2.8.6",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
+    "node-fetch": "^2.7.0",
     "nodemailer": "^8.0.7",
     "pg": "^8.20.0",
     "uuid": "^14.0.0"
   },
   "devDependencies": {
     "@types/pg": "^8.20.0",
+    "electron": "^42.0.1",
     "prisma": "^7.8.0"
   }
 }

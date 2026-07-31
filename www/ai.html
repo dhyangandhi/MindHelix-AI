@@ -1,0 +1,1493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MindHelix AI</title>
+    <!-- Google Fonts & FontAwesome -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        :root {
+            --bg-dark: #090d16;
+            --bg-card: rgba(17, 24, 39, 0.7);
+            --border-color: rgba(255, 255, 255, 0.08);
+            --primary: #6366f1;
+            --primary-gradient: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            --user-bubble: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+            --bot-bubble: rgba(30, 41, 59, 0.7);
+            --text-main: #f3f4f6;
+            --text-muted: #9ca3af;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.12) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(139, 92, 246, 0.12) 0px, transparent 50%);
+            color: var(--text-main);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* HEADER NAVBAR */
+        .navbar {
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--border-color);
+            padding: 14px 28px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .brand-section {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .brand-logo {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            background: rgba(255, 56, 0, 0.12);
+            border: 1px solid rgba(255, 56, 0, 0.35);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 3px;
+            box-shadow: 0 4px 16px rgba(255, 56, 0, 0.25);
+        }
+
+        .brand-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .brand-info h1 {
+            font-size: 18px;
+            font-weight: 700;
+            color: #ffffff;
+            letter-spacing: -0.3px;
+        }
+
+        .brand-info .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 11px;
+            color: #10b981;
+            background: rgba(16, 185, 129, 0.1);
+            padding: 2px 8px;
+            border-radius: 20px;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            font-weight: 500;
+        }
+
+        .badge-dot {
+            width: 6px;
+            height: 6px;
+            background-color: #10b981;
+            border-radius: 50%;
+            animation: pulse-dot 2s infinite;
+        }
+
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.2); }
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-btn {
+            border: none;
+            padding: 9px 16px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .clear-btn {
+            background: rgba(245, 158, 11, 0.12);
+            color: #fbbf24;
+            border: 1px solid rgba(245, 158, 11, 0.25);
+        }
+
+        .clear-btn:hover {
+            background: rgba(245, 158, 11, 0.25);
+            transform: translateY(-1px);
+        }
+
+        .logout-btn {
+            background: rgba(239, 68, 68, 0.12);
+            color: #f87171;
+            border: 1px solid rgba(239, 68, 68, 0.25);
+        }
+
+        .logout-btn:hover {
+            background: rgba(239, 68, 68, 0.25);
+            transform: translateY(-1px);
+        }
+
+        /* MAIN CHAT CONTAINER */
+        .chat-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            max-width: 1000px;
+            width: 100%;
+            margin: 0 auto;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .chat-box {
+            flex: 1;
+            overflow-y: auto;
+            padding: 24px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            scroll-behavior: smooth;
+        }
+
+        /* Scrollbar Styling */
+        .chat-box::-webkit-scrollbar {
+            width: 6px;
+        }
+        .chat-box::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .chat-box::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 10px;
+        }
+
+        /* MESSAGE BUBBLES */
+        .message-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            width: 100%;
+            animation: fadeIn 0.3s ease-out forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .message-row.user {
+            flex-direction: row-reverse;
+        }
+
+        .avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 15px;
+            flex-shrink: 0;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        .user .avatar {
+            background: var(--primary-gradient);
+            color: white;
+        }
+
+        .bot .avatar {
+            background: linear-gradient(135deg, #7c5cfc, #6366f1);
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(124, 92, 252, 0.35);
+        }
+
+        .message-content-wrapper {
+            max-width: 82%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .message {
+            padding: 14px 18px;
+            border-radius: 16px;
+            font-size: 15px;
+            line-height: 1.6;
+            word-wrap: break-word;
+            white-space: pre-wrap;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+            position: relative;
+        }
+
+        .user .message {
+            background: var(--user-bubble);
+            color: #ffffff;
+            border-bottom-right-radius: 4px;
+        }
+
+        .bot .message {
+            background: var(--bot-bubble);
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+            backdrop-filter: blur(12px);
+            border-bottom-left-radius: 4px;
+        }
+
+        /* TYPING INDICATOR */
+        .typing-indicator {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 14px 20px;
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            background: #818cf8;
+            border-radius: 50%;
+            animation: bounce 1.4s infinite ease-in-out both;
+        }
+
+        .dot:nth-child(1) { animation-delay: -0.32s; }
+        .dot:nth-child(2) { animation-delay: -0.16s; }
+
+        @keyframes bounce {
+            0%, 80%, 100% { transform: scale(0); }
+            40% { transform: scale(1.0); }
+        }
+
+        /* EMPTY STATE / WELCOME CARD */
+        .empty-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            text-align: center;
+            color: var(--text-muted);
+            padding: 40px 20px;
+        }
+
+        .empty-icon {
+            font-size: 48px;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 16px;
+        }
+
+        .empty-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 8px;
+        }
+
+        .empty-subtitle {
+            font-size: 14px;
+            margin-bottom: 28px;
+            max-width: 450px;
+        }
+
+        .prompt-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 12px;
+            width: 100%;
+            max-width: 650px;
+        }
+
+        .prompt-card {
+            background: rgba(30, 41, 59, 0.4);
+            border: 1px solid var(--border-color);
+            padding: 14px 16px;
+            border-radius: 12px;
+            cursor: pointer;
+            text-align: left;
+            transition: all 0.2s ease;
+            font-size: 13px;
+            color: var(--text-main);
+        }
+
+        .prompt-card:hover {
+            background: rgba(99, 102, 241, 0.12);
+            border-color: rgba(99, 102, 241, 0.4);
+            transform: translateY(-2px);
+        }
+
+        /* INPUT AREA */
+        .input-container {
+            padding: 16px 20px 24px;
+            background: transparent;
+        }
+
+        .input-box-wrapper {
+            background: rgba(17, 24, 39, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 16px;
+            padding: 8px 12px 8px 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .input-box-wrapper:focus-within {
+            border-color: rgba(99, 102, 241, 0.6);
+            box-shadow: 0 0 20px rgba(99, 102, 241, 0.25);
+        }
+
+        .input-box-wrapper input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            outline: none;
+            color: white;
+            font-size: 15px;
+            padding: 10px 0;
+        }
+
+        .input-box-wrapper input::placeholder {
+            color: #6b7280;
+        }
+
+        .send-btn {
+            background: var(--primary-gradient);
+            color: white;
+            border: none;
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+            flex-shrink: 0;
+        }
+
+        .send-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 16px rgba(99, 102, 241, 0.5);
+        }
+
+        .send-btn:active {
+            transform: scale(0.95);
+        }
+
+        .send-btn.stop-btn {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
+        }
+
+        .send-btn.stop-btn:hover {
+            background: linear-gradient(135deg, #dc2626, #b91c1c);
+            box-shadow: 0 6px 16px rgba(239, 68, 68, 0.6);
+            transform: scale(1.05);
+        }
+
+        .interrupt-btn {
+            background: rgba(239, 68, 68, 0.15);
+            color: #ef4444;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            margin-top: 4px;
+            transition: all 0.2s ease;
+        }
+
+        .interrupt-btn:hover {
+            background: rgba(239, 68, 68, 0.25);
+            border-color: rgba(239, 68, 68, 0.5);
+            color: #f87171;
+        }
+
+        /* CODE BLOCK WITH RUN & COPY HEADER */
+        .code-block {
+            background: #0d1117;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 10px;
+            margin: 12px 0;
+            overflow: hidden;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+            white-space: normal;
+        }
+
+        .code-header {
+            background: rgba(22, 27, 34, 0.9);
+            padding: 8px 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            font-size: 12px;
+            color: #8b949e;
+            font-weight: 600;
+        }
+
+        .code-header span {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            text-transform: lowercase;
+        }
+
+        .code-header-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .run-code-btn {
+            background: rgba(99, 102, 241, 0.15);
+            border: 1px solid rgba(99, 102, 241, 0.4);
+            color: #a5b4fc;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .run-code-btn:hover {
+            background: rgba(99, 102, 241, 0.35);
+            color: #ffffff;
+            border-color: #6366f1;
+            transform: translateY(-1px);
+        }
+
+        .copy-code-btn {
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: #c9d1d9;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .copy-code-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .copy-code-btn.copied {
+            color: #10b981;
+            border-color: rgba(16, 185, 129, 0.4);
+            background: rgba(16, 185, 129, 0.1);
+        }
+
+        .code-block pre {
+            background: transparent;
+            padding: 14px;
+            margin: 0;
+            border: none;
+            border-radius: 0;
+            overflow-x: auto;
+        }
+
+        .code-block code {
+            color: #e6edf3;
+            font-family: 'Fira Code', 'Consolas', monospace;
+            font-size: 13.5px;
+            line-height: 1.5;
+            white-space: pre;
+        }
+
+        .inline-code {
+            background: rgba(110, 118, 129, 0.2);
+            color: #38bdf8;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 13px;
+        }
+
+        /* OUTPUT TERMINAL PANEL */
+        .output-panel {
+            background: #090d16;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            flex-direction: column;
+            animation: fadeIn 0.2s ease-out;
+        }
+
+        .output-header {
+            background: #111827;
+            padding: 6px 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 11px;
+            font-weight: 700;
+            color: #9ca3af;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .close-output-btn {
+            background: transparent;
+            border: none;
+            color: #6b7280;
+            cursor: pointer;
+            font-size: 13px;
+            padding: 2px 6px;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+        }
+
+        .close-output-btn:hover {
+            color: #ef4444;
+            background: rgba(239, 68, 68, 0.1);
+        }
+
+        .output-content {
+            padding: 12px 14px;
+            max-height: 250px;
+            overflow-y: auto;
+            font-family: 'Fira Code', 'Consolas', monospace;
+            font-size: 13px;
+        }
+
+        .output-content.loading {
+            color: #818cf8;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .output-text {
+            color: #4ade80;
+            white-space: pre-wrap;
+            word-break: break-word;
+            margin: 0;
+        }
+
+        .output-error {
+            color: #f87171;
+            white-space: pre-wrap;
+            word-break: break-word;
+            margin: 0;
+        }
+
+        .output-info {
+            color: #9ca3af;
+            font-style: italic;
+            margin: 0;
+        }
+
+        .html-preview-frame {
+            width: 100%;
+            height: 220px;
+            border: none;
+            background: white;
+            border-radius: 6px;
+        }
+
+        /* MESSAGE COPY ACTION BUTTON */
+        .message-actions {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 6px;
+        }
+
+        .copy-msg-btn {
+            background: transparent;
+            border: none;
+            color: #9ca3af;
+            font-size: 12px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 4px 8px;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+            opacity: 0.75;
+        }
+
+        .copy-msg-btn:hover {
+            opacity: 1;
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .copy-msg-btn.copied {
+            color: #10b981;
+            opacity: 1;
+        }
+
+        /* USER QUESTION EDITING STYLES */
+        .user-message-actions {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 4px;
+        }
+
+        .edit-msg-btn {
+            background: transparent;
+            border: none;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 11px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 2px 6px;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+        }
+
+        .edit-msg-btn:hover {
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .edit-box {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            width: 100%;
+            min-width: 280px;
+            background: rgba(30, 41, 59, 0.95);
+            border: 1px solid rgba(99, 102, 241, 0.5);
+            border-radius: 12px;
+            padding: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .edit-input {
+            width: 100%;
+            background: rgba(15, 23, 42, 0.9);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 8px;
+            color: #ffffff;
+            font-size: 14px;
+            padding: 8px 12px;
+            outline: none;
+            resize: vertical;
+            font-family: inherit;
+        }
+
+        .edit-input:focus {
+            border-color: #6366f1;
+        }
+
+        .edit-btn-row {
+            display: flex;
+            justify-content: flex-end;
+            gap: 8px;
+        }
+
+        .save-edit-btn {
+            background: var(--primary-gradient);
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.2s ease;
+        }
+
+        .save-edit-btn:hover {
+            opacity: 0.95;
+            transform: translateY(-1px);
+        }
+
+        .cancel-edit-btn {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-muted);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .cancel-edit-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <div class="brand-section">
+            <div class="brand-logo">
+                <img src="logo.svg" alt="OpenRouter Logo">
+            </div>
+            <div class="brand-info">
+                <h1>MindHelix AI</h1>
+                <div class="badge">
+                    <span class="badge-dot"></span>
+                    OpenRouter Online
+                </div>
+            </div>
+        </div>
+
+        <div class="nav-actions">
+            <button class="nav-btn clear-btn" onclick="clearChat()" title="Clear Chat History">
+                <i class="fa-solid fa-trash-can"></i>
+                Clear Chat
+            </button>
+            <button class="nav-btn logout-btn" onclick="logout()" title="Sign Out">
+                <i class="fa-solid fa-right-from-bracket"></i>
+                Sign Out
+            </button>
+        </div>
+    </nav>
+
+    <!-- CHAT AREA -->
+    <div class="chat-container">
+        <div class="chat-box" id="chatBox">
+            <!-- Empty state shown when no messages -->
+            <div class="empty-state" id="emptyState">
+                <div class="empty-icon">
+                    <img src="logo.svg" alt="OpenRouter Logo" style="width: 56px; height: 56px;">
+                </div>
+                <h2 class="empty-title">How can I help you today?</h2>
+                <p class="empty-subtitle">Ask a question, code a solution, or draft content.</p>
+
+                <div class="prompt-grid">
+                    <div class="prompt-card" onclick="usePrompt('Write a clean JavaScript async function to fetch API data')">
+                        <i class="fa-solid fa-code" style="color: #818cf8; margin-right: 6px;"></i>
+                        <strong>Write JS async fetch</strong>
+                    </div>
+                    <div class="prompt-card" onclick="usePrompt('Write a Python script to sort an array using quicksort')">
+                        <i class="fa-brands fa-python" style="color: #34d399; margin-right: 6px;"></i>
+                        <strong>Python Quicksort Code</strong>
+                    </div>
+                    <div class="prompt-card" onclick="usePrompt('Write a simple C++ hello world program with a loop')">
+                        <i class="fa-solid fa-laptop-code" style="color: #fbbf24; margin-right: 6px;"></i>
+                        <strong>C++ Hello World Loop</strong>
+                    </div>
+                    <div class="prompt-card" onclick="usePrompt('Create a styled HTML button with hover animation')">
+                        <i class="fa-brands fa-html5" style="color: #f472b6; margin-right: 6px;"></i>
+                        <strong>HTML Animated Button</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- INPUT BOX -->
+        <div class="input-container">
+            <div class="input-box-wrapper">
+                <input 
+                    type="text" 
+                    id="userInput" 
+                    placeholder="Type your message here..." 
+                    onkeypress="handleKeyPress(event)"
+                >
+                <button class="send-btn" onclick="sendMessage()" id="sendBtn" title="Send Message">
+                    <i class="fa-solid fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    const langMap = {
+        'js': 'javascript',
+        'javascript': 'javascript',
+        'node': 'javascript',
+        'py': 'python',
+        'python': 'python',
+        'py3': 'python',
+        'cpp': 'c++',
+        'c++': 'c++',
+        'c': 'c',
+        'java': 'java',
+        'c#': 'csharp',
+        'csharp': 'csharp',
+        'ts': 'typescript',
+        'typescript': 'typescript',
+        'go': 'go',
+        'golang': 'go',
+        'rust': 'rust',
+        'rs': 'rust',
+        'php': 'php',
+        'ruby': 'ruby',
+        'rb': 'ruby',
+        'sh': 'bash',
+        'bash': 'bash',
+        'html': 'html',
+        'css': 'html'
+    };
+
+    let currentAbortController = null;
+
+    function stopGeneration() {
+        if (currentAbortController) {
+            currentAbortController.abort();
+            currentAbortController = null;
+        }
+    }
+
+    function setGeneratingState(isGenerating) {
+        const sendBtn = document.getElementById("sendBtn");
+        if (!sendBtn) return;
+        if (isGenerating) {
+            sendBtn.classList.add("stop-btn");
+            sendBtn.innerHTML = '<i class="fa-solid fa-circle-stop"></i>';
+            sendBtn.title = "Interrupt Conversation / Stop Generating";
+        } else {
+            sendBtn.classList.remove("stop-btn");
+            sendBtn.innerHTML = '<i class="fa-solid fa-paper-plane"></i>';
+            sendBtn.title = "Send Message";
+        }
+    }
+
+    function hideEmptyState() {
+        const emptyState = document.getElementById("emptyState");
+        if (emptyState) {
+            emptyState.style.display = "none";
+        }
+    }
+
+    function usePrompt(text) {
+        const input = document.getElementById("userInput");
+        input.value = text;
+        input.focus();
+    }
+
+    function handleKeyPress(e) {
+        if (e.key === "Enter") {
+            sendMessage();
+        }
+    }
+
+    async function sendMessage() {
+        if (currentAbortController) {
+            stopGeneration();
+            return;
+        }
+
+        const input = document.getElementById("userInput");
+        const chatBox = document.getElementById("chatBox");
+        const message = input.value.trim();
+
+        if (!message) return;
+
+        hideEmptyState();
+
+        // USER MESSAGE
+        chatBox.innerHTML += `
+            <div class="message-row user">
+                <div class="avatar">
+                    <i class="fa-solid fa-user"></i>
+                </div>
+                <div class="message-content-wrapper">
+                    <div class="message">${escapeHtml(message)}</div>
+                    <div class="user-message-actions">
+                        <button class="edit-msg-btn" onclick="editUserMessage(this)" title="Edit Question">
+                            <i class="fa-solid fa-pen-to-square"></i> Edit
+                        </button>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        input.value = "";
+        chatBox.scrollTop = chatBox.scrollHeight;
+
+        // BOT LOADING
+        const typingId = "typing_" + Date.now();
+        chatBox.innerHTML += `
+            <div class="message-row bot" id="${typingId}">
+                <div class="avatar">
+                    <i class="fa-solid fa-robot"></i>
+                </div>
+                <div class="message-content-wrapper">
+                    <div class="message typing-indicator">
+                        <div class="dot"></div>
+                        <div class="dot"></div>
+                        <div class="dot"></div>
+                    </div>
+                    <div class="user-message-actions">
+                        <button class="interrupt-btn" onclick="stopGeneration()" title="Interrupt Conversation">
+                            <i class="fa-solid fa-circle-stop"></i> Interrupt
+                        </button>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        chatBox.scrollTop = chatBox.scrollHeight;
+
+        currentAbortController = new AbortController();
+        setGeneratingState(true);
+
+        try {
+            const response = await fetch("/chat", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ message }),
+                signal: currentAbortController.signal
+            });
+
+            const data = await response.json();
+
+            const typingElem = document.getElementById(typingId);
+            if (typingElem) typingElem.remove();
+
+            // BOT MESSAGE WITH RUN & COPY ACTIONS
+            chatBox.innerHTML += `
+                <div class="message-row bot">
+                    <div class="avatar">
+                        <i class="fa-solid fa-robot"></i>
+                    </div>
+                    <div class="message-content-wrapper">
+                        <div class="message">${formatBotResponse(data.reply)}</div>
+                        <div class="message-actions">
+                            <button class="copy-msg-btn" onclick="copyMessageText(this)" title="Copy Message">
+                                <i class="fa-regular fa-copy"></i> Copy
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            // SAVE CHAT
+            localStorage.setItem("aiChat", chatBox.innerHTML);
+            chatBox.scrollTop = chatBox.scrollHeight;
+
+        } catch (error) {
+            const typingElem = document.getElementById(typingId);
+            if (typingElem) typingElem.remove();
+
+            if (error.name === "AbortError") {
+                chatBox.innerHTML += `
+                    <div class="message-row bot">
+                        <div class="avatar">
+                            <i class="fa-solid fa-hand" style="color: #f59e0b;"></i>
+                        </div>
+                        <div class="message-content-wrapper">
+                            <div class="message" style="border-color: rgba(245, 158, 11, 0.4); color: #fcd34d;"><i class="fa-solid fa-circle-stop" style="margin-right: 6px;"></i> Conversation response was interrupted.</div>
+                        </div>
+                    </div>
+                `;
+                localStorage.setItem("aiChat", chatBox.innerHTML);
+                chatBox.scrollTop = chatBox.scrollHeight;
+            } else {
+                console.error("Chat Error:", error);
+                chatBox.innerHTML += `
+                    <div class="message-row bot">
+                        <div class="avatar">
+                            <i class="fa-solid fa-triangle-exclamation" style="color: #f87171;"></i>
+                        </div>
+                        <div class="message-content-wrapper">
+                            <div class="message" style="border-color: rgba(239, 68, 68, 0.4);">Failed to connect to server. Please try again.</div>
+                        </div>
+                    </div>
+                `;
+                chatBox.scrollTop = chatBox.scrollHeight;
+            }
+        } finally {
+            currentAbortController = null;
+            setGeneratingState(false);
+        }
+    }
+
+    function editUserMessage(button) {
+        const wrapper = button.closest('.message-content-wrapper');
+        const msgElem = wrapper.querySelector('.message');
+        if (!msgElem) return;
+
+        const currentText = msgElem.innerText || msgElem.textContent;
+
+        wrapper.dataset.originalContent = wrapper.innerHTML;
+
+        wrapper.innerHTML = `
+            <div class="edit-box">
+                <textarea class="edit-input" rows="2">${escapeHtml(currentText)}</textarea>
+                <div class="edit-btn-row">
+                    <button class="save-edit-btn" onclick="saveUserEdit(this)">
+                        <i class="fa-solid fa-paper-plane"></i> Save & Submit
+                    </button>
+                    <button class="cancel-edit-btn" onclick="cancelUserEdit(this)">
+                        Cancel
+                    </button>
+                </div>
+            </div>
+        `;
+    }
+
+    function cancelUserEdit(button) {
+        const wrapper = button.closest('.message-content-wrapper');
+        if (wrapper && wrapper.dataset.originalContent) {
+            wrapper.innerHTML = wrapper.dataset.originalContent;
+            delete wrapper.dataset.originalContent;
+        }
+    }
+
+    async function saveUserEdit(button) {
+        if (currentAbortController) {
+            stopGeneration();
+        }
+
+        const wrapper = button.closest('.message-content-wrapper');
+        const textarea = wrapper.querySelector('.edit-input');
+        const newText = textarea.value.trim();
+        if (!newText) return;
+
+        const userRow = button.closest('.message-row.user');
+
+        wrapper.innerHTML = `
+            <div class="message">${escapeHtml(newText)}</div>
+            <div class="user-message-actions">
+                <button class="edit-msg-btn" onclick="editUserMessage(this)" title="Edit Question">
+                    <i class="fa-solid fa-pen-to-square"></i> Edit
+                </button>
+            </div>
+        `;
+        delete wrapper.dataset.originalContent;
+
+        // Remove next bot message if present
+        let nextRow = userRow.nextElementSibling;
+        if (nextRow && nextRow.classList.contains('bot')) {
+            nextRow.remove();
+        }
+
+        const chatBox = document.getElementById("chatBox");
+
+        const typingId = "typing_" + Date.now();
+        const typingHTML = `
+            <div class="message-row bot" id="${typingId}">
+                <div class="avatar">
+                    <i class="fa-solid fa-robot"></i>
+                </div>
+                <div class="message-content-wrapper">
+                    <div class="message typing-indicator">
+                        <div class="dot"></div>
+                        <div class="dot"></div>
+                        <div class="dot"></div>
+                    </div>
+                    <div class="user-message-actions">
+                        <button class="interrupt-btn" onclick="stopGeneration()" title="Interrupt Conversation">
+                            <i class="fa-solid fa-circle-stop" style="margin-right: 6px;"></i> Interrupt
+                        </button>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        userRow.insertAdjacentHTML('afterend', typingHTML);
+        chatBox.scrollTop = chatBox.scrollHeight;
+
+        currentAbortController = new AbortController();
+        setGeneratingState(true);
+
+        try {
+            const response = await fetch("/chat", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ message: newText }),
+                signal: currentAbortController.signal
+            });
+
+            const data = await response.json();
+
+            const typingElem = document.getElementById(typingId);
+            if (typingElem) typingElem.remove();
+
+            const botResponseHTML = `
+                <div class="message-row bot">
+                    <div class="avatar">
+                        <i class="fa-solid fa-robot"></i>
+                    </div>
+                    <div class="message-content-wrapper">
+                        <div class="message">${formatBotResponse(data.reply)}</div>
+                        <div class="message-actions">
+                            <button class="copy-msg-btn" onclick="copyMessageText(this)" title="Copy Message">
+                                <i class="fa-regular fa-copy"></i> Copy
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            userRow.insertAdjacentHTML('afterend', botResponseHTML);
+            localStorage.setItem("aiChat", chatBox.innerHTML);
+            chatBox.scrollTop = chatBox.scrollHeight;
+
+        } catch (error) {
+            const typingElem = document.getElementById(typingId);
+            if (typingElem) typingElem.remove();
+
+            if (error.name === "AbortError") {
+                const interruptedHTML = `
+                    <div class="message-row bot">
+                        <div class="avatar">
+                            <i class="fa-solid fa-hand" style="color: #f59e0b;"></i>
+                        </div>
+                        <div class="message-content-wrapper">
+                            <div class="message" style="border-color: rgba(245, 158, 11, 0.4); color: #fcd34d;"><i class="fa-solid fa-circle-stop" style="margin-right: 6px;"></i> Conversation response was interrupted.</div>
+                        </div>
+                    </div>
+                `;
+                userRow.insertAdjacentHTML('afterend', interruptedHTML);
+                localStorage.setItem("aiChat", chatBox.innerHTML);
+                chatBox.scrollTop = chatBox.scrollHeight;
+            } else {
+                console.error("Edit Chat Error:", error);
+                const errorHTML = `
+                    <div class="message-row bot">
+                        <div class="avatar">
+                            <i class="fa-solid fa-triangle-exclamation" style="color: #f87171;"></i>
+                        </div>
+                        <div class="message-content-wrapper">
+                            <div class="message" style="border-color: rgba(239, 68, 68, 0.4);">Failed to connect to server. Please try again.</div>
+                        </div>
+                    </div>
+                `;
+                userRow.insertAdjacentHTML('afterend', errorHTML);
+            }
+        } finally {
+            currentAbortController = null;
+            setGeneratingState(false);
+        }
+    }
+
+    function clearChat() {
+        stopGeneration();
+        document.getElementById("chatBox").innerHTML = `
+            <div class="empty-state" id="emptyState">
+                <div class="empty-icon">
+                    <img src="logo.svg" alt="OpenRouter Logo" style="width: 56px; height: 56px;">
+                </div>
+                <h2 class="empty-title">How can I help you today?</h2>
+                <p class="empty-subtitle">Powered by OpenRouter AI. Ask a question, code a solution, or draft content.</p>
+
+                <div class="prompt-grid">
+                    <div class="prompt-card" onclick="usePrompt('Write a clean JavaScript async function to fetch API data')">
+                        <i class="fa-solid fa-code" style="color: #818cf8; margin-right: 6px;"></i>
+                        <strong>Write JS async fetch</strong>
+                    </div>
+                    <div class="prompt-card" onclick="usePrompt('Write a Python script to sort an array using quicksort')">
+                        <i class="fa-brands fa-python" style="color: #34d399; margin-right: 6px;"></i>
+                        <strong>Python Quicksort Code</strong>
+                    </div>
+                    <div class="prompt-card" onclick="usePrompt('Write a simple C++ hello world program with a loop')">
+                        <i class="fa-solid fa-laptop-code" style="color: #fbbf24; margin-right: 6px;"></i>
+                        <strong>C++ Hello World Loop</strong>
+                    </div>
+                    <div class="prompt-card" onclick="usePrompt('Create a styled HTML button with hover animation')">
+                        <i class="fa-brands fa-html5" style="color: #f472b6; margin-right: 6px;"></i>
+                        <strong>HTML Animated Button</strong>
+                    </div>
+                </div>
+            </div>
+        `;
+        localStorage.removeItem("aiChat");
+    }
+
+    function logout() {
+        localStorage.removeItem("user");
+        localStorage.removeItem("aiChat");
+        window.location.href = "/";
+    }
+
+    function escapeHtml(text) {
+        return text
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    }
+
+    function formatBotResponse(text) {
+        if (!text) return "No response";
+        let formatted = escapeHtml(text);
+
+        // Convert triple backtick code blocks into styled code blocks with Run Code and Copy Code headers
+        formatted = formatted.replace(/```(\w*)\n?([\s\S]*?)```/g, function(match, lang, code) {
+            const language = lang.trim() || 'code';
+            return `
+                <div class="code-block">
+                    <div class="code-header">
+                        <span><i class="fa-solid fa-code"></i> ${language}</span>
+                        <div class="code-header-actions">
+                            <button class="run-code-btn" onclick="runCodeBlock(this)">
+                                <i class="fa-solid fa-play"></i> Run Code
+                            </button>
+                            <button class="copy-code-btn" onclick="copyCodeBlock(this)">
+                                <i class="fa-regular fa-copy"></i> Copy code
+                            </button>
+                        </div>
+                    </div>
+                    <pre><code>${code}</code></pre>
+                </div>
+            `;
+        });
+
+        // Convert inline single backticks
+        formatted = formatted.replace(/`([^`]+)`/g, '<code class="inline-code">$1</code>');
+
+        return formatted;
+    }
+
+    const judge0LangMap = {
+        'javascript': 63,
+        'python': 71,
+        'c++': 54,
+        'c': 50,
+        'java': 62,
+        'typescript': 74
+    };
+
+    async function runCodeBlock(button) {
+        const codeBlock = button.closest('.code-block');
+        const codeElement = codeBlock.querySelector('pre code');
+        const langSpan = codeBlock.querySelector('.code-header span');
+
+        if (!codeElement) return;
+
+        let rawLang = langSpan ? langSpan.textContent.trim().toLowerCase() : 'javascript';
+        rawLang = rawLang.replace(/[^a-z0-9#+]/g, '');
+
+        const code = decodeHtml(codeElement.innerText || codeElement.textContent);
+
+        let outputPanel = codeBlock.querySelector('.output-panel');
+        if (!outputPanel) {
+            outputPanel = document.createElement('div');
+            outputPanel.className = 'output-panel';
+            codeBlock.appendChild(outputPanel);
+        }
+
+        outputPanel.innerHTML = `
+            <div class="output-header">
+                <span><i class="fa-solid fa-terminal"></i> Terminal Output</span>
+                <button class="close-output-btn" onclick="this.closest('.output-panel').remove()">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div class="output-content loading">
+                <i class="fa-solid fa-spinner fa-spin"></i> Executing code...
+            </div>
+        `;
+
+        const outputContent = outputPanel.querySelector('.output-content');
+
+        const scrollToOutput = () => {
+            setTimeout(() => {
+                outputPanel.scrollIntoView({ behavior: 'smooth', block: 'end' });
+            }, 60);
+        };
+
+        scrollToOutput();
+
+        // Handle HTML Live Preview directly
+        if (rawLang === 'html' || rawLang === 'htm' || rawLang === 'xml' || code.includes('<!DOCTYPE html>') || code.includes('<html') || code.includes('<div') || code.includes('<style')) {
+            outputContent.classList.remove('loading');
+            outputContent.style.padding = '0';
+            outputContent.style.maxHeight = 'none';
+
+            const iframe = document.createElement('iframe');
+            iframe.className = 'html-preview-frame';
+            iframe.sandbox = 'allow-scripts allow-modals';
+            iframe.srcdoc = code;
+
+            outputContent.innerHTML = '';
+            outputContent.appendChild(iframe);
+            scrollToOutput();
+            return;
+        }
+
+        const language = langMap[rawLang] || rawLang || 'javascript';
+
+        // Direct Browser Execution for JavaScript / Node.js
+        if (language === 'javascript') {
+            try {
+                let logs = [];
+                const customConsole = {
+                    log: (...args) => logs.push(args.map(a => typeof a === 'object' ? JSON.stringify(a, null, 2) : String(a)).join(' ')),
+                    error: (...args) => logs.push('ERROR: ' + args.map(a => typeof a === 'object' ? JSON.stringify(a, null, 2) : String(a)).join(' ')),
+                    warn: (...args) => logs.push('WARN: ' + args.map(a => typeof a === 'object' ? JSON.stringify(a, null, 2) : String(a)).join(' ')),
+                    info: (...args) => logs.push('INFO: ' + args.map(a => typeof a === 'object' ? JSON.stringify(a, null, 2) : String(a)).join(' '))
+                };
+
+                const runFn = new Function('console', code);
+                const result = runFn(customConsole);
+                outputContent.classList.remove('loading');
+                let outStr = logs.join('\n');
+                if (result !== undefined) {
+                    outStr += (outStr ? '\n' : '') + '=> ' + (typeof result === 'object' ? JSON.stringify(result, null, 2) : String(result));
+                }
+                outputContent.innerHTML = `<pre class="output-text">${escapeHtml(outStr || 'Code executed successfully (no output)')}</pre>`;
+                scrollToOutput();
+                return;
+            } catch (jsErr) {
+                outputContent.classList.remove('loading');
+                outputContent.innerHTML = `<pre class="output-error">${escapeHtml(jsErr.stack || String(jsErr))}</pre>`;
+                scrollToOutput();
+                return;
+            }
+        }
+
+        // For Python and other languages, execute using Judge0 API
+        try {
+            const judgeLangId = judge0LangMap[language] || 71;
+            const response = await fetch('https://ce.judge0.com/submissions?wait=true', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    source_code: code,
+                    language_id: judgeLangId
+                })
+            });
+
+            const data = await response.json();
+            outputContent.classList.remove('loading');
+
+            if (data.stdout || data.stderr || data.compile_output) {
+                const stdout = data.stdout ? data.stdout.trim() : '';
+                const stderr = data.stderr ? data.stderr.trim() : '';
+                const compileErr = data.compile_output ? data.compile_output.trim() : '';
+
+                if (stderr || compileErr) {
+                    outputContent.innerHTML = `<pre class="output-error">${escapeHtml(stderr || compileErr)}</pre>`;
+                } else if (stdout) {
+                    outputContent.innerHTML = `<pre class="output-text">${escapeHtml(stdout)}</pre>`;
+                } else {
+                    outputContent.innerHTML = `<pre class="output-info">Program executed (No output)</pre>`;
+                }
+            } else if (data.status && data.status.description) {
+                outputContent.innerHTML = `<pre class="output-info">${escapeHtml(data.status.description)}</pre>`;
+            } else {
+                outputContent.innerHTML = `<pre class="output-error">Execution error occurred.</pre>`;
+            }
+            scrollToOutput();
+        } catch (err) {
+            outputContent.classList.remove('loading');
+            outputContent.innerHTML = `<pre class="output-error">Execution error: ${escapeHtml(err.message)}</pre>`;
+            scrollToOutput();
+        }
+    }
+
+    async function copyCodeBlock(button) {
+        const codeElement = button.closest('.code-block').querySelector('pre code');
+        if (!codeElement) return;
+
+        const textToCopy = decodeHtml(codeElement.innerText || codeElement.textContent);
+
+        try {
+            await navigator.clipboard.writeText(textToCopy);
+            const originalHTML = button.innerHTML;
+            button.innerHTML = '<i class="fa-solid fa-check"></i> Copied!';
+            button.classList.add('copied');
+
+            setTimeout(() => {
+                button.innerHTML = originalHTML;
+                button.classList.remove('copied');
+            }, 2000);
+        } catch (err) {
+            console.error('Failed to copy code:', err);
+        }
+    }
+
+    async function copyMessageText(button) {
+        const messageWrapper = button.closest('.message-content-wrapper');
+        const messageElem = messageWrapper.querySelector('.message');
+        if (!messageElem) return;
+
+        const textToCopy = messageElem.innerText || messageElem.textContent;
+
+        try {
+            await navigator.clipboard.writeText(textToCopy);
+            const originalHTML = button.innerHTML;
+            button.innerHTML = '<i class="fa-solid fa-check"></i> Copied';
+            button.classList.add('copied');
+
+            setTimeout(() => {
+                button.innerHTML = originalHTML;
+                button.classList.remove('copied');
+            }, 2000);
+        } catch (err) {
+            console.error('Failed to copy message:', err);
+        }
+    }
+
+    function decodeHtml(html) {
+        const txt = document.createElement("textarea");
+        txt.innerHTML = html;
+        return txt.value;
+    }
+
+    // LOAD CHAT HISTORY
+    window.onload = function () {
+        const saved = localStorage.getItem("aiChat");
+        if (saved && saved.trim()) {
+            document.getElementById("chatBox").innerHTML = saved;
+            hideEmptyState();
+            const chatBox = document.getElementById("chatBox");
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+    };
+    </script>
+</body>
+</html>

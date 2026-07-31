@@ -1,6 +1,7 @@
 require("dotenv").config();
 
 const express = require("express");
+const path = require("path");
 const cors = require("cors");
 const bcrypt = require("bcrypt");
 const { Pool } = require("pg");
@@ -14,6 +15,176 @@ const {
 } = require("./utils/encryption");
 
 const app = express();
+
+
+// ======================
+// MIDDLEWARE
+// ======================
+
+app.use(cors());
+
+app.use(express.json());
+
+app.use(
+  express.static(
+    path.join(__dirname, "www")
+  )
+);
+
+app.use(
+  express.static(__dirname)
+);
+
+
+// ======================
+// PAGE ROUTES
+// ======================
+
+// ======================
+// PAGE ROUTES (CLEAN URLs)
+// ======================
+
+// Helper function to resolve target file from route name
+function resolveRouteFile(routeName) {
+  if (!routeName) return path.join(__dirname, "www", "home.html");
+  const route = routeName.toLowerCase().trim().replace(/^\/+|\/+$/g, '');
+  switch (route) {
+    case 'home':
+    case 'index':
+    case '':
+      return path.join(__dirname, "www", "home.html");
+    case 'login':
+      return path.join(__dirname, "www", "login.html");
+    case 'register':
+      return path.join(__dirname, "www", "register.html");
+    case 'ai':
+      return path.join(__dirname, "www", "ai.html");
+    case 'dashboard':
+    case 'dashbord':
+      return path.join(__dirname, "dashbord.html");
+    case 'contact':
+      return path.join(__dirname, "Contact.html");
+    case 'forgot-password':
+      return path.join(__dirname, "www", "forgot-password.html");
+    case 'reset-password':
+      return path.join(__dirname, "www", "reset-password.html");
+    case 'forget-success':
+      return path.join(__dirname, "www", "forget succefull.html");
+    default:
+      return null;
+  }
+}
+
+// API endpoint to encrypt any path URL
+app.get("/api/encrypt-url", (req, res) => {
+  const targetPath = req.query.path || "home";
+  try {
+    const encodedBase64 = Buffer.from(targetPath).toString("base64url");
+    const aesToken = encrypt ? encrypt(targetPath) : encodedBase64;
+    res.json({
+      success: true,
+      originalPath: targetPath,
+      encryptedUrl: `/e/${encodedBase64}`,
+      aesEncryptedUrl: `/secure?token=${encodeURIComponent(aesToken)}`
+    });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// Route for encrypted URL tokens (e.g. /e/bG9naW4= or /e/aG9tZQ==)
+app.get("/e/:token", (req, res) => {
+  try {
+    const token = req.params.token || "";
+    let decoded = "";
+    try {
+      let b64 = token.replace(/-/g, '+').replace(/_/g, '/');
+      while (b64.length % 4) {
+        b64 += '=';
+      }
+      decoded = Buffer.from(b64, "base64").toString("utf8");
+    } catch (e) {
+      decoded = token;
+    }
+    
+    let targetFile = resolveRouteFile(decoded);
+    if (!targetFile && typeof decrypt === "function") {
+      try {
+        const aesDecoded = decrypt(token);
+        targetFile = resolveRouteFile(aesDecoded);
+      } catch (e) {}
+    }
+
+    if (targetFile) {
+      return res.sendFile(targetFile);
+    }
+    res.sendFile(path.join(__dirname, "www", "home.html"));
+  } catch (err) {
+    res.sendFile(path.join(__dirname, "www", "home.html"));
+  }
+});
+
+// Route for secure query token URLs (e.g. /secure?token=...)
+app.get("/secure", (req, res) => {
+  try {
+    const token = req.query.token;
+    if (!token) return res.redirect("/");
+    let decodedPath = "";
+    if (typeof decrypt === "function") {
+      try {
+        decodedPath = decrypt(token);
+      } catch (e) {}
+    }
+    if (!decodedPath) {
+      try {
+        decodedPath = Buffer.from(token, "base64url").toString("utf8");
+      } catch (e) {}
+    }
+    const targetFile = resolveRouteFile(decodedPath);
+    if (targetFile) {
+      return res.sendFile(targetFile);
+    }
+    res.redirect("/");
+  } catch (err) {
+    res.redirect("/");
+  }
+});
+
+app.get(["/", "/home", "/home.html", "/index.html", "/www/home.html", "/www/index.html"], (req, res) => {
+  res.sendFile(path.join(__dirname, "www", "home.html"));
+});
+
+app.get(["/login", "/login.html", "/www/login.html"], (req, res) => {
+  res.sendFile(path.join(__dirname, "www", "login.html"));
+});
+
+app.get(["/register", "/register.html", "/www/register.html"], (req, res) => {
+  res.sendFile(path.join(__dirname, "www", "register.html"));
+});
+
+app.get(["/ai", "/ai.html", "/www/ai.html"], (req, res) => {
+  res.sendFile(path.join(__dirname, "www", "ai.html"));
+});
+
+app.get(["/dashboard", "/dashbord", "/dashbord.html", "/dashboard.html", "/www/dashbord.html", "/www/dashboard.html"], (req, res) => {
+  res.sendFile(path.join(__dirname, "dashbord.html"));
+});
+
+app.get(["/forgot-password", "/forgot-password.html", "/www/forgot-password.html"], (req, res) => {
+  res.sendFile(path.join(__dirname, "www", "forgot-password.html"));
+});
+
+app.get(["/reset-password", "/reset-password.html", "/www/reset-password.html"], (req, res) => {
+  res.sendFile(path.join(__dirname, "www", "reset-password.html"));
+});
+
+app.get(["/contact", "/contact.html", "/Contact.html", "/www/contact.html"], (req, res) => {
+  res.sendFile(path.join(__dirname, "Contact.html"));
+});
+
+app.get(["/forget-success", "/forget-success.html", "/www/forget succefull.html"], (req, res) => {
+  res.sendFile(path.join(__dirname, "www", "forget succefull.html"));
+});
 
 
 // ======================
@@ -37,39 +208,6 @@ const transporter =
 
 
 // ======================
-// MIDDLEWARE
-// ======================
-
-app.use(cors());
-
-app.use(express.json());
-
-app.use(express.static("public"));
-
-
-// ======================
-// TEST ROUTE
-// ======================
-
-app.get("/test", (req, res) => {
-
-  res.send("TEST WORKING");
-});
-
-
-// ======================
-// HOME ROUTE
-// ======================
-
-app.get("/", (req, res) => {
-
-  res.sendFile(
-    __dirname + "/public/index.html"
-  );
-});
-
-
-// ======================
 // DATABASE CONNECTION
 // ======================
 
@@ -81,11 +219,14 @@ const pool = new Pool({
   ssl: {
     rejectUnauthorized: false,
   },
+
+  connectionTimeoutMillis:
+    10000,
 });
 
 
 // ======================
-// CREATE USERS TABLE
+// CREATE TABLE
 // ======================
 
 async function createTable() {
@@ -148,8 +289,6 @@ app.post("/register", async (req, res) => {
       password
     } = req.body;
 
-    // VALIDATION
-
     if (
       !fullname ||
       !username ||
@@ -161,12 +300,11 @@ app.post("/register", async (req, res) => {
       return res.status(400).json({
 
         success: false,
+
         error:
           "All fields required"
       });
     }
-
-    // HASH PASSWORD
 
     const hashedPassword =
       await bcrypt.hash(
@@ -174,22 +312,14 @@ app.post("/register", async (req, res) => {
         10
       );
 
-    // HASH EMAIL
-
     const hashedEmail =
       hashEmail(email);
-
-    // ENCRYPT EMAIL
 
     const encryptedEmail =
       encrypt(email);
 
-    // ENCRYPT PHONE
-
     const encryptedPhone =
       encrypt(phone);
-
-    // INSERT USER
 
     await pool.query(
 
@@ -221,6 +351,7 @@ app.post("/register", async (req, res) => {
     res.json({
 
       success: true,
+
       message:
         "User registered"
     });
@@ -232,13 +363,12 @@ app.post("/register", async (req, res) => {
       error
     );
 
-    // DUPLICATE EMAIL
-
     if (error.code === "23505") {
 
       return res.status(400).json({
 
         success: false,
+
         error:
           "Email already exists"
       });
@@ -247,6 +377,7 @@ app.post("/register", async (req, res) => {
     res.status(500).json({
 
       success: false,
+
       error:
         "Server error"
     });
@@ -267,12 +398,8 @@ app.post("/login", async (req, res) => {
       password
     } = req.body;
 
-    // HASH EMAIL
-
     const hashedEmail =
       hashEmail(email);
-
-    // FIND USER
 
     const result =
       await pool.query(
@@ -285,8 +412,6 @@ app.post("/login", async (req, res) => {
         [hashedEmail]
       );
 
-    // USER NOT FOUND
-
     if (
       result.rows.length === 0
     ) {
@@ -294,6 +419,7 @@ app.post("/login", async (req, res) => {
       return res.status(400).json({
 
         success: false,
+
         error:
           "User not found"
       });
@@ -302,11 +428,8 @@ app.post("/login", async (req, res) => {
     const user =
       result.rows[0];
 
-    // CHECK PASSWORD
-
     const isMatch =
       await bcrypt.compare(
-
         password,
         user.password
       );
@@ -316,12 +439,11 @@ app.post("/login", async (req, res) => {
       return res.status(401).json({
 
         success: false,
+
         error:
           "Wrong password"
       });
     }
-
-    // DECRYPT DATA
 
     const decryptedEmail =
       decrypt(
@@ -353,11 +475,15 @@ app.post("/login", async (req, res) => {
 
   } catch (error) {
 
-    console.log(error);
+    console.log(
+      "LOGIN ERROR:",
+      error
+    );
 
     res.status(500).json({
 
       success: false,
+
       error:
         "Server error"
     });
@@ -366,7 +492,128 @@ app.post("/login", async (req, res) => {
 
 
 // ======================
-// FORGOT PASSWORD ROUTE
+// ======================
+// CHAT TEST ROUTE
+// ======================
+
+app.get("/chat", (req, res) => {
+
+  res.send("OpenRouter Chat API Running");
+
+});
+
+
+// ======================
+// OPENROUTER AI CHAT
+// ======================
+
+app.post("/chat", async (req, res) => {
+
+  try {
+
+    const { message } = req.body;
+
+    if (!message) {
+
+      return res.status(400).json({
+
+        reply:
+          "Message required"
+      });
+    }
+
+    const apiKey = process.env.OPENROUTER_API_KEY;
+    const model = process.env.OPENROUTER_MODEL || "openai/gpt-3.5-turbo";
+
+    if (!apiKey) {
+      return res.status(400).json({
+        reply: "OpenRouter API key is not configured in .env (OPENROUTER_API_KEY)"
+      });
+    }
+
+    const response = await fetch(
+
+      "https://openrouter.ai/api/v1/chat/completions",
+
+      {
+
+        method: "POST",
+
+        headers: {
+
+          "Content-Type":
+            "application/json",
+
+          "Authorization":
+            `Bearer ${apiKey}`,
+
+          "HTTP-Referer":
+            "http://localhost:3000",
+
+          "X-Title":
+            "AI Chat App"
+        },
+
+        body: JSON.stringify({
+
+          model: model,
+
+          messages: [
+
+            {
+              role: "user",
+
+              content: message
+            }
+          ]
+        })
+      }
+    );
+
+    const data =
+      await response.json();
+
+    console.log(
+      "OPENROUTER RESPONSE:",
+      data
+    );
+
+    let reply = "No response";
+
+    if (
+      data.choices &&
+      Array.isArray(data.choices) &&
+      data.choices.length > 0
+    ) {
+
+      reply =
+        data.choices[0].message?.content ||
+        "No response";
+    } else if (data.error) {
+      reply = `Error from OpenRouter: ${data.error.message || JSON.stringify(data.error)}`;
+    }
+
+    res.json({
+      reply
+    });
+
+  } catch (error) {
+
+    console.log(
+      "OPENROUTER ERROR:",
+      error
+    );
+
+    res.status(500).json({
+
+      reply:
+        "AI server error"
+    });
+  }
+});
+
+// ======================
+// FORGOT PASSWORD
 // ======================
 
 app.post(
@@ -379,12 +626,8 @@ app.post(
       const { email } =
         req.body;
 
-      // HASH EMAIL
-
       const hashedEmail =
         hashEmail(email);
-
-      // FIND USER
 
       const result =
         await pool.query(
@@ -397,8 +640,6 @@ app.post(
           [hashedEmail]
         );
 
-      // USER NOT FOUND
-
       if (
         result.rows.length === 0
       ) {
@@ -406,23 +647,18 @@ app.post(
         return res.status(400).json({
 
           success: false,
+
           error:
             "Email not found"
         });
       }
 
-      // CREATE TOKEN
-
       const token =
         uuidv4();
-
-      // TOKEN EXPIRY
 
       const expiry =
         Date.now() +
         1000 * 60 * 15;
-
-      // SAVE TOKEN
 
       await pool.query(
 
@@ -441,13 +677,9 @@ app.post(
         ]
       );
 
-      // RESET LINK
-
       const resetLink =
 
-        `http://localhost:3000/reset-password.html?token=${token}`;
-
-      // SEND EMAIL
+        `${process.env.BASE_URL}/reset-password?token=${token}`;
 
       await transporter.sendMail({
 
@@ -461,9 +693,7 @@ app.post(
 
         html: `
 
-          <h2>
-            Password Reset
-          </h2>
+          <h2>Password Reset</h2>
 
           <p>
             Click below link
@@ -487,15 +717,14 @@ app.post(
     } catch (error) {
 
       console.log(
-
         "FORGOT PASSWORD ERROR:",
-
         error
       );
 
       res.status(500).json({
 
         success: false,
+
         error:
           "Server error"
       });
@@ -505,7 +734,7 @@ app.post(
 
 
 // ======================
-// RESET PASSWORD ROUTE
+// RESET PASSWORD
 // ======================
 
 app.post(
@@ -520,8 +749,6 @@ app.post(
         password
       } = req.body;
 
-      // FIND TOKEN
-
       const result =
         await pool.query(
 
@@ -533,8 +760,6 @@ app.post(
           [token]
         );
 
-      // INVALID TOKEN
-
       if (
         result.rows.length === 0
       ) {
@@ -542,6 +767,7 @@ app.post(
         return res.status(400).json({
 
           success: false,
+
           error:
             "Invalid token"
         });
@@ -550,33 +776,25 @@ app.post(
       const user =
         result.rows[0];
 
-      // TOKEN EXPIRED
-
       if (
-
         Date.now() >
-
         user.reset_token_expiry
-
       ) {
 
         return res.status(400).json({
 
           success: false,
+
           error:
             "Token expired"
         });
       }
-
-      // HASH PASSWORD
 
       const hashedPassword =
         await bcrypt.hash(
           password,
           10
         );
-
-      // UPDATE PASSWORD
 
       await pool.query(
 
@@ -606,21 +824,30 @@ app.post(
     } catch (error) {
 
       console.log(
-
         "RESET PASSWORD ERROR:",
-
         error
       );
 
       res.status(500).json({
 
         success: false,
+
         error:
           "Server error"
       });
     }
   }
 );
+
+
+// ======================
+// TEST ROUTE
+// ======================
+
+app.get("/test", (req, res) => {
+
+  res.send("TEST WORKING");
+});
 
 
 // ======================
@@ -632,7 +859,6 @@ const PORT = 3000;
 app.listen(PORT, "0.0.0.0", () => {
 
   console.log(
-
     `Server running on port ${PORT}`
   );
 });
