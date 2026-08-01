@@ -76,6 +76,10 @@
 
     <!-- LOGIN SCRIPT -->
     <script>
+    if (localStorage.getItem("user")) {
+        window.location.replace("ai.html");
+    }
+
     async function loginUser(e) {
         e.preventDefault();
         const email = document.getElementById("email").value;
@@ -96,7 +100,6 @@
             const data = await response.json();
 
             if (data.success) {
-                alert("Login Successful");
                 localStorage.setItem("user", JSON.stringify(data.user));
                 window.location.href = "ai.html";
             } else {

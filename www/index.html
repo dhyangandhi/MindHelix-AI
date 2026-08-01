@@ -20,6 +20,7 @@
 
     <!-- WELCOME SPLASH SCREEN OVERLAY -->
     <div class="welcome-overlay" id="welcomeOverlay">
+        <script>if(sessionStorage.getItem('welcomeShown')){document.write('<style>#welcomeOverlay{display:none!important;}</style>');}</script>
         <div class="welcome-card">
             <div class="welcome-logo">
                 <img src="logo.svg" alt="MindHelix AI Logo">
@@ -480,7 +481,7 @@
         }
 
         // Welcome Screen Dismiss & Auto-progress logic
-        window.addEventListener('DOMContentLoaded', function() {
+        function initWelcome() {
             const overlay = document.getElementById('welcomeOverlay');
             const fill = document.getElementById('welcomeProgress');
             
@@ -493,7 +494,14 @@
                 setTimeout(() => { fill.style.width = '100%'; }, 100);
                 setTimeout(() => { dismissWelcome(); }, 2500);
             }
-        });
+        }
+
+        if (document.readyState === 'complete' || document.readyState === 'interactive') {
+            initWelcome();
+        } else {
+            document.addEventListener('DOMContentLoaded', initWelcome);
+        }
+        window.addEventListener('load', initWelcome);
 
         function dismissWelcome() {
             const overlay = document.getElementById('welcomeOverlay');

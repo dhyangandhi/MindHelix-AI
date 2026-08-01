@@ -613,6 +613,87 @@ app.post("/chat", async (req, res) => {
 });
 
 // ======================
+// AI IMAGE GENERATION ROUTE
+// ======================
+
+app.post("/api/generate-image", async (req, res) => {
+  try {
+    const { prompt, style, width, height } = req.body;
+
+    if (!prompt || !prompt.trim()) {
+      return res.status(400).json({
+        success: false,
+        error: "Prompt is required"
+      });
+    }
+
+    const seed = Math.floor(Math.random() * 1000000);
+    const selectedWidth = width || 1024;
+    const selectedHeight = height || 1024;
+    const styleString = style && style !== 'none' ? `, ${style} style` : '';
+    const fullPrompt = `${prompt.trim()}${styleString}`;
+    const apiKey = process.env.OPENROUTER_API_KEY;
+
+    let imageUrl = null;
+    let provider = "FLUX.1 AI Engine";
+
+    // Attempt OpenRouter AI Image API first if key is present
+    if (apiKey) {
+      try {
+        const openrouterRes = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${apiKey}`,
+            "HTTP-Referer": "http://localhost:3000",
+            "X-Title": "MindHelix AI Image Generator"
+          },
+          body: JSON.stringify({
+            model: process.env.OPENROUTER_IMAGE_MODEL || "black-forest-labs/flux-1-schnell",
+            messages: [{ role: "user", content: `Generate image: ${fullPrompt}` }]
+          })
+        });
+
+        const openrouterData = await openrouterRes.json();
+        if (openrouterData.choices && openrouterData.choices[0]?.message?.content) {
+          const content = openrouterData.choices[0].message.content;
+          const urlMatch = content.match(/https?:\/\/[^\s\)\"]+\.(png|jpg|jpeg|webp)/i) || content.match(/https?:\/\/[^\s\)\"]+/i);
+          if (urlMatch) {
+            imageUrl = urlMatch[0];
+            provider = "OpenRouter AI (" + (process.env.OPENROUTER_IMAGE_MODEL || "FLUX 1") + ")";
+          }
+        }
+      } catch (e) {
+        console.log("OpenRouter image fallback to FLUX AI engine:", e.message);
+      }
+    }
+
+    // High-performance FLUX / SDXL AI Image Synthesis Engine
+    if (!imageUrl) {
+      const encodedPrompt = encodeURIComponent(fullPrompt);
+      imageUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?width=${selectedWidth}&height=${selectedHeight}&seed=${seed}&nologo=true&model=flux`;
+    }
+
+    res.json({
+      success: true,
+      prompt: fullPrompt,
+      imageUrl: imageUrl,
+      seed: seed,
+      width: selectedWidth,
+      height: selectedHeight,
+      provider: provider
+    });
+  } catch (error) {
+    console.error("IMAGE GENERATION ERROR:", error);
+    res.status(500).json({
+      success: false,
+      error: "Image generation server error"
+    });
+  }
+});
+
+
+// ======================
 // FORGOT PASSWORD
 // ======================
 
@@ -677,9 +758,11 @@ app.post(
         ]
       );
 
-      const resetLink =
+      const baseUrl =
+        process.env.BASE_URL || `${req.protocol}://${req.get("host")}`;
 
-        `${process.env.BASE_URL}/reset-password?token=${token}`;
+      const resetLink =
+        `${baseUrl}/reset-password?token=${token}`;
 
       await transporter.sendMail({
 
@@ -726,7 +809,7 @@ app.post(
         success: false,
 
         error:
-          "Server error"
+          error.message || "Server error"
       });
     }
   }

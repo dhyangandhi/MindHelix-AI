@@ -19,7 +19,7 @@ function createWindow() {
   });
 
   req.on("error", () => {
-    win.loadFile(path.join(__dirname, "dashbord.html"));
+    win.loadFile(path.join(__dirname, "www", "home.html"));
   });
 }
 

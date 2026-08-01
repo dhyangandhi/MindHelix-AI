@@ -19,10 +19,8 @@ window.registerUser = async function () {
             "email"
         ).value;
 
-    const phone =
-        document.getElementById(
-            "phone"
-        ).value;
+    const phoneElem = document.getElementById("phone") || document.getElementById("mobileNumber");
+    const phone = phoneElem ? phoneElem.value : "";
 
     const password =
         document.getElementById(
