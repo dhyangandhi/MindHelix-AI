@@ -199,3 +199,4 @@ SMTP_PASS="your_smtp_password"
 * **Run Server (Production)**: `npm start`
 * **Run Desktop App (Electron)**: `npm run electron`
 * **Sync Mobile Build (Capacitor)**: `npx cap sync android`
+* **Run cloune form github commit git cloune 
