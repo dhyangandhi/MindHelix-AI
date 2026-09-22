@@ -6,3 +6,4 @@ compatibility_flags = [ "nodejs_compat" ]
 [assets]
 directory = "./www"
 binding = "ASSETS"
+run_worker_first = true

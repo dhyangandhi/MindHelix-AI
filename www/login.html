@@ -102,7 +102,7 @@
         loginBtn.innerHTML = "<i class='bx bx-loader-alt bx-spin' style='font-size: 18px; margin-right: 6px; vertical-align: middle;'></i> Logging in...";
 
         try {
-            const response = await fetch("/login", {
+            const response = await fetch("/api/login", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ email, password })

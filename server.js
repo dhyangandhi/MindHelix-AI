@@ -287,7 +287,7 @@ createTable();
 // REGISTER ROUTE
 // ======================
 
-app.post("/register", async (req, res) => {
+app.post(["/register", "/api/register"], async (req, res) => {
     try {
         const {
             fullname,
@@ -371,7 +371,7 @@ app.post("/register", async (req, res) => {
 // LOGIN ROUTE
 // ======================
 
-app.post("/login", async (req, res) => {
+app.post(["/login", "/api/login"], async (req, res) => {
     try {
         const { email, password } = req.body || {};
 

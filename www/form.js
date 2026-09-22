@@ -29,13 +29,19 @@ window.registerUser = async function () {
     }
 
     try {
-        const response = await fetch("/register", {
+        const response = await fetch("/api/register", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ fullname, username, email, phone, password })
         });
 
-        const data = await response.json();
+        let data;
+        const text = await response.text();
+        try {
+            data = JSON.parse(text);
+        } catch (e) {
+            throw new Error(text || `Server error (${response.status})`);
+        }
 
         if (data.success) {
             if (regBtn) regBtn.innerHTML = "<i class='bx bx-check' style='font-size: 20px; margin-right: 6px; vertical-align: middle;'></i> Success!";
