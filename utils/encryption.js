@@ -109,12 +109,31 @@ function hashEmail(email) {
 
 
 // ======================
+// DATA MASKING FUNCTIONS (Neon DB Masking)
+// ======================
+
+function maskEmail(email) {
+  if (!email || !email.includes('@')) return '***';
+  const [local, domain] = email.split('@');
+  if (local.length <= 2) return local.charAt(0) + '***@' + domain;
+  return local.substring(0, 2) + '***' + local.slice(-1) + '@' + domain;
+}
+
+function maskPhone(phone) {
+  if (!phone) return '***';
+  const str = String(phone).replace(/\s+/g, '');
+  if (str.length <= 4) return '****';
+  return str.substring(0, 3) + '****' + str.slice(-3);
+}
+
+// ======================
 // EXPORT
 // ======================
 
 module.exports = {
-
   encrypt,
   decrypt,
   hashEmail,
+  maskEmail,
+  maskPhone,
 };

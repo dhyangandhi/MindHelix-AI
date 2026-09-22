@@ -35,7 +35,7 @@
     </a>
 
     <div class="wrapper" style="position: relative; z-index: 2;">
-        <form id="registerForm">
+        <form id="registerForm" onsubmit="event.preventDefault(); registerUser();">
             <h1>Registration</h1>
 
             <div class="input-box">
@@ -70,7 +70,7 @@
                 </div>
             </div>
 
-            <button type="button" class="btn" onclick="registerUser()">
+            <button type="submit" id="registerBtn" class="btn">
                 Register
             </button>
 

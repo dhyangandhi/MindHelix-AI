@@ -1,127 +1,63 @@
 console.log("FORM JS LOADED");
 
 window.registerUser = async function () {
-
-    // GET VALUES
-
-    const fullname =
-        document.getElementById(
-            "fullname"
-        ).value;
-
-    const username =
-        document.getElementById(
-            "username"
-        ).value;
-
-    const email =
-        document.getElementById(
-            "email"
-        ).value;
-
+    const fullname = document.getElementById("fullname") ? document.getElementById("fullname").value.trim() : "";
+    const username = document.getElementById("username") ? document.getElementById("username").value.trim() : "";
+    const email = document.getElementById("email") ? document.getElementById("email").value.trim() : "";
     const phoneElem = document.getElementById("phone") || document.getElementById("mobileNumber");
-    const phone = phoneElem ? phoneElem.value : "";
-
-    const password =
-        document.getElementById(
-            "password"
-        ).value;
-
-    const confirmPassword =
-        document.getElementById(
-            "confirmPassword"
-        ).value;
-
-
-    // PASSWORD CHECK
+    const phone = phoneElem ? phoneElem.value.trim() : "";
+    const password = document.getElementById("password") ? document.getElementById("password").value : "";
+    const confirmPassword = document.getElementById("confirmPassword") ? document.getElementById("confirmPassword").value : "";
+    const regBtn = document.getElementById("registerBtn") || document.querySelector("#registerForm button[type='submit']") || document.querySelector("#registerForm button.btn");
 
     if (password !== confirmPassword) {
-
-        alert(
-            "Passwords do not match"
-        );
-
+        alert("Passwords do not match");
         return;
     }
 
-
-    // EMPTY FIELD CHECK
-
-    if (
-        !fullname ||
-        !username ||
-        !email ||
-        !phone ||
-        !password
-    ) {
-
-        alert(
-            "All fields are required"
-        );
-
+    if (!fullname || !username || !email || !phone || !password) {
+        alert("All fields are required");
         return;
     }
 
+    const originalHtml = regBtn ? regBtn.innerHTML : "Register";
+    if (regBtn) {
+        regBtn.disabled = true;
+        regBtn.style.opacity = "0.8";
+        regBtn.style.cursor = "wait";
+        regBtn.innerHTML = "<i class='bx bx-loader-alt bx-spin' style='font-size: 18px; margin-right: 6px; vertical-align: middle;'></i> Registering...";
+    }
 
     try {
+        const response = await fetch("/register", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ fullname, username, email, phone, password })
+        });
 
-        // SEND DATA
-
-        const response =
-            await fetch(
-                "/register",
-                {
-
-                    method: "POST",
-
-                    headers: {
-                        "Content-Type":
-                            "application/json",
-                    },
-
-                    body: JSON.stringify({
-
-                        fullname,
-                        username,
-                        email,
-                        phone,
-                        password,
-                    }),
-                }
-            );
-
-
-        const data =
-            await response.json();
-
-        console.log(data);
-
-
-        // SUCCESS
+        const data = await response.json();
 
         if (data.success) {
-
-            alert(
-                "Registration Successful"
-            );
-
-            // REDIRECT TO LOGIN
-            window.location.href = "login.html";
+            if (regBtn) regBtn.innerHTML = "<i class='bx bx-check' style='font-size: 20px; margin-right: 6px; vertical-align: middle;'></i> Success!";
+            alert("Registration Successful! Redirecting to login...");
+            window.location.replace("login.html");
+        } else {
+            alert(data.error || "Registration failed");
+            if (regBtn) {
+                regBtn.disabled = false;
+                regBtn.style.opacity = "1";
+                regBtn.style.cursor = "pointer";
+                regBtn.innerHTML = originalHtml;
+            }
         }
-
-        // ERROR
-
-        else {
-
-            alert(data.error);
-        }
-
     } catch (error) {
-
-        console.log(error);
-
-        alert(
-            "Registration failed"
-        );
+        console.error("Register error:", error);
+        alert("Registration failed. Please check your connection and try again.");
+        if (regBtn) {
+            regBtn.disabled = false;
+            regBtn.style.opacity = "1";
+            regBtn.style.cursor = "pointer";
+            regBtn.innerHTML = originalHtml;
+        }
     }
 };

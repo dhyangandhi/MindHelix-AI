@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en" class="cn-root">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shadcn UI Component Suite — MindHelix AI</title>
+
+    <!-- Google Fonts & FontAwesome -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Shadcn Master Stylesheet -->
+    <link rel="stylesheet" href="shadcn.css">
+
+    <style>
+        body {
+            background-color: var(--background);
+            color: var(--foreground);
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+        }
+
+        .showcase-header {
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--border);
+            padding: 20px 40px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .showcase-title {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .showcase-title h1 {
+            font-size: 1.35rem;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            margin: 0;
+        }
+
+        .showcase-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 48px;
+        }
+
+        .section-header {
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 12px;
+            margin-bottom: 24px;
+        }
+
+        .section-header h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 0 0 6px 0;
+        }
+
+        .section-header p {
+            color: var(--muted-foreground);
+            font-size: 0.9rem;
+            margin: 0;
+        }
+
+        .component-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 24px;
+        }
+
+        .component-box {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .component-label {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--muted-foreground);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .flex-wrap {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: center;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Header Navigation -->
+    <header class="showcase-header">
+        <div class="showcase-title">
+            <div style="background: linear-gradient(135deg, #6366f1, #a855f7); width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; color: white;">
+                <i class="fa-solid fa-shapes"></i>
+            </div>
+            <div>
+                <h1>Shadcn UI Component Suite</h1>
+                <span class="cn-badge cn-badge-glass" style="font-size: 9px;">MindHelix Design System</span>
+            </div>
+        </div>
+
+        <div class="flex-wrap">
+            <button class="cn-btn cn-btn-outline" onclick="Shadcn.openCommandPalette()">
+                <i class="fa-solid fa-magnifying-glass"></i> Command <span class="cn-command-kbd">Ctrl+K</span>
+            </button>
+            <a href="/ai" class="cn-btn cn-btn-primary">
+                <i class="fa-solid fa-robot"></i> Open MindHelix AI
+            </a>
+        </div>
+    </header>
+
+    <!-- Main Content Grid -->
+    <main class="showcase-container">
+
+        <!-- 1. BUTTONS SECTION -->
+        <section>
+            <div class="section-header">
+                <h2>1. Buttons</h2>
+                <p>Displays a button or a component that looks like a button.</p>
+            </div>
+            <div class="component-box">
+                <div class="component-label">Button Variants</div>
+                <div class="flex-wrap">
+                    <button class="cn-btn cn-btn-primary">Primary</button>
+                    <button class="cn-btn cn-btn-secondary">Secondary</button>
+                    <button class="cn-btn cn-btn-destructive">Destructive</button>
+                    <button class="cn-btn cn-btn-outline">Outline</button>
+                    <button class="cn-btn cn-btn-ghost">Ghost</button>
+                    <button class="cn-btn cn-btn-link">Link</button>
+                </div>
+
+                <div class="component-label" style="margin-top: 12px;">Sizes & Icons</div>
+                <div class="flex-wrap">
+                    <button class="cn-btn cn-btn-primary cn-btn-sm">Small</button>
+                    <button class="cn-btn cn-btn-primary">Default</button>
+                    <button class="cn-btn cn-btn-primary cn-btn-lg">Large</button>
+                    <button class="cn-btn cn-btn-secondary cn-btn-icon" title="Icon Only"><i class="fa-solid fa-bolt"></i></button>
+                    <button class="cn-btn cn-btn-primary" disabled><i class="fa-solid fa-spinner fa-spin"></i> Loading</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. CARDS SECTION -->
+        <section>
+            <div class="section-header">
+                <h2>2. Cards & Containers</h2>
+                <p>Displays a card with header, content, and footer sections.</p>
+            </div>
+            <div class="component-grid">
+                <div class="cn-card">
+                    <div class="cn-card-header">
+                        <div class="cn-card-title">MindHelix Neural Model</div>
+                        <div class="cn-card-description">Deploy custom artificial intelligence agents.</div>
+                    </div>
+                    <div class="cn-card-content">
+                        Experience low-latency streaming inference powered by multi-model cloud orchestration.
+                    </div>
+                    <div class="cn-card-footer">
+                        <button class="cn-btn cn-btn-outline">Cancel</button>
+                        <button class="cn-btn cn-btn-primary">Deploy Agent</button>
+                    </div>
+                </div>
+
+                <div class="cn-card">
+                    <div class="cn-card-header">
+                        <div class="cn-card-title">Subscription Tier</div>
+                        <div class="cn-card-description">Manage your current quota & access tokens.</div>
+                    </div>
+                    <div class="cn-card-content">
+                        <div style="font-size: 1.8rem; font-weight: 800; color: var(--primary); margin-bottom: 8px;">Pro Workspace</div>
+                        <div class="cn-progress" style="margin-bottom: 6px;"><div class="cn-progress-indicator" style="width: 75%;"></div></div>
+                        <span style="font-size: 0.8rem; color: var(--muted-foreground);">750,000 / 1,000,000 Tokens used</span>
+                    </div>
+                    <div class="cn-card-footer">
+                        <button class="cn-btn cn-btn-secondary" style="width: 100%;">Upgrade Tier</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. INPUTS & FORM CONTROLS -->
+        <section>
+            <div class="section-header">
+                <h2>3. Form Controls & Inputs</h2>
+                <p>Accessible text fields, textareas, switches, checkboxes, and radios.</p>
+            </div>
+            <div class="component-grid">
+                <div class="component-box">
+                    <label class="cn-label" for="username">Username</label>
+                    <input type="text" id="username" class="cn-input" placeholder="e.g. alex_developer">
+
+                    <label class="cn-label" for="prompt" style="margin-top: 12px;">System Prompt</label>
+                    <textarea id="prompt" class="cn-textarea" placeholder="Enter system instructions for AI model..."></textarea>
+                </div>
+
+                <div class="component-box">
+                    <div class="component-label">Switches & Toggles</div>
+                    <div class="cn-switch-container" onclick="Shadcn.toggleSwitch(this.querySelector('.cn-switch'))">
+                        <div class="cn-switch active"><div class="cn-switch-thumb"></div></div>
+                        <span style="font-size: 0.9rem; font-weight: 600;">Enable SSE Real-Time Streaming</span>
+                    </div>
+                    <div class="cn-switch-container" onclick="Shadcn.toggleSwitch(this.querySelector('.cn-switch'))">
+                        <div class="cn-switch"><div class="cn-switch-thumb"></div></div>
+                        <span style="font-size: 0.9rem; font-weight: 600;">Dark Glassmorphic UI Mode</span>
+                    </div>
+
+                    <div class="component-label" style="margin-top: 16px;">Checkboxes & Radios</div>
+                    <div class="flex-wrap">
+                        <label style="display:flex;align-items:center;gap:8px;font-size:0.875rem;cursor:pointer;">
+                            <input type="checkbox" class="cn-checkbox" checked> Remember Session
+                        </label>
+                        <label style="display:flex;align-items:center;gap:8px;font-size:0.875rem;cursor:pointer;">
+                            <input type="radio" name="modelOption" class="cn-radio" checked> GPT-4o
+                        </label>
+                        <label style="display:flex;align-items:center;gap:8px;font-size:0.875rem;cursor:pointer;">
+                            <input type="radio" name="modelOption" class="cn-radio"> Claude 3.5
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. BADGES & AVATARS -->
+        <section>
+            <div class="section-header">
+                <h2>4. Badges & Avatars</h2>
+                <p>Status badges and avatar identity components.</p>
+            </div>
+            <div class="component-box">
+                <div class="component-label">Badges</div>
+                <div class="flex-wrap">
+                    <span class="cn-badge cn-badge-default">Active</span>
+                    <span class="cn-badge cn-badge-secondary">Secondary</span>
+                    <span class="cn-badge cn-badge-destructive">Expired</span>
+                    <span class="cn-badge cn-badge-outline">Outline</span>
+                    <span class="cn-badge cn-badge-glass"><i class="fa-solid fa-sparkles"></i> AI Powered</span>
+                </div>
+
+                <div class="component-label" style="margin-top: 16px;">Avatars & Groups</div>
+                <div class="flex-wrap">
+                    <div class="cn-avatar">MH</div>
+                    <div class="cn-avatar" style="background:#4f46e5;color:white;">AI</div>
+                    <div class="cn-avatar-group">
+                        <div class="cn-avatar" style="background:#ec4899;">JD</div>
+                        <div class="cn-avatar" style="background:#3b82f6;">AK</div>
+                        <div class="cn-avatar" style="background:#10b981;">SM</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. TABS & ACCORDION -->
+        <section>
+            <div class="section-header">
+                <h2>5. Tabs & Accordion</h2>
+                <p>Organize content into tabbed panels or collapsible accordion sections.</p>
+            </div>
+            <div class="component-grid">
+                <!-- Tabs -->
+                <div class="component-box">
+                    <div class="cn-tabs">
+                        <div class="cn-tabs-list">
+                            <button class="cn-tabs-trigger active" onclick="Shadcn.switchTab(this, 'tab1')">Overview</button>
+                            <button class="cn-tabs-trigger" onclick="Shadcn.switchTab(this, 'tab2')">API Keys</button>
+                        </div>
+                        <div class="cn-tabs-content active" id="tab1">
+                            <p style="margin:0;color:var(--muted-foreground);font-size:0.9rem;">Overview: MindHelix AI workspace is running smoothly on Node.js & Express.</p>
+                        </div>
+                        <div class="cn-tabs-content" id="tab2">
+                            <p style="margin:0;color:var(--muted-foreground);font-size:0.9rem;">API Keys: OpenRouter key configured in environment settings.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Accordion -->
+                <div class="cn-accordion">
+                    <div class="cn-accordion-item active">
+                        <button class="cn-accordion-trigger" onclick="Shadcn.toggleAccordion(this)">
+                            <span>What is Shadcn UI?</span>
+                            <i class="fa-solid fa-chevron-down cn-accordion-chevron"></i>
+                        </button>
+                        <div class="cn-accordion-content">
+                            Shadcn UI is a collection of re-usable components designed with clean aesthetics, accessibility, and high performance.
+                        </div>
+                    </div>
+                    <div class="cn-accordion-item">
+                        <button class="cn-accordion-trigger" onclick="Shadcn.toggleAccordion(this)">
+                            <span>How does streaming work?</span>
+                            <i class="fa-solid fa-chevron-down cn-accordion-chevron"></i>
+                        </button>
+                        <div class="cn-accordion-content">
+                            MindHelix AI uses Server-Sent Events (SSE) to deliver AI model tokens chunk-by-chunk in real time.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 6. DIALOG, SHEET & TOAST TRIGGERS -->
+        <section>
+            <div class="section-header">
+                <h2>6. Interactive Modals, Drawers & Toasts</h2>
+                <p>Popups, side drawers, and toast notification popups.</p>
+            </div>
+            <div class="component-box">
+                <div class="flex-wrap">
+                    <button class="cn-btn cn-btn-primary" onclick="Shadcn.openDialog('demoDialog')">
+                        <i class="fa-solid fa-window-restore"></i> Open Dialog Modal
+                    </button>
+
+                    <button class="cn-btn cn-btn-secondary" onclick="Shadcn.openSheet('demoSheet')">
+                        <i class="fa-solid fa-sidebar"></i> Open Side Drawer Sheet
+                    </button>
+
+                    <button class="cn-btn cn-btn-outline" onclick="Shadcn.toast({ title: 'Default Toast', description: 'Everything is synchronized.' })">
+                        Default Toast
+                    </button>
+
+                    <button class="cn-btn cn-btn-primary" onclick="Shadcn.toast({ title: 'Success!', description: 'Model agent deployed successfully.', variant: 'success' })">
+                        Success Toast
+                    </button>
+
+                    <button class="cn-btn cn-btn-destructive" onclick="Shadcn.toast({ title: 'Error Occurred', description: 'Failed to establish cloud socket.', variant: 'destructive' })">
+                        Destructive Toast
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 7. SKELETON LOADERS & DATA TABLE -->
+        <section>
+            <div class="section-header">
+                <h2>7. Data Table & Skeleton Loader</h2>
+                <p>Structured grid presentation with loading state placeholders.</p>
+            </div>
+            <div class="component-box">
+                <div class="component-label">Skeleton Shimmer Placeholder</div>
+                <div style="display:flex;flex-direction:column;gap:10px;">
+                    <div class="cn-skeleton" style="height: 24px; width: 60%;"></div>
+                    <div class="cn-skeleton" style="height: 16px; width: 90%;"></div>
+                    <div class="cn-skeleton" style="height: 16px; width: 40%;"></div>
+                </div>
+
+                <div class="component-label" style="margin-top: 16px;">Data Table</div>
+                <div class="cn-table-wrapper">
+                    <table class="cn-table">
+                        <thead>
+                            <tr>
+                                <th>Agent Name</th>
+                                <th>Model Engine</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><b>MindHelix Assistant</b></td>
+                                <td>GPT-3.5 Turbo</td>
+                                <td><span class="cn-badge cn-badge-glass">Online</span></td>
+                                <td><button class="cn-btn cn-btn-ghost cn-btn-sm">Configure</button></td>
+                            </tr>
+                            <tr>
+                                <td><b>Code Canvas Bot</b></td>
+                                <td>Claude 3.5 Sonnet</td>
+                                <td><span class="cn-badge cn-badge-secondary">Idle</span></td>
+                                <td><button class="cn-btn cn-btn-ghost cn-btn-sm">Configure</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- SHADCN DIALOG MODAL DEMO -->
+    <div class="cn-dialog-overlay" id="demoDialog">
+        <div class="cn-dialog-content">
+            <div class="cn-dialog-header">
+                <h3>Confirm Action</h3>
+                <p>Are you sure you want to initialize a new AI session context?</p>
+            </div>
+            <p style="font-size: 0.9rem; color: var(--muted-foreground);">
+                This will save your active chat history to PostgreSQL and reset the canvas sandbox.
+            </p>
+            <div class="cn-dialog-footer">
+                <button class="cn-btn cn-btn-outline" onclick="Shadcn.closeDialog('demoDialog')">Cancel</button>
+                <button class="cn-btn cn-btn-primary" onclick="Shadcn.closeDialog('demoDialog'); Shadcn.toast({ title: 'Session Initialized', variant: 'success' });">Confirm</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- SHADCN SHEET / SIDE DRAWER DEMO -->
+    <div class="cn-sheet-overlay" id="demoSheet-overlay" onclick="Shadcn.closeSheet('demoSheet')"></div>
+    <div class="cn-sheet-content" id="demoSheet-content">
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+            <h3 style="margin:0;font-size:1.2rem;font-weight:700;">Settings Panel</h3>
+            <button class="cn-btn cn-btn-ghost cn-btn-icon" onclick="Shadcn.closeSheet('demoSheet')">✕</button>
+        </div>
+        <p style="color:var(--muted-foreground);font-size:0.9rem;">Configure your MindHelix AI workspace environment parameters.</p>
+        <div style="display:flex;flex-direction:column;gap:16px;margin-top:10px;">
+            <div>
+                <label class="cn-label">Default Model</label>
+                <input class="cn-input" value="openai/gpt-3.5-turbo">
+            </div>
+            <div>
+                <label class="cn-label">Temperature</label>
+                <input class="cn-input" type="number" step="0.1" value="0.7">
+            </div>
+        </div>
+        <button class="cn-btn cn-btn-primary" style="margin-top:auto;" onclick="Shadcn.closeSheet('demoSheet'); Shadcn.toast({ title: 'Settings Saved', variant: 'success' });">Save Preferences</button>
+    </div>
+
+    <!-- SHADCN COMMAND PALETTE (CTRL + K) -->
+    <div class="cn-command-modal" id="cnCommandPalette" onclick="if(event.target === this) Shadcn.closeCommandPalette()">
+        <div class="cn-command-box">
+            <div class="cn-command-header">
+                <i class="fa-solid fa-magnifying-glass" style="color: var(--muted-foreground);"></i>
+                <input class="cn-command-input" placeholder="Type a command or search components..." autofocus>
+                <span class="cn-command-kbd">ESC</span>
+            </div>
+            <div class="cn-command-list">
+                <div class="cn-command-item" onclick="window.location.href='/ai';">
+                    <span><i class="fa-solid fa-robot" style="margin-right:8px;"></i> Open MindHelix AI Workspace</span>
+                    <span class="cn-command-kbd">↵</span>
+                </div>
+                <div class="cn-command-item" onclick="window.location.href='/dashboard';">
+                    <span><i class="fa-solid fa-chart-line" style="margin-right:8px;"></i> Open Telemetry Dashboard</span>
+                    <span class="cn-command-kbd">↵</span>
+                </div>
+                <div class="cn-command-item" onclick="Shadcn.closeCommandPalette(); Shadcn.openDialog('demoDialog');">
+                    <span><i class="fa-solid fa-window-restore" style="margin-right:8px;"></i> Trigger Dialog Modal</span>
+                    <span class="cn-command-kbd">↵</span>
+                </div>
+                <div class="cn-command-item" onclick="Shadcn.closeCommandPalette(); Shadcn.toast({ title: 'Command Executed', variant: 'success' });">
+                    <span><i class="fa-solid fa-bolt" style="margin-right:8px;"></i> Trigger Toast Test</span>
+                    <span class="cn-command-kbd">↵</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Shadcn Master JS Controller -->
+    <script src="shadcn.js"></script>
+</body>
+
+</html>

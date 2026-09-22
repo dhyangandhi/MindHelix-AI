@@ -57,7 +57,7 @@
             </div>
 
             <!-- LOGIN BUTTON -->
-            <button type="submit" class="btn">Login</button>
+            <button type="submit" id="loginBtn" class="btn">Login</button>
 
             <!-- OR DIVIDER -->
             <div class="or-divider">
@@ -82,13 +82,24 @@
 
     async function loginUser(e) {
         e.preventDefault();
-        const email = document.getElementById("email").value;
-        const password = document.getElementById("password").value;
+        const emailInput = document.getElementById("email");
+        const passwordInput = document.getElementById("password");
+        const loginBtn = document.getElementById("loginBtn") || e.target.querySelector("button[type='submit']");
+
+        const email = emailInput ? emailInput.value.trim() : "";
+        const password = passwordInput ? passwordInput.value : "";
 
         if (!email || !password) {
-            alert("Please fill all fields");
+            alert("Please enter both email and password");
             return;
         }
+
+        // Instant visual feedback
+        const originalHtml = loginBtn.innerHTML;
+        loginBtn.disabled = true;
+        loginBtn.style.opacity = "0.8";
+        loginBtn.style.cursor = "wait";
+        loginBtn.innerHTML = "<i class='bx bx-loader-alt bx-spin' style='font-size: 18px; margin-right: 6px; vertical-align: middle;'></i> Logging in...";
 
         try {
             const response = await fetch("/login", {
@@ -100,14 +111,23 @@
             const data = await response.json();
 
             if (data.success) {
+                loginBtn.innerHTML = "<i class='bx bx-check' style='font-size: 20px; margin-right: 6px; vertical-align: middle;'></i> Success!";
                 localStorage.setItem("user", JSON.stringify(data.user));
-                window.location.href = "ai.html";
+                window.location.replace("ai.html");
             } else {
                 alert(data.error || "Login failed");
+                loginBtn.disabled = false;
+                loginBtn.style.opacity = "1";
+                loginBtn.style.cursor = "pointer";
+                loginBtn.innerHTML = originalHtml;
             }
         } catch (error) {
-            console.log(error);
-            alert("Login failed");
+            console.error("Login error:", error);
+            alert("Login failed. Please check your connection and try again.");
+            loginBtn.disabled = false;
+            loginBtn.style.opacity = "1";
+            loginBtn.style.cursor = "pointer";
+            loginBtn.innerHTML = originalHtml;
         }
     }
     </script>

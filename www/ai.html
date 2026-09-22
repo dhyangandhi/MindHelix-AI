@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,9 +8,11 @@
     <!-- Google Fonts & FontAwesome -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+    <link rel="stylesheet" href="shadcn.css">
+
     <style>
         * {
             margin: 0;
@@ -32,7 +35,7 @@
 
         body {
             background-color: var(--bg-dark);
-            background-image: 
+            background-image:
                 radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.12) 0px, transparent 50%),
                 radial-gradient(at 100% 100%, rgba(139, 92, 246, 0.12) 0px, transparent 50%);
             color: var(--text-main);
@@ -110,8 +113,17 @@
         }
 
         @keyframes pulse-dot {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.5; transform: scale(1.2); }
+
+            0%,
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+
+            50% {
+                opacity: 0.5;
+                transform: scale(1.2);
+            }
         }
 
         .nav-actions {
@@ -190,9 +202,11 @@
         .chat-box::-webkit-scrollbar {
             width: 6px;
         }
+
         .chat-box::-webkit-scrollbar-track {
             background: transparent;
         }
+
         .chat-box::-webkit-scrollbar-thumb {
             background: rgba(255, 255, 255, 0.15);
             border-radius: 10px;
@@ -208,8 +222,15 @@
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .message-row.user {
@@ -225,7 +246,7 @@
             justify-content: center;
             font-size: 15px;
             flex-shrink: 0;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
         }
 
         .user .avatar {
@@ -286,12 +307,25 @@
             animation: bounce 1.4s infinite ease-in-out both;
         }
 
-        .dot:nth-child(1) { animation-delay: -0.32s; }
-        .dot:nth-child(2) { animation-delay: -0.16s; }
+        .dot:nth-child(1) {
+            animation-delay: -0.32s;
+        }
+
+        .dot:nth-child(2) {
+            animation-delay: -0.16s;
+        }
 
         @keyframes bounce {
-            0%, 80%, 100% { transform: scale(0); }
-            40% { transform: scale(1.0); }
+
+            0%,
+            80%,
+            100% {
+                transform: scale(0);
+            }
+
+            40% {
+                transform: scale(1.0);
+            }
         }
 
         /* EMPTY STATE / WELCOME CARD */
@@ -592,12 +626,12 @@
             outline: none;
             resize: vertical;
             min-height: 140px;
-            box-shadow: inset 0 2px 10px rgba(0,0,0,0.5);
+            box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.5);
         }
 
         .code-editor-textarea:focus {
             border-color: #6366f1;
-            box-shadow: inset 0 2px 10px rgba(0,0,0,0.5), 0 0 12px rgba(99, 102, 241, 0.3);
+            box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.5), 0 0 12px rgba(99, 102, 241, 0.3);
         }
 
         .code-block pre {
@@ -1012,6 +1046,7 @@
         .sessions-list::-webkit-scrollbar {
             width: 5px;
         }
+
         .sessions-list::-webkit-scrollbar-thumb {
             background: rgba(255, 255, 255, 0.15);
             border-radius: 10px;
@@ -1299,7 +1334,7 @@
             border-radius: 16px;
             padding: 12px;
             max-width: 520px;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
             margin-top: 6px;
         }
 
@@ -1402,7 +1437,7 @@
             max-width: 100%;
             max-height: 80vh;
             border-radius: 12px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
         }
 
         .lightbox-close {
@@ -1428,6 +1463,7 @@
         }
     </style>
 </head>
+
 <body>
 
     <div class="app-layout">
@@ -1493,23 +1529,34 @@
                         <p class="empty-subtitle">Ask a question, code a solution, or draft content.</p>
 
                         <div class="prompt-grid">
-                            <div class="prompt-card" onclick="usePrompt('Write a clean JavaScript async function to fetch API data')">
+                            <div class="prompt-card"
+                                onclick="usePrompt('Demonstrate data masking in SQL database for sensitive PII fields')">
+                                <i class="fa-solid fa-user-shield" style="color: #38bdf8; margin-right: 6px;"></i>
+                                <strong>Data Masking & Privacy</strong>
+                            </div>
+                            <div class="prompt-card"
+                                onclick="usePrompt('Create a lightweight SQLite / Nano database schema and query script')">
+                                <i class="fa-solid fa-database" style="color: #a78bfa; margin-right: 6px;"></i>
+                                <strong>Nano Database SQL</strong>
+                            </div>
+                            <div class="prompt-card"
+                                onclick="usePrompt('Write a clean JavaScript async function to fetch API data')">
                                 <i class="fa-solid fa-code" style="color: #818cf8; margin-right: 6px;"></i>
                                 <strong>Write JS async fetch</strong>
                             </div>
-                            <div class="prompt-card" onclick="usePrompt('Write a Python script to sort an array using quicksort')">
+                            <div class="prompt-card"
+                                onclick="usePrompt('Write a Python script to sort an array using quicksort')">
                                 <i class="fa-brands fa-python" style="color: #34d399; margin-right: 6px;"></i>
                                 <strong>Python Quicksort Code</strong>
                             </div>
-                            <div class="prompt-card" onclick="usePrompt('Write a simple C++ hello world program with a loop')">
-                                <i class="fa-solid fa-laptop-code" style="color: #fbbf24; margin-right: 6px;"></i>
-                                <strong>C++ Hello World Loop</strong>
-                            </div>
-                            <div class="prompt-card" onclick="useImagePrompt('A futuristic cyberpunk floating city in space at sunset, ultra realistic')">
-                                <i class="fa-solid fa-wand-magic-sparkles" style="color: #a855f7; margin-right: 6px;"></i>
+                            <div class="prompt-card"
+                                onclick="useImagePrompt('A futuristic cyberpunk floating city in space at sunset, ultra realistic')">
+                                <i class="fa-solid fa-wand-magic-sparkles"
+                                    style="color: #a855f7; margin-right: 6px;"></i>
                                 <strong>Generate Cyberpunk Art</strong>
                             </div>
-                            <div class="prompt-card" onclick="usePrompt('Create a styled HTML button with hover animation')">
+                            <div class="prompt-card"
+                                onclick="usePrompt('Create a styled HTML button with hover animation')">
                                 <i class="fa-brands fa-html5" style="color: #f472b6; margin-right: 6px;"></i>
                                 <strong>HTML Animated Button</strong>
                             </div>
@@ -1543,16 +1590,13 @@
                     </div>
 
                     <div class="input-box-wrapper">
-                        <button class="mode-toggle-btn" id="modeToggleBtn" onclick="toggleImageMode()" title="Switch between Chat and Image Generation">
+                        <button class="mode-toggle-btn" id="modeToggleBtn" onclick="toggleImageMode()"
+                            title="Switch between Chat and Image Generation">
                             <i class="fa-solid fa-comment-dots"></i>
                             <span id="modeToggleText">Chat Mode</span>
                         </button>
-                        <input 
-                            type="text" 
-                            id="userInput" 
-                            placeholder="Type your message here..." 
-                            onkeypress="handleKeyPress(event)"
-                        >
+                        <input type="text" id="userInput" placeholder="Type your message here..."
+                            onkeypress="handleKeyPress(event)">
                         <button class="send-btn" onclick="sendMessage()" id="sendBtn" title="Send Message">
                             <i class="fa-solid fa-paper-plane"></i>
                         </button>
@@ -1572,302 +1616,302 @@
     </div>
 
     <script>
-    const langMap = {
-        'js': 'javascript',
-        'javascript': 'javascript',
-        'node': 'javascript',
-        'py': 'python',
-        'python': 'python',
-        'py3': 'python',
-        'cpp': 'c++',
-        'c++': 'c++',
-        'c': 'c',
-        'java': 'java',
-        'c#': 'csharp',
-        'csharp': 'csharp',
-        'ts': 'typescript',
-        'typescript': 'typescript',
-        'go': 'go',
-        'golang': 'go',
-        'rust': 'rust',
-        'rs': 'rust',
-        'php': 'php',
-        'ruby': 'ruby',
-        'rb': 'ruby',
-        'sh': 'bash',
-        'bash': 'bash',
-        'html': 'html',
-        'css': 'html'
-    };
+        const langMap = {
+            'js': 'javascript',
+            'javascript': 'javascript',
+            'node': 'javascript',
+            'py': 'python',
+            'python': 'python',
+            'py3': 'python',
+            'cpp': 'c++',
+            'c++': 'c++',
+            'c': 'c',
+            'java': 'java',
+            'c#': 'csharp',
+            'csharp': 'csharp',
+            'ts': 'typescript',
+            'typescript': 'typescript',
+            'go': 'go',
+            'golang': 'go',
+            'rust': 'rust',
+            'rs': 'rust',
+            'php': 'php',
+            'ruby': 'ruby',
+            'rb': 'ruby',
+            'sh': 'bash',
+            'bash': 'bash',
+            'html': 'html',
+            'css': 'html'
+        };
 
-    let currentAbortController = null;
+        let currentAbortController = null;
 
-    // ==========================================
-    // CHAT SESSION MANAGEMENT SYSTEM
-    // ==========================================
-    let sessions = [];
-    let activeSessionId = null;
-    let isInitialized = false;
+        // ==========================================
+        // CHAT SESSION MANAGEMENT SYSTEM
+        // ==========================================
+        let sessions = [];
+        let activeSessionId = null;
+        let isInitialized = false;
 
-    function initSessions() {
-        const sidebar = document.getElementById("sidebar");
-        if (sidebar && window.innerWidth > 768) {
-            sidebar.classList.remove("collapsed");
-        }
-
-        try {
-            const storedSessions = localStorage.getItem("ai_chat_sessions");
-            if (storedSessions) {
-                sessions = JSON.parse(storedSessions);
+        function initSessions() {
+            const sidebar = document.getElementById("sidebar");
+            if (sidebar && window.innerWidth > 768) {
+                sidebar.classList.remove("collapsed");
             }
-        } catch (e) {
-            sessions = [];
-        }
 
-        activeSessionId = localStorage.getItem("ai_active_session_id");
-
-        // Migration for legacy single chat storage
-        const legacyChat = localStorage.getItem("aiChat");
-        if (legacyChat && legacyChat.trim() && sessions.length === 0) {
-            const legacySession = {
-                id: "session_" + Date.now(),
-                title: "Previous Chat",
-                html: legacyChat,
-                pinned: false,
-                createdAt: Date.now(),
-                updatedAt: Date.now()
-            };
-            sessions.push(legacySession);
-            activeSessionId = legacySession.id;
-            saveSessionsToStorage();
-            localStorage.removeItem("aiChat");
-        }
-
-        if (sessions.length > 0) {
-            if (!activeSessionId || !sessions.find(s => s.id === activeSessionId)) {
-                activeSessionId = sessions[0].id;
+            try {
+                const storedSessions = localStorage.getItem("ai_chat_sessions");
+                if (storedSessions) {
+                    sessions = JSON.parse(storedSessions);
+                }
+            } catch (e) {
+                sessions = [];
             }
-            loadSession(activeSessionId, false);
-        } else {
+
+            activeSessionId = localStorage.getItem("ai_active_session_id");
+
+            // Migration for legacy single chat storage
+            const legacyChat = localStorage.getItem("aiChat");
+            if (legacyChat && legacyChat.trim() && sessions.length === 0) {
+                const legacySession = {
+                    id: "session_" + Date.now(),
+                    title: "Previous Chat",
+                    html: legacyChat,
+                    pinned: false,
+                    createdAt: Date.now(),
+                    updatedAt: Date.now()
+                };
+                sessions.push(legacySession);
+                activeSessionId = legacySession.id;
+                saveSessionsToStorage();
+                localStorage.removeItem("aiChat");
+            }
+
+            if (sessions.length > 0) {
+                if (!activeSessionId || !sessions.find(s => s.id === activeSessionId)) {
+                    activeSessionId = sessions[0].id;
+                }
+                loadSession(activeSessionId, false);
+            } else {
+                activeSessionId = null;
+                localStorage.removeItem("ai_active_session_id");
+                showEmptyState();
+            }
+            renderSessionsList();
+            updateSidebarToggleState();
+        }
+
+        function saveSessionsToStorage() {
+            localStorage.setItem("ai_chat_sessions", JSON.stringify(sessions));
+            if (activeSessionId) {
+                localStorage.setItem("ai_active_session_id", activeSessionId);
+            } else {
+                localStorage.removeItem("ai_active_session_id");
+            }
+        }
+
+        function createNewSession(autoFocus = true) {
+            stopGeneration();
+            saveCurrentSession();
             activeSessionId = null;
             localStorage.removeItem("ai_active_session_id");
             showEmptyState();
-        }
-        renderSessionsList();
-        updateSidebarToggleState();
-    }
+            renderSessionsList();
 
-    function saveSessionsToStorage() {
-        localStorage.setItem("ai_chat_sessions", JSON.stringify(sessions));
-        if (activeSessionId) {
+            if (autoFocus) {
+                const input = document.getElementById("userInput");
+                if (input) input.focus();
+            }
+            closeMobileSidebar();
+        }
+
+        function loadSession(id, shouldSaveCurrent = true) {
+            if (shouldSaveCurrent && activeSessionId && activeSessionId !== id) {
+                saveCurrentSession();
+            }
+            activeSessionId = id;
             localStorage.setItem("ai_active_session_id", activeSessionId);
-        } else {
-            localStorage.removeItem("ai_active_session_id");
+            const session = sessions.find(s => s.id === id);
+            const chatBox = document.getElementById("chatBox");
+
+            if (!session || !session.html || !session.html.trim()) {
+                showEmptyState();
+            } else {
+                chatBox.innerHTML = session.html;
+                hideEmptyState();
+                requestAnimationFrame(() => {
+                    chatBox.scrollTop = chatBox.scrollHeight;
+                });
+            }
+            renderSessionsList();
+            closeMobileSidebar();
         }
-    }
 
-    function createNewSession(autoFocus = true) {
-        stopGeneration();
-        saveCurrentSession();
-        activeSessionId = null;
-        localStorage.removeItem("ai_active_session_id");
-        showEmptyState();
-        renderSessionsList();
+        function saveCurrentSession() {
+            const chatBox = document.getElementById("chatBox");
+            const tempDiv = document.createElement("div");
+            tempDiv.innerHTML = chatBox.innerHTML;
 
-        if (autoFocus) {
-            const input = document.getElementById("userInput");
-            if (input) input.focus();
-        }
-        closeMobileSidebar();
-    }
-
-    function loadSession(id, shouldSaveCurrent = true) {
-        if (shouldSaveCurrent && activeSessionId && activeSessionId !== id) {
-            saveCurrentSession();
-        }
-        activeSessionId = id;
-        localStorage.setItem("ai_active_session_id", activeSessionId);
-        const session = sessions.find(s => s.id === id);
-        const chatBox = document.getElementById("chatBox");
-
-        if (!session || !session.html || !session.html.trim()) {
-            showEmptyState();
-        } else {
-            chatBox.innerHTML = session.html;
-            hideEmptyState();
-            requestAnimationFrame(() => {
-                chatBox.scrollTop = chatBox.scrollHeight;
+            // Clean out temporary typing indicators before saving
+            const typings = tempDiv.querySelectorAll(".typing-indicator, [id^='typing_']");
+            typings.forEach(el => {
+                const row = el.closest('.message-row');
+                if (row) row.remove();
+                else el.remove();
             });
-        }
-        renderSessionsList();
-        closeMobileSidebar();
-    }
 
-    function saveCurrentSession() {
-        const chatBox = document.getElementById("chatBox");
-        const tempDiv = document.createElement("div");
-        tempDiv.innerHTML = chatBox.innerHTML;
+            const emptyState = tempDiv.querySelector("#emptyState");
+            if (emptyState) emptyState.remove();
 
-        // Clean out temporary typing indicators before saving
-        const typings = tempDiv.querySelectorAll(".typing-indicator, [id^='typing_']");
-        typings.forEach(el => {
-            const row = el.closest('.message-row');
-            if (row) row.remove();
-            else el.remove();
-        });
+            const cleanHTML = tempDiv.innerHTML.trim();
+            if (!cleanHTML) return;
 
-        const emptyState = tempDiv.querySelector("#emptyState");
-        if (emptyState) emptyState.remove();
+            let session = activeSessionId ? sessions.find(s => s.id === activeSessionId) : null;
+            if (!session) {
+                session = {
+                    id: "session_" + Date.now() + "_" + Math.floor(Math.random() * 1000),
+                    title: "New Chat",
+                    html: cleanHTML,
+                    pinned: false,
+                    createdAt: Date.now(),
+                    updatedAt: Date.now()
+                };
+                sessions.unshift(session);
+                activeSessionId = session.id;
+            } else {
+                session.html = cleanHTML;
+                session.updatedAt = Date.now();
+            }
 
-        const cleanHTML = tempDiv.innerHTML.trim();
-        if (!cleanHTML) return;
-
-        let session = activeSessionId ? sessions.find(s => s.id === activeSessionId) : null;
-        if (!session) {
-            session = {
-                id: "session_" + Date.now() + "_" + Math.floor(Math.random() * 1000),
-                title: "New Chat",
-                html: cleanHTML,
-                pinned: false,
-                createdAt: Date.now(),
-                updatedAt: Date.now()
-            };
-            sessions.unshift(session);
-            activeSessionId = session.id;
-        } else {
-            session.html = cleanHTML;
-            session.updatedAt = Date.now();
-        }
-
-        // Auto generate session title from first user message if untitled or "New Chat"
-        if (session.title === "New Chat" || !session.title) {
-            const firstUserMsg = tempDiv.querySelector(".user .message");
-            if (firstUserMsg) {
-                let plainText = firstUserMsg.innerText || firstUserMsg.textContent;
-                plainText = plainText.trim();
-                if (plainText) {
-                    session.title = plainText.length > 28 ? plainText.substring(0, 28) + "..." : plainText;
+            // Auto generate session title from first user message if untitled or "New Chat"
+            if (session.title === "New Chat" || !session.title) {
+                const firstUserMsg = tempDiv.querySelector(".user .message");
+                if (firstUserMsg) {
+                    let plainText = firstUserMsg.innerText || firstUserMsg.textContent;
+                    plainText = plainText.trim();
+                    if (plainText) {
+                        session.title = plainText.length > 28 ? plainText.substring(0, 28) + "..." : plainText;
+                    }
                 }
             }
-        }
 
-        saveSessionsToStorage();
-        renderSessionsList();
-    }
-
-    function togglePinSession(id, e) {
-        if (e) e.stopPropagation();
-        const session = sessions.find(s => s.id === id);
-        if (session) {
-            session.pinned = !session.pinned;
             saveSessionsToStorage();
             renderSessionsList();
         }
-    }
 
-    function startRenameSession(id, e) {
-        if (e) e.stopPropagation();
-        const itemElem = document.getElementById(`session_item_${id}`);
-        if (!itemElem) return;
-        const titleElem = itemElem.querySelector(".session-title");
-        const session = sessions.find(s => s.id === id);
-        if (!titleElem || !session) return;
+        function togglePinSession(id, e) {
+            if (e) e.stopPropagation();
+            const session = sessions.find(s => s.id === id);
+            if (session) {
+                session.pinned = !session.pinned;
+                saveSessionsToStorage();
+                renderSessionsList();
+            }
+        }
 
-        const currentTitle = session.title;
-        titleElem.innerHTML = `
+        function startRenameSession(id, e) {
+            if (e) e.stopPropagation();
+            const itemElem = document.getElementById(`session_item_${id}`);
+            if (!itemElem) return;
+            const titleElem = itemElem.querySelector(".session-title");
+            const session = sessions.find(s => s.id === id);
+            if (!titleElem || !session) return;
+
+            const currentTitle = session.title;
+            titleElem.innerHTML = `
             <input type="text" class="session-edit-input" value="${escapeHtml(currentTitle)}" 
                 onclick="event.stopPropagation()" 
                 onkeydown="handleRenameKey(event, '${id}')" 
                 onblur="finishRenameSession('${id}', this.value)"
             />
         `;
-        const input = titleElem.querySelector("input");
-        if (input) {
-            input.focus();
-            input.select();
-        }
-    }
-
-    function handleRenameKey(e, id) {
-        if (e.key === "Enter") {
-            e.preventDefault();
-            finishRenameSession(id, e.target.value);
-        } else if (e.key === "Escape") {
-            e.preventDefault();
-            renderSessionsList();
-        }
-    }
-
-    function finishRenameSession(id, newTitle) {
-        const session = sessions.find(s => s.id === id);
-        if (session) {
-            const trimmed = newTitle.trim();
-            if (trimmed) {
-                session.title = trimmed.length > 40 ? trimmed.substring(0, 40) + "..." : trimmed;
+            const input = titleElem.querySelector("input");
+            if (input) {
+                input.focus();
+                input.select();
             }
-            saveSessionsToStorage();
         }
-        renderSessionsList();
-    }
 
-    function deleteSession(id, e) {
-        if (e) {
-            e.stopPropagation();
-            e.preventDefault();
-        }
-        const sessionIndex = sessions.findIndex(s => s.id === id);
-        if (sessionIndex === -1) return;
-
-        sessions.splice(sessionIndex, 1);
-
-        if (activeSessionId === id) {
-            if (sessions.length > 0) {
-                activeSessionId = sessions[0].id;
-                saveSessionsToStorage();
-                loadSession(sessions[0].id);
-            } else {
-                activeSessionId = null;
-                saveSessionsToStorage();
-                showEmptyState();
+        function handleRenameKey(e, id) {
+            if (e.key === "Enter") {
+                e.preventDefault();
+                finishRenameSession(id, e.target.value);
+            } else if (e.key === "Escape") {
+                e.preventDefault();
                 renderSessionsList();
             }
-        } else {
-            saveSessionsToStorage();
+        }
+
+        function finishRenameSession(id, newTitle) {
+            const session = sessions.find(s => s.id === id);
+            if (session) {
+                const trimmed = newTitle.trim();
+                if (trimmed) {
+                    session.title = trimmed.length > 40 ? trimmed.substring(0, 40) + "..." : trimmed;
+                }
+                saveSessionsToStorage();
+            }
             renderSessionsList();
         }
-    }
 
-    function renderSessionsList() {
-        const container = document.getElementById("sessionsList");
-        if (!container) return;
+        function deleteSession(id, e) {
+            if (e) {
+                e.stopPropagation();
+                e.preventDefault();
+            }
+            const sessionIndex = sessions.findIndex(s => s.id === id);
+            if (sessionIndex === -1) return;
 
-        const pinnedSessions = sessions.filter(s => s.pinned).sort((a, b) => b.updatedAt - a.updatedAt);
-        const recentSessions = sessions.filter(s => !s.pinned).sort((a, b) => b.updatedAt - a.updatedAt);
+            sessions.splice(sessionIndex, 1);
 
-        let html = "";
-
-        if (pinnedSessions.length > 0) {
-            html += `<div class="sessions-section-title"><i class="fa-solid fa-thumbtack" style="color: #fbbf24;"></i> Pinned</div>`;
-            pinnedSessions.forEach(s => {
-                html += renderSessionItemHTML(s);
-            });
+            if (activeSessionId === id) {
+                if (sessions.length > 0) {
+                    activeSessionId = sessions[0].id;
+                    saveSessionsToStorage();
+                    loadSession(sessions[0].id);
+                } else {
+                    activeSessionId = null;
+                    saveSessionsToStorage();
+                    showEmptyState();
+                    renderSessionsList();
+                }
+            } else {
+                saveSessionsToStorage();
+                renderSessionsList();
+            }
         }
 
-        html += `<div class="sessions-section-title" style="margin-top: ${pinnedSessions.length ? '12px' : '0'};"><i class="fa-regular fa-comments"></i> Recent Chats</div>`;
-        if (recentSessions.length === 0 && pinnedSessions.length === 0) {
-            html += `<div style="font-size: 12px; color: var(--text-muted); padding: 8px 12px; font-style: italic;">No chat history</div>`;
-        } else {
-            recentSessions.forEach(s => {
-                html += renderSessionItemHTML(s);
-            });
+        function renderSessionsList() {
+            const container = document.getElementById("sessionsList");
+            if (!container) return;
+
+            const pinnedSessions = sessions.filter(s => s.pinned).sort((a, b) => b.updatedAt - a.updatedAt);
+            const recentSessions = sessions.filter(s => !s.pinned).sort((a, b) => b.updatedAt - a.updatedAt);
+
+            let html = "";
+
+            if (pinnedSessions.length > 0) {
+                html += `<div class="sessions-section-title"><i class="fa-solid fa-thumbtack" style="color: #fbbf24;"></i> Pinned</div>`;
+                pinnedSessions.forEach(s => {
+                    html += renderSessionItemHTML(s);
+                });
+            }
+
+            html += `<div class="sessions-section-title" style="margin-top: ${pinnedSessions.length ? '12px' : '0'};"><i class="fa-regular fa-comments"></i> Recent Chats</div>`;
+            if (recentSessions.length === 0 && pinnedSessions.length === 0) {
+                html += `<div style="font-size: 12px; color: var(--text-muted); padding: 8px 12px; font-style: italic;">No chat history</div>`;
+            } else {
+                recentSessions.forEach(s => {
+                    html += renderSessionItemHTML(s);
+                });
+            }
+
+            container.innerHTML = html;
         }
 
-        container.innerHTML = html;
-    }
-
-    function renderSessionItemHTML(s) {
-        const isActive = s.id === activeSessionId;
-        return `
+        function renderSessionItemHTML(s) {
+            const isActive = s.id === activeSessionId;
+            return `
             <div class="session-item ${isActive ? 'active' : ''}" id="session_item_${s.id}" onclick="loadSession('${s.id}')" title="${escapeHtml(s.title)}">
                 <div class="session-title-wrapper">
                     <i class="${s.pinned ? 'fa-solid fa-thumbtack' : 'fa-regular fa-message'} session-icon" style="${s.pinned ? 'color: #fbbf24;' : ''}"></i>
@@ -1886,11 +1930,11 @@
                 </div>
             </div>
         `;
-    }
+        }
 
-    function showEmptyState() {
-        const chatBox = document.getElementById("chatBox");
-        chatBox.innerHTML = `
+        function showEmptyState() {
+            const chatBox = document.getElementById("chatBox");
+            chatBox.innerHTML = `
             <div class="empty-state" id="emptyState">
                 <div class="empty-icon">
                     <img src="logo.svg" alt="OpenRouter Logo" style="width: 56px; height: 56px;">
@@ -1918,140 +1962,140 @@
                 </div>
             </div>
         `;
-    }
-
-    function updateSidebarToggleState() {
-        const sidebar = document.getElementById("sidebar");
-        const toggleBtns = document.querySelectorAll(".toggle-sidebar-btn");
-        if (!sidebar) return;
-
-        let isOpen = false;
-        if (window.innerWidth <= 768) {
-            isOpen = sidebar.classList.contains("mobile-open");
-        } else {
-            isOpen = !sidebar.classList.contains("collapsed");
         }
 
-        toggleBtns.forEach(btn => {
-            if (isOpen) {
-                btn.classList.add("active");
-                btn.title = "Collapse Sidebar";
+        function updateSidebarToggleState() {
+            const sidebar = document.getElementById("sidebar");
+            const toggleBtns = document.querySelectorAll(".toggle-sidebar-btn");
+            if (!sidebar) return;
+
+            let isOpen = false;
+            if (window.innerWidth <= 768) {
+                isOpen = sidebar.classList.contains("mobile-open");
             } else {
-                btn.classList.remove("active");
-                btn.title = "Expand Sidebar";
+                isOpen = !sidebar.classList.contains("collapsed");
             }
-        });
-    }
 
-    function toggleSidebar() {
-        const sidebar = document.getElementById("sidebar");
-        const overlay = document.getElementById("sidebarOverlay");
-        if (!sidebar) return;
-
-        if (window.innerWidth <= 768) {
-            sidebar.classList.toggle("mobile-open");
-            if (overlay) overlay.classList.toggle("active", sidebar.classList.contains("mobile-open"));
-        } else {
-            sidebar.classList.toggle("collapsed");
+            toggleBtns.forEach(btn => {
+                if (isOpen) {
+                    btn.classList.add("active");
+                    btn.title = "Collapse Sidebar";
+                } else {
+                    btn.classList.remove("active");
+                    btn.title = "Expand Sidebar";
+                }
+            });
         }
-        updateSidebarToggleState();
-    }
 
-    function closeMobileSidebar() {
-        const sidebar = document.getElementById("sidebar");
-        const overlay = document.getElementById("sidebarOverlay");
-        if (sidebar) sidebar.classList.remove("mobile-open");
-        if (overlay) overlay.classList.remove("active");
-        updateSidebarToggleState();
-    }
+        function toggleSidebar() {
+            const sidebar = document.getElementById("sidebar");
+            const overlay = document.getElementById("sidebarOverlay");
+            if (!sidebar) return;
 
-    function stopGeneration() {
-        if (currentAbortController) {
-            currentAbortController.abort();
-            currentAbortController = null;
+            if (window.innerWidth <= 768) {
+                sidebar.classList.toggle("mobile-open");
+                if (overlay) overlay.classList.toggle("active", sidebar.classList.contains("mobile-open"));
+            } else {
+                sidebar.classList.toggle("collapsed");
+            }
+            updateSidebarToggleState();
         }
-    }
 
-    function setGeneratingState(isGenerating) {
-        const sendBtn = document.getElementById("sendBtn");
-        if (!sendBtn) return;
-        if (isGenerating) {
-            sendBtn.classList.add("stop-btn");
-            sendBtn.innerHTML = '<i class="fa-solid fa-circle-stop"></i>';
-            sendBtn.title = "Interrupt Conversation / Stop Generating";
-        } else {
-            sendBtn.classList.remove("stop-btn");
-            sendBtn.innerHTML = '<i class="fa-solid fa-paper-plane"></i>';
-            sendBtn.title = "Send Message";
+        function closeMobileSidebar() {
+            const sidebar = document.getElementById("sidebar");
+            const overlay = document.getElementById("sidebarOverlay");
+            if (sidebar) sidebar.classList.remove("mobile-open");
+            if (overlay) overlay.classList.remove("active");
+            updateSidebarToggleState();
         }
-    }
 
-    function hideEmptyState() {
-        const emptyState = document.getElementById("emptyState");
-        if (emptyState) {
-            emptyState.style.display = "none";
+        function stopGeneration() {
+            if (currentAbortController) {
+                currentAbortController.abort();
+                currentAbortController = null;
+            }
         }
-    }
 
-    function usePrompt(text) {
-        const input = document.getElementById("userInput");
-        input.value = text;
-        input.focus();
-    }
-
-    function handleKeyPress(e) {
-        if (e.key === "Enter") {
-            sendMessage();
+        function setGeneratingState(isGenerating) {
+            const sendBtn = document.getElementById("sendBtn");
+            if (!sendBtn) return;
+            if (isGenerating) {
+                sendBtn.classList.add("stop-btn");
+                sendBtn.innerHTML = '<i class="fa-solid fa-circle-stop"></i>';
+                sendBtn.title = "Interrupt Conversation / Stop Generating";
+            } else {
+                sendBtn.classList.remove("stop-btn");
+                sendBtn.innerHTML = '<i class="fa-solid fa-paper-plane"></i>';
+                sendBtn.title = "Send Message";
+            }
         }
-    }
 
-    let isImageMode = false;
-
-    function toggleImageMode() {
-        isImageMode = !isImageMode;
-        const btn = document.getElementById("modeToggleBtn");
-        const bar = document.getElementById("imageOptionsBar");
-        const input = document.getElementById("userInput");
-        const sendBtn = document.getElementById("sendBtn");
-
-        if (isImageMode) {
-            btn.classList.add("image-mode");
-            btn.innerHTML = '<i class="fa-solid fa-wand-magic-sparkles"></i> <span>Image Mode</span>';
-            if (bar) bar.classList.add("active");
-            if (input) input.placeholder = "Describe the AI image you want to generate...";
-            if (sendBtn) sendBtn.innerHTML = '<i class="fa-solid fa-wand-magic-sparkles"></i>';
-        } else {
-            btn.classList.remove("image-mode");
-            btn.innerHTML = '<i class="fa-solid fa-wand-magic-sparkles"></i> <span>Chat Mode</span>';
-            if (bar) bar.classList.remove("active");
-            if (input) input.placeholder = "Type your message here...";
-            if (sendBtn) sendBtn.innerHTML = '<i class="fa-solid fa-paper-plane"></i>';
+        function hideEmptyState() {
+            const emptyState = document.getElementById("emptyState");
+            if (emptyState) {
+                emptyState.style.display = "none";
+            }
         }
-    }
 
-    function useImagePrompt(promptText) {
-        if (!isImageMode) {
-            toggleImageMode();
-        }
-        const input = document.getElementById("userInput");
-        if (input) {
-            input.value = promptText;
+        function usePrompt(text) {
+            const input = document.getElementById("userInput");
+            input.value = text;
             input.focus();
         }
-    }
 
-    async function generateImageFlow(prompt) {
-        const chatBox = document.getElementById("chatBox");
-        hideEmptyState();
+        function handleKeyPress(e) {
+            if (e.key === "Enter") {
+                sendMessage();
+            }
+        }
 
-        const ratioSelect = document.getElementById("imgRatioSelect");
-        const styleSelect = document.getElementById("imgStyleSelect");
-        const dim = ratioSelect ? ratioSelect.value : "1024x1024";
-        const [w, h] = dim.split('x').map(Number);
-        const style = styleSelect ? styleSelect.value : "none";
+        let isImageMode = false;
 
-        // USER PROMPT BUBBLE
-        chatBox.innerHTML += `
+        function toggleImageMode() {
+            isImageMode = !isImageMode;
+            const btn = document.getElementById("modeToggleBtn");
+            const bar = document.getElementById("imageOptionsBar");
+            const input = document.getElementById("userInput");
+            const sendBtn = document.getElementById("sendBtn");
+
+            if (isImageMode) {
+                btn.classList.add("image-mode");
+                btn.innerHTML = '<i class="fa-solid fa-wand-magic-sparkles"></i> <span>Image Mode</span>';
+                if (bar) bar.classList.add("active");
+                if (input) input.placeholder = "Describe the AI image you want to generate...";
+                if (sendBtn) sendBtn.innerHTML = '<i class="fa-solid fa-wand-magic-sparkles"></i>';
+            } else {
+                btn.classList.remove("image-mode");
+                btn.innerHTML = '<i class="fa-solid fa-wand-magic-sparkles"></i> <span>Chat Mode</span>';
+                if (bar) bar.classList.remove("active");
+                if (input) input.placeholder = "Type your message here...";
+                if (sendBtn) sendBtn.innerHTML = '<i class="fa-solid fa-paper-plane"></i>';
+            }
+        }
+
+        function useImagePrompt(promptText) {
+            if (!isImageMode) {
+                toggleImageMode();
+            }
+            const input = document.getElementById("userInput");
+            if (input) {
+                input.value = promptText;
+                input.focus();
+            }
+        }
+
+        async function generateImageFlow(prompt) {
+            const chatBox = document.getElementById("chatBox");
+            hideEmptyState();
+
+            const ratioSelect = document.getElementById("imgRatioSelect");
+            const styleSelect = document.getElementById("imgStyleSelect");
+            const dim = ratioSelect ? ratioSelect.value : "1024x1024";
+            const [w, h] = dim.split('x').map(Number);
+            const style = styleSelect ? styleSelect.value : "none";
+
+            // USER PROMPT BUBBLE
+            chatBox.innerHTML += `
             <div class="message-row user image-prompt-row">
                 <div class="avatar" style="background: linear-gradient(135deg, #a855f7 0%, #ec4899 100%);">
                     <i class="fa-solid fa-wand-magic-sparkles"></i>
@@ -2068,12 +2112,12 @@
             </div>
         `;
 
-        chatBox.scrollTop = chatBox.scrollHeight;
-        saveCurrentSession();
+            chatBox.scrollTop = chatBox.scrollHeight;
+            saveCurrentSession();
 
-        // BOT LOADING CARD
-        const genId = "gen_" + Date.now();
-        chatBox.innerHTML += `
+            // BOT LOADING CARD
+            const genId = "gen_" + Date.now();
+            chatBox.innerHTML += `
             <div class="message-row bot" id="${genId}">
                 <div class="avatar" style="background: linear-gradient(135deg, #a855f7, #6366f1);">
                     <i class="fa-solid fa-palette"></i>
@@ -2090,21 +2134,21 @@
             </div>
         `;
 
-        chatBox.scrollTop = chatBox.scrollHeight;
+            chatBox.scrollTop = chatBox.scrollHeight;
 
-        try {
-            const res = await fetch("/api/generate-image", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ prompt, style, width: w, height: h })
-            });
+            try {
+                const res = await fetch("/api/generate-image", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ prompt, style, width: w, height: h })
+                });
 
-            const data = await res.json();
-            const genElem = document.getElementById(genId);
+                const data = await res.json();
+                const genElem = document.getElementById(genId);
 
-            if (data.success && data.imageUrl) {
-                const providerBadge = data.provider ? `<div class="img-badge" style="background: rgba(99, 102, 241, 0.15); color: #818cf8; border-color: rgba(99, 102, 241, 0.3);"><i class="fa-solid fa-bolt"></i> ${escapeHtml(data.provider)}</div>` : '';
-                const cardHTML = `
+                if (data.success && data.imageUrl) {
+                    const providerBadge = data.provider ? `<div class="img-badge" style="background: rgba(99, 102, 241, 0.15); color: #818cf8; border-color: rgba(99, 102, 241, 0.3);"><i class="fa-solid fa-bolt"></i> ${escapeHtml(data.provider)}</div>` : '';
+                    const cardHTML = `
                     <div class="message-row bot">
                         <div class="avatar" style="background: linear-gradient(135deg, #a855f7, #6366f1);">
                             <i class="fa-solid fa-palette"></i>
@@ -2130,10 +2174,10 @@
                         </div>
                     </div>
                 `;
-                if (genElem) genElem.outerHTML = cardHTML;
-                else chatBox.innerHTML += cardHTML;
-            } else {
-                if (genElem) genElem.outerHTML = `
+                    if (genElem) genElem.outerHTML = cardHTML;
+                    else chatBox.innerHTML += cardHTML;
+                } else {
+                    if (genElem) genElem.outerHTML = `
                     <div class="message-row bot">
                         <div class="avatar"><i class="fa-solid fa-triangle-exclamation" style="color: #f87171;"></i></div>
                         <div class="message-content-wrapper">
@@ -2141,28 +2185,28 @@
                         </div>
                     </div>
                 `;
+                }
+
+                saveCurrentSession();
+                requestAnimationFrame(() => { chatBox.scrollTop = chatBox.scrollHeight; });
+
+            } catch (err) {
+                console.error("Image Gen Error:", err);
+                const genElem = document.getElementById(genId);
+                if (genElem) genElem.remove();
             }
-
-            saveCurrentSession();
-            requestAnimationFrame(() => { chatBox.scrollTop = chatBox.scrollHeight; });
-
-        } catch (err) {
-            console.error("Image Gen Error:", err);
-            const genElem = document.getElementById(genId);
-            if (genElem) genElem.remove();
         }
-    }
 
-    async function generateImageFlowForEdit(userRow, prompt) {
-        const chatBox = document.getElementById("chatBox");
-        const ratioSelect = document.getElementById("imgRatioSelect");
-        const styleSelect = document.getElementById("imgStyleSelect");
-        const dim = ratioSelect ? ratioSelect.value : "1024x1024";
-        const [w, h] = dim.split('x').map(Number);
-        const style = styleSelect ? styleSelect.value : "none";
+        async function generateImageFlowForEdit(userRow, prompt) {
+            const chatBox = document.getElementById("chatBox");
+            const ratioSelect = document.getElementById("imgRatioSelect");
+            const styleSelect = document.getElementById("imgStyleSelect");
+            const dim = ratioSelect ? ratioSelect.value : "1024x1024";
+            const [w, h] = dim.split('x').map(Number);
+            const style = styleSelect ? styleSelect.value : "none";
 
-        const genId = "gen_" + Date.now();
-        const loadingHTML = `
+            const genId = "gen_" + Date.now();
+            const loadingHTML = `
             <div class="message-row bot" id="${genId}">
                 <div class="avatar" style="background: linear-gradient(135deg, #a855f7, #6366f1);">
                     <i class="fa-solid fa-palette"></i>
@@ -2178,23 +2222,23 @@
                 </div>
             </div>
         `;
-        userRow.insertAdjacentHTML('afterend', loadingHTML);
-        requestAnimationFrame(() => { chatBox.scrollTop = chatBox.scrollHeight; });
-        saveCurrentSession();
+            userRow.insertAdjacentHTML('afterend', loadingHTML);
+            requestAnimationFrame(() => { chatBox.scrollTop = chatBox.scrollHeight; });
+            saveCurrentSession();
 
-        try {
-            const res = await fetch("/api/generate-image", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ prompt, style, width: w, height: h })
-            });
+            try {
+                const res = await fetch("/api/generate-image", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ prompt, style, width: w, height: h })
+                });
 
-            const data = await res.json();
-            const genElem = document.getElementById(genId);
+                const data = await res.json();
+                const genElem = document.getElementById(genId);
 
-            if (data.success && data.imageUrl) {
-                const providerBadge = data.provider ? `<div class="img-badge" style="background: rgba(99, 102, 241, 0.15); color: #818cf8; border-color: rgba(99, 102, 241, 0.3);"><i class="fa-solid fa-bolt"></i> ${escapeHtml(data.provider)}</div>` : '';
-                const cardHTML = `
+                if (data.success && data.imageUrl) {
+                    const providerBadge = data.provider ? `<div class="img-badge" style="background: rgba(99, 102, 241, 0.15); color: #818cf8; border-color: rgba(99, 102, 241, 0.3);"><i class="fa-solid fa-bolt"></i> ${escapeHtml(data.provider)}</div>` : '';
+                    const cardHTML = `
                     <div class="message-row bot">
                         <div class="avatar" style="background: linear-gradient(135deg, #a855f7, #6366f1);">
                             <i class="fa-solid fa-palette"></i>
@@ -2220,9 +2264,9 @@
                         </div>
                     </div>
                 `;
-                if (genElem) genElem.outerHTML = cardHTML;
-            } else {
-                if (genElem) genElem.outerHTML = `
+                    if (genElem) genElem.outerHTML = cardHTML;
+                } else {
+                    if (genElem) genElem.outerHTML = `
                     <div class="message-row bot">
                         <div class="avatar"><i class="fa-solid fa-triangle-exclamation" style="color: #f87171;"></i></div>
                         <div class="message-content-wrapper">
@@ -2230,91 +2274,91 @@
                         </div>
                     </div>
                 `;
+                }
+
+                saveCurrentSession();
+                requestAnimationFrame(() => { chatBox.scrollTop = chatBox.scrollHeight; });
+
+            } catch (err) {
+                console.error("Image Gen Error:", err);
+                const genElem = document.getElementById(genId);
+                if (genElem) genElem.remove();
+            }
+        }
+
+        function openLightbox(url, caption) {
+            const modal = document.getElementById("lightboxModal");
+            const img = document.getElementById("lightboxImg");
+            const cap = document.getElementById("lightboxCaption");
+            if (modal && img) {
+                img.src = url;
+                if (cap) cap.textContent = caption || '';
+                modal.classList.add("active");
+            }
+        }
+
+        function closeLightbox() {
+            const modal = document.getElementById("lightboxModal");
+            if (modal) modal.classList.remove("active");
+        }
+
+        async function downloadImage(url) {
+            try {
+                const response = await fetch(url);
+                const blob = await response.blob();
+                const blobUrl = URL.createObjectURL(blob);
+                const a = document.createElement("a");
+                a.href = blobUrl;
+                a.download = `mindhelix_ai_art_${Date.now()}.jpg`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(blobUrl);
+            } catch (e) {
+                window.open(url, '_blank');
+            }
+        }
+
+        async function copyImageUrl(url, btn) {
+            try {
+                await navigator.clipboard.writeText(url);
+                const orig = btn.innerHTML;
+                btn.innerHTML = '<i class="fa-solid fa-check"></i> Copied!';
+                setTimeout(() => { btn.innerHTML = orig; }, 2000);
+            } catch (e) { }
+        }
+
+        function regenerateImage(prompt, dim, style, btn) {
+            const ratioSelect = document.getElementById("imgRatioSelect");
+            const styleSelect = document.getElementById("imgStyleSelect");
+            if (ratioSelect && dim) ratioSelect.value = dim;
+            if (styleSelect && style) styleSelect.value = style;
+            generateImageFlow(prompt);
+        }
+
+        async function sendMessage() {
+            if (currentAbortController) {
+                stopGeneration();
+                return;
             }
 
-            saveCurrentSession();
-            requestAnimationFrame(() => { chatBox.scrollTop = chatBox.scrollHeight; });
+            const input = document.getElementById("userInput");
+            const chatBox = document.getElementById("chatBox");
+            const message = input.value.trim();
 
-        } catch (err) {
-            console.error("Image Gen Error:", err);
-            const genElem = document.getElementById(genId);
-            if (genElem) genElem.remove();
-        }
-    }
+            if (!message) return;
 
-    function openLightbox(url, caption) {
-        const modal = document.getElementById("lightboxModal");
-        const img = document.getElementById("lightboxImg");
-        const cap = document.getElementById("lightboxCaption");
-        if (modal && img) {
-            img.src = url;
-            if (cap) cap.textContent = caption || '';
-            modal.classList.add("active");
-        }
-    }
+            input.value = "";
 
-    function closeLightbox() {
-        const modal = document.getElementById("lightboxModal");
-        if (modal) modal.classList.remove("active");
-    }
+            if (isImageMode) {
+                generateImageFlow(message);
+                return;
+            }
 
-    async function downloadImage(url) {
-        try {
-            const response = await fetch(url);
-            const blob = await response.blob();
-            const blobUrl = URL.createObjectURL(blob);
-            const a = document.createElement("a");
-            a.href = blobUrl;
-            a.download = `mindhelix_ai_art_${Date.now()}.jpg`;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(blobUrl);
-        } catch (e) {
-            window.open(url, '_blank');
-        }
-    }
+            hideEmptyState();
 
-    async function copyImageUrl(url, btn) {
-        try {
-            await navigator.clipboard.writeText(url);
-            const orig = btn.innerHTML;
-            btn.innerHTML = '<i class="fa-solid fa-check"></i> Copied!';
-            setTimeout(() => { btn.innerHTML = orig; }, 2000);
-        } catch(e) {}
-    }
-
-    function regenerateImage(prompt, dim, style, btn) {
-        const ratioSelect = document.getElementById("imgRatioSelect");
-        const styleSelect = document.getElementById("imgStyleSelect");
-        if (ratioSelect && dim) ratioSelect.value = dim;
-        if (styleSelect && style) styleSelect.value = style;
-        generateImageFlow(prompt);
-    }
-
-    async function sendMessage() {
-        if (currentAbortController) {
-            stopGeneration();
-            return;
-        }
-
-        const input = document.getElementById("userInput");
-        const chatBox = document.getElementById("chatBox");
-        const message = input.value.trim();
-
-        if (!message) return;
-
-        input.value = "";
-
-        if (isImageMode) {
-            generateImageFlow(message);
-            return;
-        }
-
-        hideEmptyState();
-
-        // USER MESSAGE
-        chatBox.innerHTML += `
+            // USER MESSAGE
+            chatBox.innerHTML += `
             <div class="message-row user">
                 <div class="avatar">
                     <i class="fa-solid fa-user"></i>
@@ -2330,13 +2374,13 @@
             </div>
         `;
 
-        input.value = "";
-        chatBox.scrollTop = chatBox.scrollHeight;
-        saveCurrentSession();
+            input.value = "";
+            chatBox.scrollTop = chatBox.scrollHeight;
+            saveCurrentSession();
 
-        // BOT LOADING
-        const typingId = "typing_" + Date.now();
-        chatBox.innerHTML += `
+            // BOT LOADING
+            const typingId = "typing_" + Date.now();
+            chatBox.innerHTML += `
             <div class="message-row bot" id="${typingId}">
                 <div class="avatar">
                     <i class="fa-solid fa-robot"></i>
@@ -2356,28 +2400,28 @@
             </div>
         `;
 
-        chatBox.scrollTop = chatBox.scrollHeight;
+            chatBox.scrollTop = chatBox.scrollHeight;
 
-        currentAbortController = new AbortController();
-        setGeneratingState(true);
+            currentAbortController = new AbortController();
+            setGeneratingState(true);
 
-        try {
-            const response = await fetch("/chat", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({ message }),
-                signal: currentAbortController.signal
-            });
+            try {
+                const response = await fetch("/chat", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ message }),
+                    signal: currentAbortController.signal
+                });
 
-            const data = await response.json();
+                const data = await response.json();
 
-            const typingElem = document.getElementById(typingId);
-            if (typingElem) typingElem.remove();
+                const typingElem = document.getElementById(typingId);
+                if (typingElem) typingElem.remove();
 
-            // BOT MESSAGE WITH RUN & COPY ACTIONS
-            chatBox.innerHTML += `
+                // BOT MESSAGE WITH RUN & COPY ACTIONS
+                chatBox.innerHTML += `
                 <div class="message-row bot">
                     <div class="avatar">
                         <i class="fa-solid fa-robot"></i>
@@ -2393,16 +2437,16 @@
                 </div>
             `;
 
-            // SAVE CHAT SESSION
-            saveCurrentSession();
-            chatBox.scrollTop = chatBox.scrollHeight;
+                // SAVE CHAT SESSION
+                saveCurrentSession();
+                chatBox.scrollTop = chatBox.scrollHeight;
 
-        } catch (error) {
-            const typingElem = document.getElementById(typingId);
-            if (typingElem) typingElem.remove();
+            } catch (error) {
+                const typingElem = document.getElementById(typingId);
+                if (typingElem) typingElem.remove();
 
-            if (error.name === "AbortError") {
-                chatBox.innerHTML += `
+                if (error.name === "AbortError") {
+                    chatBox.innerHTML += `
                     <div class="message-row bot">
                         <div class="avatar">
                             <i class="fa-solid fa-hand" style="color: #f59e0b;"></i>
@@ -2412,11 +2456,11 @@
                         </div>
                     </div>
                 `;
-                saveCurrentSession();
-                chatBox.scrollTop = chatBox.scrollHeight;
-            } else {
-                console.error("Chat Error:", error);
-                chatBox.innerHTML += `
+                    saveCurrentSession();
+                    chatBox.scrollTop = chatBox.scrollHeight;
+                } else {
+                    console.error("Chat Error:", error);
+                    chatBox.innerHTML += `
                     <div class="message-row bot">
                         <div class="avatar">
                             <i class="fa-solid fa-triangle-exclamation" style="color: #f87171;"></i>
@@ -2426,24 +2470,24 @@
                         </div>
                     </div>
                 `;
-                chatBox.scrollTop = chatBox.scrollHeight;
+                    chatBox.scrollTop = chatBox.scrollHeight;
+                }
+            } finally {
+                currentAbortController = null;
+                setGeneratingState(false);
             }
-        } finally {
-            currentAbortController = null;
-            setGeneratingState(false);
         }
-    }
 
-    function editUserMessage(button) {
-        const wrapper = button.closest('.message-content-wrapper');
-        const msgElem = wrapper.querySelector('.message');
-        if (!msgElem) return;
+        function editUserMessage(button) {
+            const wrapper = button.closest('.message-content-wrapper');
+            const msgElem = wrapper.querySelector('.message');
+            if (!msgElem) return;
 
-        const currentText = msgElem.innerText || msgElem.textContent;
+            const currentText = msgElem.innerText || msgElem.textContent;
 
-        wrapper.dataset.originalContent = wrapper.innerHTML;
+            wrapper.dataset.originalContent = wrapper.innerHTML;
 
-        wrapper.innerHTML = `
+            wrapper.innerHTML = `
             <div class="edit-box">
                 <textarea class="edit-input" rows="2">${escapeHtml(currentText)}</textarea>
                 <div class="edit-btn-row">
@@ -2456,31 +2500,31 @@
                 </div>
             </div>
         `;
-    }
-
-    function cancelUserEdit(button) {
-        const wrapper = button.closest('.message-content-wrapper');
-        if (wrapper && wrapper.dataset.originalContent) {
-            wrapper.innerHTML = wrapper.dataset.originalContent;
-            delete wrapper.dataset.originalContent;
-        }
-    }
-
-    async function saveUserEdit(button) {
-        if (currentAbortController) {
-            stopGeneration();
         }
 
-        const wrapper = button.closest('.message-content-wrapper');
-        const textarea = wrapper.querySelector('.edit-input');
-        const newText = textarea.value.trim();
-        if (!newText) return;
+        function cancelUserEdit(button) {
+            const wrapper = button.closest('.message-content-wrapper');
+            if (wrapper && wrapper.dataset.originalContent) {
+                wrapper.innerHTML = wrapper.dataset.originalContent;
+                delete wrapper.dataset.originalContent;
+            }
+        }
 
-        const userRow = button.closest('.message-row.user');
-        const isImagePrompt = (wrapper.dataset.originalContent && wrapper.dataset.originalContent.includes('img-badge')) || (userRow && userRow.querySelector('.img-badge'));
+        async function saveUserEdit(button) {
+            if (currentAbortController) {
+                stopGeneration();
+            }
 
-        if (isImagePrompt) {
-            wrapper.innerHTML = `
+            const wrapper = button.closest('.message-content-wrapper');
+            const textarea = wrapper.querySelector('.edit-input');
+            const newText = textarea.value.trim();
+            if (!newText) return;
+
+            const userRow = button.closest('.message-row.user');
+            const isImagePrompt = (wrapper.dataset.originalContent && wrapper.dataset.originalContent.includes('img-badge')) || (userRow && userRow.querySelector('.img-badge'));
+
+            if (isImagePrompt) {
+                wrapper.innerHTML = `
                 <div class="img-badge"><i class="fa-solid fa-palette"></i> Image Prompt</div>
                 <div class="message">${escapeHtml(newText)}</div>
                 <div class="user-message-actions">
@@ -2489,18 +2533,18 @@
                     </button>
                 </div>
             `;
-            delete wrapper.dataset.originalContent;
+                delete wrapper.dataset.originalContent;
 
-            let nextRow = userRow.nextElementSibling;
-            if (nextRow && nextRow.classList.contains('bot')) {
-                nextRow.remove();
+                let nextRow = userRow.nextElementSibling;
+                if (nextRow && nextRow.classList.contains('bot')) {
+                    nextRow.remove();
+                }
+
+                generateImageFlowForEdit(userRow, newText);
+                return;
             }
 
-            generateImageFlowForEdit(userRow, newText);
-            return;
-        }
-
-        wrapper.innerHTML = `
+            wrapper.innerHTML = `
             <div class="message">${escapeHtml(newText)}</div>
             <div class="user-message-actions">
                 <button class="edit-msg-btn" onclick="editUserMessage(this)" title="Edit Question">
@@ -2508,18 +2552,18 @@
                 </button>
             </div>
         `;
-        delete wrapper.dataset.originalContent;
+            delete wrapper.dataset.originalContent;
 
-        // Remove next bot message if present
-        let nextRow = userRow.nextElementSibling;
-        if (nextRow && nextRow.classList.contains('bot')) {
-            nextRow.remove();
-        }
+            // Remove next bot message if present
+            let nextRow = userRow.nextElementSibling;
+            if (nextRow && nextRow.classList.contains('bot')) {
+                nextRow.remove();
+            }
 
-        const chatBox = document.getElementById("chatBox");
+            const chatBox = document.getElementById("chatBox");
 
-        const typingId = "typing_" + Date.now();
-        const typingHTML = `
+            const typingId = "typing_" + Date.now();
+            const typingHTML = `
             <div class="message-row bot" id="${typingId}">
                 <div class="avatar">
                     <i class="fa-solid fa-robot"></i>
@@ -2539,28 +2583,28 @@
             </div>
         `;
 
-        userRow.insertAdjacentHTML('afterend', typingHTML);
-        chatBox.scrollTop = chatBox.scrollHeight;
+            userRow.insertAdjacentHTML('afterend', typingHTML);
+            chatBox.scrollTop = chatBox.scrollHeight;
 
-        currentAbortController = new AbortController();
-        setGeneratingState(true);
+            currentAbortController = new AbortController();
+            setGeneratingState(true);
 
-        try {
-            const response = await fetch("/chat", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({ message: newText }),
-                signal: currentAbortController.signal
-            });
+            try {
+                const response = await fetch("/chat", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ message: newText }),
+                    signal: currentAbortController.signal
+                });
 
-            const data = await response.json();
+                const data = await response.json();
 
-            const typingElem = document.getElementById(typingId);
-            if (typingElem) typingElem.remove();
+                const typingElem = document.getElementById(typingId);
+                if (typingElem) typingElem.remove();
 
-            const botResponseHTML = `
+                const botResponseHTML = `
                 <div class="message-row bot">
                     <div class="avatar">
                         <i class="fa-solid fa-robot"></i>
@@ -2576,16 +2620,16 @@
                 </div>
             `;
 
-            userRow.insertAdjacentHTML('afterend', botResponseHTML);
-            saveCurrentSession();
-            chatBox.scrollTop = chatBox.scrollHeight;
+                userRow.insertAdjacentHTML('afterend', botResponseHTML);
+                saveCurrentSession();
+                chatBox.scrollTop = chatBox.scrollHeight;
 
-        } catch (error) {
-            const typingElem = document.getElementById(typingId);
-            if (typingElem) typingElem.remove();
+            } catch (error) {
+                const typingElem = document.getElementById(typingId);
+                if (typingElem) typingElem.remove();
 
-            if (error.name === "AbortError") {
-                const interruptedHTML = `
+                if (error.name === "AbortError") {
+                    const interruptedHTML = `
                     <div class="message-row bot">
                         <div class="avatar">
                             <i class="fa-solid fa-hand" style="color: #f59e0b;"></i>
@@ -2595,12 +2639,12 @@
                         </div>
                     </div>
                 `;
-                userRow.insertAdjacentHTML('afterend', interruptedHTML);
-                saveCurrentSession();
-                chatBox.scrollTop = chatBox.scrollHeight;
-            } else {
-                console.error("Edit Chat Error:", error);
-                const errorHTML = `
+                    userRow.insertAdjacentHTML('afterend', interruptedHTML);
+                    saveCurrentSession();
+                    chatBox.scrollTop = chatBox.scrollHeight;
+                } else {
+                    console.error("Edit Chat Error:", error);
+                    const errorHTML = `
                     <div class="message-row bot">
                         <div class="avatar">
                             <i class="fa-solid fa-triangle-exclamation" style="color: #f87171;"></i>
@@ -2610,49 +2654,49 @@
                         </div>
                     </div>
                 `;
-                userRow.insertAdjacentHTML('afterend', errorHTML);
-            }
-        } finally {
-            currentAbortController = null;
-            setGeneratingState(false);
-        }
-    }
-
-    function clearChat() {
-        stopGeneration();
-        showEmptyState();
-        if (activeSessionId) {
-            const session = sessions.find(s => s.id === activeSessionId);
-            if (session) {
-                session.html = "";
-                saveSessionsToStorage();
-                renderSessionsList();
+                    userRow.insertAdjacentHTML('afterend', errorHTML);
+                }
+            } finally {
+                currentAbortController = null;
+                setGeneratingState(false);
             }
         }
-    }
 
-    function logout() {
-        localStorage.removeItem("user");
-        window.location.href = "/";
-    }
+        function clearChat() {
+            stopGeneration();
+            showEmptyState();
+            if (activeSessionId) {
+                const session = sessions.find(s => s.id === activeSessionId);
+                if (session) {
+                    session.html = "";
+                    saveSessionsToStorage();
+                    renderSessionsList();
+                }
+            }
+        }
 
-    function escapeHtml(text) {
-        return text
-            .replace(/&/g, "&amp;")
-            .replace(/</g, "&lt;")
-            .replace(/>/g, "&gt;")
-            .replace(/"/g, "&quot;")
-            .replace(/'/g, "&#039;");
-    }
+        function logout() {
+            localStorage.removeItem("user");
+            window.location.href = "/";
+        }
 
-    function formatBotResponse(text) {
-        if (!text) return "No response";
-        let formatted = escapeHtml(text);
+        function escapeHtml(text) {
+            return text
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
 
-        // Convert triple backtick code blocks into styled code blocks with Run Code and Copy Code headers
-        formatted = formatted.replace(/```(\w*)\n?([\s\S]*?)```/g, function(match, lang, code) {
-            const language = lang.trim() || 'code';
-            return `
+        function formatBotResponse(text) {
+            if (!text) return "No response";
+            let formatted = escapeHtml(text);
+
+            // Convert triple backtick code blocks into styled code blocks with Run Code and Copy Code headers
+            formatted = formatted.replace(/```(\w*)\n?([\s\S]*?)```/g, function (match, lang, code) {
+                const language = lang.trim() || 'code';
+                return `
                 <div class="code-block">
                     <div class="code-header">
                         <span><i class="fa-solid fa-code"></i> ${language}</span>
@@ -2671,104 +2715,104 @@
                     <pre><code>${code}</code></pre>
                 </div>
             `;
-        });
-
-        // Convert inline single backticks
-        formatted = formatted.replace(/`([^`]+)`/g, '<code class="inline-code">$1</code>');
-
-        return formatted;
-    }
-
-    const judge0LangMap = {
-        'javascript': 63,
-        'python': 71,
-        'c++': 54,
-        'c': 50,
-        'java': 62,
-        'typescript': 74
-    };
-
-    function toggleEditCodeBlock(button) {
-        const codeBlock = button.closest('.code-block');
-        if (!codeBlock) return;
-
-        const preElem = codeBlock.querySelector('pre');
-        const existingEditor = codeBlock.querySelector('.code-editor-textarea');
-
-        if (existingEditor) {
-            // Save and exit edit mode
-            const updatedCode = existingEditor.value;
-            const newPre = document.createElement('pre');
-            const newCode = document.createElement('code');
-            newCode.textContent = updatedCode;
-            newPre.appendChild(newCode);
-
-            existingEditor.remove();
-            codeBlock.appendChild(newPre);
-
-            button.innerHTML = '<i class="fa-solid fa-pen-to-square"></i> Edit';
-            button.classList.remove('editing');
-            saveCurrentSession();
-        } else if (preElem) {
-            // Enter edit mode
-            const currentCode = preElem.innerText || preElem.textContent;
-            const textarea = document.createElement('textarea');
-            textarea.className = 'code-editor-textarea';
-            textarea.value = currentCode;
-            textarea.spellcheck = false;
-
-            const calculatedHeight = Math.max(140, Math.min(600, preElem.offsetHeight + 24));
-            textarea.style.height = calculatedHeight + 'px';
-
-            // Indent Tab key handling inside editor
-            textarea.addEventListener('keydown', function(e) {
-                if (e.key === 'Tab') {
-                    e.preventDefault();
-                    const start = this.selectionStart;
-                    const end = this.selectionEnd;
-                    this.value = this.value.substring(0, start) + '    ' + this.value.substring(end);
-                    this.selectionStart = this.selectionEnd = start + 4;
-                }
             });
 
-            preElem.remove();
-            codeBlock.appendChild(textarea);
-            textarea.focus();
+            // Convert inline single backticks
+            formatted = formatted.replace(/`([^`]+)`/g, '<code class="inline-code">$1</code>');
 
-            button.innerHTML = '<i class="fa-solid fa-check"></i> Done';
-            button.classList.add('editing');
-        }
-    }
-
-    async function runCodeBlock(button) {
-        const codeBlock = button.closest('.code-block');
-        if (!codeBlock) return;
-
-        // Auto commit code edit if currently editing when clicking Run Code
-        const editBtn = codeBlock.querySelector('.edit-code-btn');
-        const existingEditor = codeBlock.querySelector('.code-editor-textarea');
-        if (existingEditor && editBtn) {
-            toggleEditCodeBlock(editBtn);
+            return formatted;
         }
 
-        const codeElement = codeBlock.querySelector('pre code');
-        const langSpan = codeBlock.querySelector('.code-header span');
+        const judge0LangMap = {
+            'javascript': 63,
+            'python': 71,
+            'c++': 54,
+            'c': 50,
+            'java': 62,
+            'typescript': 74
+        };
 
-        if (!codeElement) return;
+        function toggleEditCodeBlock(button) {
+            const codeBlock = button.closest('.code-block');
+            if (!codeBlock) return;
 
-        let rawLang = langSpan ? langSpan.textContent.trim().toLowerCase() : 'javascript';
-        rawLang = rawLang.replace(/[^a-z0-9#+]/g, '');
+            const preElem = codeBlock.querySelector('pre');
+            const existingEditor = codeBlock.querySelector('.code-editor-textarea');
 
-        const code = decodeHtml(codeElement.innerText || codeElement.textContent);
+            if (existingEditor) {
+                // Save and exit edit mode
+                const updatedCode = existingEditor.value;
+                const newPre = document.createElement('pre');
+                const newCode = document.createElement('code');
+                newCode.textContent = updatedCode;
+                newPre.appendChild(newCode);
 
-        let outputPanel = codeBlock.querySelector('.output-panel');
-        if (!outputPanel) {
-            outputPanel = document.createElement('div');
-            outputPanel.className = 'output-panel';
-            codeBlock.appendChild(outputPanel);
+                existingEditor.remove();
+                codeBlock.appendChild(newPre);
+
+                button.innerHTML = '<i class="fa-solid fa-pen-to-square"></i> Edit';
+                button.classList.remove('editing');
+                saveCurrentSession();
+            } else if (preElem) {
+                // Enter edit mode
+                const currentCode = preElem.innerText || preElem.textContent;
+                const textarea = document.createElement('textarea');
+                textarea.className = 'code-editor-textarea';
+                textarea.value = currentCode;
+                textarea.spellcheck = false;
+
+                const calculatedHeight = Math.max(140, Math.min(600, preElem.offsetHeight + 24));
+                textarea.style.height = calculatedHeight + 'px';
+
+                // Indent Tab key handling inside editor
+                textarea.addEventListener('keydown', function (e) {
+                    if (e.key === 'Tab') {
+                        e.preventDefault();
+                        const start = this.selectionStart;
+                        const end = this.selectionEnd;
+                        this.value = this.value.substring(0, start) + '    ' + this.value.substring(end);
+                        this.selectionStart = this.selectionEnd = start + 4;
+                    }
+                });
+
+                preElem.remove();
+                codeBlock.appendChild(textarea);
+                textarea.focus();
+
+                button.innerHTML = '<i class="fa-solid fa-check"></i> Done';
+                button.classList.add('editing');
+            }
         }
 
-        outputPanel.innerHTML = `
+        async function runCodeBlock(button) {
+            const codeBlock = button.closest('.code-block');
+            if (!codeBlock) return;
+
+            // Auto commit code edit if currently editing when clicking Run Code
+            const editBtn = codeBlock.querySelector('.edit-code-btn');
+            const existingEditor = codeBlock.querySelector('.code-editor-textarea');
+            if (existingEditor && editBtn) {
+                toggleEditCodeBlock(editBtn);
+            }
+
+            const codeElement = codeBlock.querySelector('pre code');
+            const langSpan = codeBlock.querySelector('.code-header span');
+
+            if (!codeElement) return;
+
+            let rawLang = langSpan ? langSpan.textContent.trim().toLowerCase() : 'javascript';
+            rawLang = rawLang.replace(/[^a-z0-9#+]/g, '');
+
+            const code = decodeHtml(codeElement.innerText || codeElement.textContent);
+
+            let outputPanel = codeBlock.querySelector('.output-panel');
+            if (!outputPanel) {
+                outputPanel = document.createElement('div');
+                outputPanel.className = 'output-panel';
+                codeBlock.appendChild(outputPanel);
+            }
+
+            outputPanel.innerHTML = `
             <div class="output-header">
                 <span><i class="fa-solid fa-terminal"></i> Terminal Output</span>
                 <div class="output-header-actions">
@@ -2794,267 +2838,298 @@
             </div>
         `;
 
-        const outputContent = outputPanel.querySelector('.output-content');
+            const outputContent = outputPanel.querySelector('.output-content');
 
-        const scrollToOutput = () => {
-            setTimeout(() => {
-                outputPanel.scrollIntoView({ behavior: 'smooth', block: 'end' });
-            }, 60);
-        };
+            const scrollToOutput = () => {
+                setTimeout(() => {
+                    outputPanel.scrollIntoView({ behavior: 'smooth', block: 'end' });
+                }, 60);
+            };
 
-        scrollToOutput();
-
-        // Handle HTML Live Preview directly
-        if (rawLang === 'html' || rawLang === 'htm' || rawLang === 'xml' || code.includes('<!DOCTYPE html>') || code.includes('<html') || code.includes('<div') || code.includes('<style')) {
-            outputContent.classList.remove('loading');
-            outputContent.style.padding = '0';
-            outputContent.style.maxHeight = 'none';
-
-            const iframe = document.createElement('iframe');
-            iframe.className = 'html-preview-frame';
-            iframe.sandbox = 'allow-scripts allow-modals';
-            iframe.srcdoc = code;
-
-            outputContent.innerHTML = '';
-            outputContent.appendChild(iframe);
             scrollToOutput();
-            return;
-        }
 
-        const language = langMap[rawLang] || rawLang || 'javascript';
+            // Handle HTML Live Preview directly
+            if (rawLang === 'html' || rawLang === 'htm' || rawLang === 'xml' || code.includes('<!DOCTYPE html>') || code.includes('<html') || code.includes('<div') || code.includes('<style')) {
+                outputContent.classList.remove('loading');
+                outputContent.style.padding = '0';
+                outputContent.style.maxHeight = 'none';
 
-        // Direct Browser Execution for JavaScript / Node.js
-        if (language === 'javascript') {
+                const iframe = document.createElement('iframe');
+                iframe.className = 'html-preview-frame';
+                iframe.sandbox = 'allow-scripts allow-modals';
+                iframe.srcdoc = code;
+
+                outputContent.innerHTML = '';
+                outputContent.appendChild(iframe);
+                scrollToOutput();
+                return;
+            }
+
+            const language = langMap[rawLang] || rawLang || 'javascript';
+
+            // Direct Browser Execution for JavaScript / Node.js
+            if (language === 'javascript') {
+                try {
+                    let logs = [];
+                    const customConsole = {
+                        log: (...args) => logs.push(args.map(a => typeof a === 'object' ? JSON.stringify(a, null, 2) : String(a)).join(' ')),
+                        error: (...args) => logs.push('ERROR: ' + args.map(a => typeof a === 'object' ? JSON.stringify(a, null, 2) : String(a)).join(' ')),
+                        warn: (...args) => logs.push('WARN: ' + args.map(a => typeof a === 'object' ? JSON.stringify(a, null, 2) : String(a)).join(' ')),
+                        info: (...args) => logs.push('INFO: ' + args.map(a => typeof a === 'object' ? JSON.stringify(a, null, 2) : String(a)).join(' '))
+                    };
+
+                    const runFn = new Function('console', code);
+                    const result = runFn(customConsole);
+                    outputContent.classList.remove('loading');
+                    let outStr = logs.join('\n');
+                    if (result !== undefined) {
+                        outStr += (outStr ? '\n' : '') + '=> ' + (typeof result === 'object' ? JSON.stringify(result, null, 2) : String(result));
+                    }
+                    outputContent.innerHTML = `<pre class="output-text">${escapeHtml(outStr || 'Code executed successfully (no output)')}</pre>`;
+                    scrollToOutput();
+                    return;
+                } catch (jsErr) {
+                    outputContent.classList.remove('loading');
+                    outputContent.innerHTML = `<pre class="output-error">${escapeHtml(jsErr.stack || String(jsErr))}</pre>`;
+                    scrollToOutput();
+                    return;
+                }
+            }
+
+            // For Python and other languages, execute using Judge0 API
             try {
-                let logs = [];
-                const customConsole = {
-                    log: (...args) => logs.push(args.map(a => typeof a === 'object' ? JSON.stringify(a, null, 2) : String(a)).join(' ')),
-                    error: (...args) => logs.push('ERROR: ' + args.map(a => typeof a === 'object' ? JSON.stringify(a, null, 2) : String(a)).join(' ')),
-                    warn: (...args) => logs.push('WARN: ' + args.map(a => typeof a === 'object' ? JSON.stringify(a, null, 2) : String(a)).join(' ')),
-                    info: (...args) => logs.push('INFO: ' + args.map(a => typeof a === 'object' ? JSON.stringify(a, null, 2) : String(a)).join(' '))
-                };
+                const judgeLangId = judge0LangMap[language] || 71;
+                const response = await fetch('https://ce.judge0.com/submissions?wait=true', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        source_code: code,
+                        language_id: judgeLangId
+                    })
+                });
 
-                const runFn = new Function('console', code);
-                const result = runFn(customConsole);
+                const data = await response.json();
                 outputContent.classList.remove('loading');
-                let outStr = logs.join('\n');
-                if (result !== undefined) {
-                    outStr += (outStr ? '\n' : '') + '=> ' + (typeof result === 'object' ? JSON.stringify(result, null, 2) : String(result));
-                }
-                outputContent.innerHTML = `<pre class="output-text">${escapeHtml(outStr || 'Code executed successfully (no output)')}</pre>`;
-                scrollToOutput();
-                return;
-            } catch (jsErr) {
-                outputContent.classList.remove('loading');
-                outputContent.innerHTML = `<pre class="output-error">${escapeHtml(jsErr.stack || String(jsErr))}</pre>`;
-                scrollToOutput();
-                return;
-            }
-        }
 
-        // For Python and other languages, execute using Judge0 API
-        try {
-            const judgeLangId = judge0LangMap[language] || 71;
-            const response = await fetch('https://ce.judge0.com/submissions?wait=true', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    source_code: code,
-                    language_id: judgeLangId
-                })
-            });
+                if (data.stdout || data.stderr || data.compile_output) {
+                    const stdout = data.stdout ? data.stdout.trim() : '';
+                    const stderr = data.stderr ? data.stderr.trim() : '';
+                    const compileErr = data.compile_output ? data.compile_output.trim() : '';
 
-            const data = await response.json();
-            outputContent.classList.remove('loading');
-
-            if (data.stdout || data.stderr || data.compile_output) {
-                const stdout = data.stdout ? data.stdout.trim() : '';
-                const stderr = data.stderr ? data.stderr.trim() : '';
-                const compileErr = data.compile_output ? data.compile_output.trim() : '';
-
-                if (stderr || compileErr) {
-                    outputContent.innerHTML = `<pre class="output-error">${escapeHtml(stderr || compileErr)}</pre>`;
-                } else if (stdout) {
-                    outputContent.innerHTML = `<pre class="output-text">${escapeHtml(stdout)}</pre>`;
+                    if (stderr || compileErr) {
+                        outputContent.innerHTML = `<pre class="output-error">${escapeHtml(stderr || compileErr)}</pre>`;
+                    } else if (stdout) {
+                        outputContent.innerHTML = `<pre class="output-text">${escapeHtml(stdout)}</pre>`;
+                    } else {
+                        outputContent.innerHTML = `<pre class="output-info">Program executed (No output)</pre>`;
+                    }
+                } else if (data.status && data.status.description) {
+                    outputContent.innerHTML = `<pre class="output-info">${escapeHtml(data.status.description)}</pre>`;
                 } else {
-                    outputContent.innerHTML = `<pre class="output-info">Program executed (No output)</pre>`;
+                    outputContent.innerHTML = `<pre class="output-error">Execution error occurred.</pre>`;
                 }
-            } else if (data.status && data.status.description) {
-                outputContent.innerHTML = `<pre class="output-info">${escapeHtml(data.status.description)}</pre>`;
-            } else {
-                outputContent.innerHTML = `<pre class="output-error">Execution error occurred.</pre>`;
+                scrollToOutput();
+            } catch (err) {
+                outputContent.classList.remove('loading');
+                outputContent.innerHTML = `<pre class="output-error">Execution error: ${escapeHtml(err.message)}</pre>`;
+                scrollToOutput();
             }
-            scrollToOutput();
-        } catch (err) {
-            outputContent.classList.remove('loading');
-            outputContent.innerHTML = `<pre class="output-error">Execution error: ${escapeHtml(err.message)}</pre>`;
-            scrollToOutput();
-        }
-    }
-
-    async function copyCodeBlock(button) {
-        const codeBlock = button.closest('.code-block');
-        if (!codeBlock) return;
-
-        const editor = codeBlock.querySelector('.code-editor-textarea');
-        const codeElement = codeBlock.querySelector('pre code');
-
-        let textToCopy = '';
-        if (editor) {
-            textToCopy = editor.value;
-        } else if (codeElement) {
-            textToCopy = decodeHtml(codeElement.innerText || codeElement.textContent);
         }
 
-        if (!textToCopy) return;
+        async function copyCodeBlock(button) {
+            const codeBlock = button.closest('.code-block');
+            if (!codeBlock) return;
 
-        try {
-            await navigator.clipboard.writeText(textToCopy);
-            const originalHTML = button.innerHTML;
-            button.innerHTML = '<i class="fa-solid fa-check"></i> Copied!';
-            button.classList.add('copied');
+            const editor = codeBlock.querySelector('.code-editor-textarea');
+            const codeElement = codeBlock.querySelector('pre code');
 
-            setTimeout(() => {
-                button.innerHTML = originalHTML;
-                button.classList.remove('copied');
-            }, 2000);
-        } catch (err) {
-            console.error('Failed to copy code:', err);
-        }
-    }
+            let textToCopy = '';
+            if (editor) {
+                textToCopy = editor.value;
+            } else if (codeElement) {
+                textToCopy = decodeHtml(codeElement.innerText || codeElement.textContent);
+            }
 
-    async function copyMessageText(button) {
-        const messageWrapper = button.closest('.message-content-wrapper');
-        const messageElem = messageWrapper.querySelector('.message');
-        if (!messageElem) return;
+            if (!textToCopy) return;
 
-        const textToCopy = messageElem.innerText || messageElem.textContent;
+            try {
+                await navigator.clipboard.writeText(textToCopy);
+                const originalHTML = button.innerHTML;
+                button.innerHTML = '<i class="fa-solid fa-check"></i> Copied!';
+                button.classList.add('copied');
 
-        try {
-            await navigator.clipboard.writeText(textToCopy);
-            const originalHTML = button.innerHTML;
-            button.innerHTML = '<i class="fa-solid fa-check"></i> Copied';
-            button.classList.add('copied');
-
-            setTimeout(() => {
-                button.innerHTML = originalHTML;
-                button.classList.remove('copied');
-            }, 2000);
-        } catch (err) {
-            console.error('Failed to copy message:', err);
-        }
-    }
-
-    function toggleOutputFullscreen(btn) {
-        const panel = btn.closest('.output-panel');
-        if (!panel) return;
-        const isFullscreen = panel.classList.toggle('fullscreen');
-        if (isFullscreen) {
-            btn.innerHTML = '<i class="fa-solid fa-compress"></i> Exit Fullscreen';
-            btn.classList.add('active');
-            document.body.style.overflow = 'hidden';
-        } else {
-            btn.innerHTML = '<i class="fa-solid fa-expand"></i> Fullscreen';
-            btn.classList.remove('active');
-            document.body.style.overflow = '';
-        }
-    }
-
-    function openOutputInNewTab(btn) {
-        const panel = btn.closest('.output-panel');
-        if (!panel) return;
-        const iframe = panel.querySelector('iframe');
-        const outputText = panel.querySelector('.output-text, .output-error, .output-info');
-
-        let htmlContent = '';
-        if (iframe && iframe.srcdoc) {
-            htmlContent = iframe.srcdoc;
-        } else if (outputText) {
-            const txt = outputText.innerText || outputText.textContent;
-            htmlContent = `<!DOCTYPE html><html><head><title>Terminal Output</title><style>body{background:#090d16;color:#4ade80;font-family:'Fira Code',Consolas,monospace;padding:24px;white-space:pre-wrap;line-height:1.6;}</style></head><body>${escapeHtml(txt)}</body></html>`;
+                setTimeout(() => {
+                    button.innerHTML = originalHTML;
+                    button.classList.remove('copied');
+                }, 2000);
+            } catch (err) {
+                console.error('Failed to copy code:', err);
+            }
         }
 
-        if (htmlContent) {
-            const blob = new Blob([htmlContent], { type: 'text/html;charset=utf-8' });
-            const url = URL.createObjectURL(blob);
-            window.open(url, '_blank');
+        async function copyMessageText(button) {
+            const messageWrapper = button.closest('.message-content-wrapper');
+            const messageElem = messageWrapper.querySelector('.message');
+            if (!messageElem) return;
+
+            const textToCopy = messageElem.innerText || messageElem.textContent;
+
+            try {
+                await navigator.clipboard.writeText(textToCopy);
+                const originalHTML = button.innerHTML;
+                button.innerHTML = '<i class="fa-solid fa-check"></i> Copied';
+                button.classList.add('copied');
+
+                setTimeout(() => {
+                    button.innerHTML = originalHTML;
+                    button.classList.remove('copied');
+                }, 2000);
+            } catch (err) {
+                console.error('Failed to copy message:', err);
+            }
         }
-    }
 
-    async function copyOutputContent(btn) {
-        const panel = btn.closest('.output-panel');
-        if (!panel) return;
-        const iframe = panel.querySelector('iframe');
-        const outputText = panel.querySelector('.output-text, .output-error, .output-info');
-
-        let textToCopy = '';
-        if (iframe && iframe.srcdoc) {
-            textToCopy = iframe.srcdoc;
-        } else if (outputText) {
-            textToCopy = outputText.innerText || outputText.textContent;
-        }
-
-        if (!textToCopy) return;
-
-        try {
-            await navigator.clipboard.writeText(textToCopy);
-            const origHTML = btn.innerHTML;
-            btn.innerHTML = '<i class="fa-solid fa-check"></i> Copied!';
-            setTimeout(() => { btn.innerHTML = origHTML; }, 2000);
-        } catch (e) {
-            console.error('Failed to copy output:', e);
-        }
-    }
-
-    function clearOutputContent(btn) {
-        const panel = btn.closest('.output-panel');
-        if (!panel) return;
-        const content = panel.querySelector('.output-content');
-        if (content) {
-            content.innerHTML = '<pre class="output-info">Output cleared</pre>';
-        }
-    }
-
-    function closeOutputPanel(btn) {
-        const panel = btn.closest('.output-panel');
-        if (!panel) return;
-        if (panel.classList.contains('fullscreen')) {
-            document.body.style.overflow = '';
-        }
-        panel.remove();
-    }
-
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') {
-            const fsPanels = document.querySelectorAll('.output-panel.fullscreen');
-            fsPanels.forEach(panel => {
-                panel.classList.remove('fullscreen');
+        function toggleOutputFullscreen(btn) {
+            const panel = btn.closest('.output-panel');
+            if (!panel) return;
+            const isFullscreen = panel.classList.toggle('fullscreen');
+            if (isFullscreen) {
+                btn.innerHTML = '<i class="fa-solid fa-compress"></i> Exit Fullscreen';
+                btn.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            } else {
+                btn.innerHTML = '<i class="fa-solid fa-expand"></i> Fullscreen';
+                btn.classList.remove('active');
                 document.body.style.overflow = '';
-                const btn = panel.querySelector('button[onclick*="toggleOutputFullscreen"]');
-                if (btn) btn.innerHTML = '<i class="fa-solid fa-expand"></i> Fullscreen';
-            });
+            }
         }
-    });
 
-    function decodeHtml(html) {
-        const txt = document.createElement("textarea");
-        txt.innerHTML = html;
-        return txt.value;
-    }
+        function openOutputInNewTab(btn) {
+            const panel = btn.closest('.output-panel');
+            if (!panel) return;
+            const iframe = panel.querySelector('iframe');
+            const outputText = panel.querySelector('.output-text, .output-error, .output-info');
 
-    // INITIALIZE CHAT SESSIONS INSTANTLY ON LOAD/REFRESH
-    function startInit() {
-        if (!isInitialized) {
-            isInitialized = true;
-            initSessions();
+            let htmlContent = '';
+            if (iframe && iframe.srcdoc) {
+                htmlContent = iframe.srcdoc;
+            } else if (outputText) {
+                const txt = outputText.innerText || outputText.textContent;
+                htmlContent = `<!DOCTYPE html><html><head><title>Terminal Output</title><style>body{background:#090d16;color:#4ade80;font-family:'Fira Code',Consolas,monospace;padding:24px;white-space:pre-wrap;line-height:1.6;}</style></head><body>${escapeHtml(txt)}</body></html>`;
+            }
+
+            if (htmlContent) {
+                const blob = new Blob([htmlContent], { type: 'text/html;charset=utf-8' });
+                const url = URL.createObjectURL(blob);
+                window.open(url, '_blank');
+            }
         }
-    }
-    if (document.readyState === "complete" || document.readyState === "interactive") {
-        startInit();
-    } else {
-        document.addEventListener("DOMContentLoaded", startInit);
-    }
-    window.addEventListener("load", startInit);
+
+        async function copyOutputContent(btn) {
+            const panel = btn.closest('.output-panel');
+            if (!panel) return;
+            const iframe = panel.querySelector('iframe');
+            const outputText = panel.querySelector('.output-text, .output-error, .output-info');
+
+            let textToCopy = '';
+            if (iframe && iframe.srcdoc) {
+                textToCopy = iframe.srcdoc;
+            } else if (outputText) {
+                textToCopy = outputText.innerText || outputText.textContent;
+            }
+
+            if (!textToCopy) return;
+
+            try {
+                await navigator.clipboard.writeText(textToCopy);
+                const origHTML = btn.innerHTML;
+                btn.innerHTML = '<i class="fa-solid fa-check"></i> Copied!';
+                setTimeout(() => { btn.innerHTML = origHTML; }, 2000);
+            } catch (e) {
+                console.error('Failed to copy output:', e);
+            }
+        }
+
+        function clearOutputContent(btn) {
+            const panel = btn.closest('.output-panel');
+            if (!panel) return;
+            const content = panel.querySelector('.output-content');
+            if (content) {
+                content.innerHTML = '<pre class="output-info">Output cleared</pre>';
+            }
+        }
+
+        function closeOutputPanel(btn) {
+            const panel = btn.closest('.output-panel');
+            if (!panel) return;
+            if (panel.classList.contains('fullscreen')) {
+                document.body.style.overflow = '';
+            }
+            panel.remove();
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                const fsPanels = document.querySelectorAll('.output-panel.fullscreen');
+                fsPanels.forEach(panel => {
+                    panel.classList.remove('fullscreen');
+                    document.body.style.overflow = '';
+                    const btn = panel.querySelector('button[onclick*="toggleOutputFullscreen"]');
+                    if (btn) btn.innerHTML = '<i class="fa-solid fa-expand"></i> Fullscreen';
+                });
+            }
+        });
+
+        function decodeHtml(html) {
+            const txt = document.createElement("textarea");
+            txt.innerHTML = html;
+            return txt.value;
+        }
+
+        // INITIALIZE CHAT SESSIONS INSTANTLY ON LOAD/REFRESH
+        function startInit() {
+            if (!isInitialized) {
+                isInitialized = true;
+                initSessions();
+            }
+        }
+        if (document.readyState === "complete" || document.readyState === "interactive") {
+            startInit();
+        } else {
+            document.addEventListener("DOMContentLoaded", startInit);
+        }
+        window.addEventListener("load", startInit);
     </script>
+    <script src="shadcn.js"></script>
+
+    <!-- SHADCN COMMAND PALETTE (CTRL + K) -->
+    <div class="cn-command-modal" id="cnCommandPalette" onclick="if(event.target === this) Shadcn.closeCommandPalette()">
+        <div class="cn-command-box">
+            <div class="cn-command-header">
+                <i class="fa-solid fa-magnifying-glass" style="color: var(--muted-foreground);"></i>
+                <input class="cn-command-input" placeholder="Search commands, prompt templates, or navigate..." autofocus>
+                <span class="cn-command-kbd">ESC</span>
+            </div>
+            <div class="cn-command-list">
+                <div class="cn-command-item" onclick="Shadcn.closeCommandPalette(); createNewSession();">
+                    <span><i class="fa-solid fa-plus" style="margin-right:8px;"></i> Create New Chat Session</span>
+                    <span class="cn-command-kbd">↵</span>
+                </div>
+                <div class="cn-command-item" onclick="window.location.href='/components';">
+                    <span><i class="fa-solid fa-shapes" style="margin-right:8px;"></i> Open Shadcn UI Component Catalog</span>
+                    <span class="cn-command-kbd">↵</span>
+                </div>
+                <div class="cn-command-item" onclick="window.location.href='/dashboard';">
+                    <span><i class="fa-solid fa-chart-line" style="margin-right:8px;"></i> View Telemetry Dashboard</span>
+                    <span class="cn-command-kbd">↵</span>
+                </div>
+                <div class="cn-command-item" onclick="Shadcn.closeCommandPalette(); document.getElementById('userInput').value='Create a glassmorphic HTML card'; sendMessage();">
+                    <span><i class="fa-solid fa-wand-magic-sparkles" style="margin-right:8px;"></i> Prompt: Create Glassmorphic HTML Card</span>
+                    <span class="cn-command-kbd">↵</span>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
+
 </html>
