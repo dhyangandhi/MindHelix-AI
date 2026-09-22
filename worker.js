@@ -249,25 +249,54 @@ export default {
                     return jsonResponse({ reply: "Please provide a message" }, 400);
                 }
 
-                const aiResponse = await fetch("https://openrouter.ai/api/v1/chat/completions", {
-                    method: "POST",
-                    headers: {
-                        "Authorization": `Bearer ${openrouterKey}`,
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({
-                        model: openrouterModel || "google/gemma-4-26b-a4b-it:free",
-                        messages: [
-                            { role: "system", content: "You are MindHelix AI, an intelligent, helpful, and concise AI assistant." },
-                            { role: "user", content: message }
-                        ]
-                    })
-                });
+                const models = [
+                    openrouterModel,
+                    "liquid/lfm-2.5-2.6b:free",
+                    "nex-agi/nex-n2.5-pro:free",
+                    "z-ai/glm-5.2:free"
+                ].filter(Boolean);
 
-                const aiData = await aiResponse.json();
-                const reply = aiData?.choices?.[0]?.message?.content || "No response generated";
+                let reply = "";
+                let lastError = null;
 
-                return jsonResponse({ reply });
+                for (const m of models) {
+                    try {
+                        const aiResponse = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+                            method: "POST",
+                            headers: {
+                                "Authorization": `Bearer ${openrouterKey}`,
+                                "Content-Type": "application/json"
+                            },
+                            body: JSON.stringify({
+                                model: m,
+                                messages: [
+                                    { role: "system", content: "You are MindHelix AI, an intelligent, helpful, and concise AI assistant." },
+                                    { role: "user", content: message }
+                                ]
+                            })
+                        });
+
+                        const aiData = await aiResponse.json();
+                        if (aiData?.choices?.[0]?.message?.content) {
+                            reply = aiData.choices[0].message.content;
+                            break;
+                        }
+                        if (aiData?.error) {
+                            lastError = aiData.error.metadata?.raw || aiData.error.message;
+                        }
+                    } catch (e) {
+                        lastError = e.message;
+                    }
+                }
+
+                if (reply) {
+                    return jsonResponse({ reply });
+                }
+
+                return jsonResponse({
+                    reply: "All free models are currently busy. Please retry in a few seconds.",
+                    error: lastError
+                }, 429);
             } catch (err) {
                 return jsonResponse({
                     reply: "AI service temporarily unavailable",

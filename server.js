@@ -466,7 +466,7 @@ app.post("/chat", async (req, res) => {
         }
 
         const apiKey = process.env.OPENROUTER_API_KEY;
-        const model = process.env.OPENROUTER_MODEL || "openai/gpt-3.5-turbo";
+        const requestedModel = process.env.OPENROUTER_MODEL || "liquid/lfm-2.5-2.6b:free";
 
         if (!apiKey) {
             return res.status(400).json({
@@ -474,66 +474,56 @@ app.post("/chat", async (req, res) => {
             });
         }
 
-        const response = await fetch(
+        const models = [
+            requestedModel,
+            "liquid/lfm-2.5-2.6b:free",
+            "nex-agi/nex-n2.5-pro:free",
+            "z-ai/glm-5.2:free"
+        ].filter(Boolean);
 
-            "https://openrouter.ai/api/v1/chat/completions",
+        let reply = "";
+        let lastError = null;
 
-            {
+        for (const m of models) {
+            try {
+                const response = await fetch(
+                    "https://openrouter.ai/api/v1/chat/completions",
+                    {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Authorization": `Bearer ${apiKey}`,
+                            "HTTP-Referer": "http://localhost:3000",
+                            "X-Title": "MindHelix AI"
+                        },
+                        body: JSON.stringify({
+                            model: m,
+                            messages: [
+                                {
+                                    role: "user",
+                                    content: message
+                                }
+                            ]
+                        })
+                    }
+                );
 
-                method: "POST",
+                const data = await response.json();
+                console.log(`OPENROUTER RESPONSE (${m}):`, data);
 
-                headers: {
-
-                    "Content-Type":
-                        "application/json",
-
-                    "Authorization":
-                        `Bearer ${apiKey}`,
-
-                    "HTTP-Referer":
-                        "http://localhost:3000",
-
-                    "X-Title":
-                        "AI Chat App"
-                },
-
-                body: JSON.stringify({
-
-                    model: model,
-
-                    messages: [
-
-                        {
-                            role: "user",
-
-                            content: message
-                        }
-                    ]
-                })
+                if (data.choices && Array.isArray(data.choices) && data.choices.length > 0) {
+                    reply = data.choices[0].message?.content || "";
+                    if (reply) break;
+                } else if (data.error) {
+                    lastError = data.error.metadata?.raw || data.error.message;
+                }
+            } catch (err) {
+                lastError = err.message;
             }
-        );
+        }
 
-        const data =
-            await response.json();
-
-        console.log(
-            "OPENROUTER RESPONSE:",
-            data
-        );
-
-        let reply = "No response";
-
-        if (
-            data.choices &&
-            Array.isArray(data.choices) &&
-            data.choices.length > 0
-        ) {
-
-            reply =
-                data.choices[0].message?.content ||
-                "No response";
-        } else if (data.error) {
-            reply = `Error from OpenRouter: ${data.error.message || JSON.stringify(data.error)}`;
+        if (!reply) {
+            reply = `OpenRouter rate limited: ${lastError || "Please try again shortly."}`;
         }
 
         res.json({
@@ -837,4 +827,4 @@ if (require.main === module || !process.env.VERCEL) {
     });
 }
 
-module.exports = app;
+module.exports = app;
