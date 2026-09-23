@@ -60,13 +60,13 @@
                     <!-- TRIAL COUNTDOWN BADGE -->
                     <div id="trialCountdownBadge" class="trial-countdown-badge" style="display: none;">
                         <i class="fa-solid fa-clock"></i>
-                        <span>Free session: <strong id="countdownTimerText">90s remaining</strong></span>
+                        <span>Free session: <strong id="countdownTimerText">02:00 remaining</strong></span>
                     </div>
 
                     <!-- TRY AI ASSISTANT NOW BUTTON (for unauthenticated before starting) -->
                     <button id="startTrialBtn" class="trial-start-btn" onclick="startTrialNow()" style="display: none;"
-                        title="Start 90-Second Free Preview">
-                        <i class="fa-solid fa-robot"></i> Try AI Assistant Now
+                        title="Start 2-Minute Free Preview">
+                        <i class="fa-solid fa-robot"></i> Try AI Assistant (2 Min Free)
                     </button>
 
                     <button class="nav-btn clear-btn" onclick="clearChat()" title="Clear Current Chat">
@@ -79,6 +79,33 @@
                     </button>
                 </div>
             </nav>
+
+            <!-- TRIAL TIMELIMIT STATUS BAR -->
+            <div id="trialStatusBar" class="trial-status-bar" style="display: none;">
+                <div class="trial-status-container">
+                    <div class="trial-status-info">
+                        <span class="trial-status-dot"></span>
+                        <span class="trial-status-title">
+                            <i class="fa-solid fa-stopwatch"></i> Free Preview Limit:
+                        </span>
+                        <span class="trial-status-time" id="trialStatusTimeText">2m 00s remaining</span>
+                    </div>
+
+                    <div class="trial-progress-section">
+                        <div class="trial-progress-track" title="Time Limit Progress">
+                            <div id="trialProgressBar" class="trial-progress-fill" style="width: 100%;"></div>
+                        </div>
+                        <span class="trial-progress-percent" id="trialProgressPercent">100%</span>
+                    </div>
+
+                    <div class="trial-status-action">
+                        <button class="trial-status-login-btn" onclick="showLoginModal()" title="Log in to unlock unlimited messaging">
+                            <i class="fa-solid fa-bolt"></i> Log In to Unlock Unlimited
+                        </button>
+                    </div>
+                </div>
+                <div class="trial-status-glow-line" id="trialGlowLine"></div>
+            </div>
 
             <!-- CHAT AREA -->
             <div class="chat-container">
@@ -1720,6 +1747,7 @@
 
         function initTrialController() {
             const countdownBadge = document.getElementById("trialCountdownBadge");
+            const statusBar = document.getElementById("trialStatusBar");
             const startTrialBtn = document.getElementById("startTrialBtn");
             const authNavBtnText = document.getElementById("authNavBtnText");
             const authNavBtn = document.getElementById("authNavBtn");
@@ -1727,6 +1755,7 @@
             if (isUserLoggedIn()) {
                 // Authenticated user: full unrestricted access
                 if (countdownBadge) countdownBadge.style.display = "none";
+                if (statusBar) statusBar.style.display = "none";
                 if (startTrialBtn) startTrialBtn.style.display = "none";
                 if (authNavBtnText) authNavBtnText.textContent = "Sign Out";
                 if (authNavBtn) authNavBtn.title = "Sign Out";
@@ -1783,14 +1812,16 @@
             // Otherwise, unauthenticated user has not started trial yet
             if (startTrialBtn) startTrialBtn.style.display = "inline-flex";
             if (countdownBadge) countdownBadge.style.display = "none";
+            if (statusBar) statusBar.style.display = "none";
         }
 
         function startTrialNow() {
             if (isUserLoggedIn()) return;
+            const TOTAL_TRIAL_MS = 120000; // 2 minutes preview limit
             let deadline = parseInt(localStorage.getItem("ai_trial_deadline") || "0", 10);
             if (!deadline || Date.now() >= deadline) {
                 const now = Date.now();
-                deadline = now + 90000;
+                deadline = now + TOTAL_TRIAL_MS;
                 localStorage.setItem("ai_trial_start_time", now.toString());
                 localStorage.setItem("ai_trial_deadline", deadline.toString());
                 localStorage.removeItem("ai_trial_expired");
@@ -1805,26 +1836,60 @@
 
             const badge = document.getElementById("trialCountdownBadge");
             const text = document.getElementById("countdownTimerText");
+            const statusBar = document.getElementById("trialStatusBar");
+            const statusTime = document.getElementById("trialStatusTimeText");
+            const progressBar = document.getElementById("trialProgressBar");
+            const progressPercent = document.getElementById("trialProgressPercent");
             const startTrialBtn = document.getElementById("startTrialBtn");
+
             if (startTrialBtn) startTrialBtn.style.display = "none";
             if (badge) badge.style.display = "inline-flex";
+            if (statusBar) statusBar.style.display = "block";
 
             function updateTick() {
-                const remainingMs = deadline - Date.now();
+                const now = Date.now();
+                const remainingMs = deadline - now;
                 const remainingSec = Math.max(0, Math.ceil(remainingMs / 1000));
 
+                let startTime = parseInt(localStorage.getItem("ai_trial_start_time") || "0", 10);
+                if (!startTime || startTime >= deadline) {
+                    startTime = deadline - 120000;
+                }
+                const totalDuration = Math.max(1000, deadline - startTime);
+                const pct = Math.max(0, Math.min(100, (remainingMs / totalDuration) * 100));
+
+                // Minutes and seconds formatting
+                const mins = Math.floor(remainingSec / 60);
+                const secs = remainingSec % 60;
+                const padSecs = secs < 10 ? '0' + secs : secs;
+                const padMins = mins < 10 ? '0' + mins : mins;
+
+                const timeMmSs = `${padMins}:${padSecs}`;
+                const timeHuman = mins > 0 ? `${mins}m ${padSecs}s remaining` : `${secs}s remaining`;
+
                 if (text) {
-                    text.textContent = remainingSec + "s remaining";
+                    text.textContent = timeMmSs + " remaining";
+                }
+                if (statusTime) {
+                    statusTime.textContent = timeHuman;
+                }
+                if (progressBar) {
+                    progressBar.style.width = pct.toFixed(1) + "%";
+                }
+                if (progressPercent) {
+                    progressPercent.textContent = Math.round(pct) + "%";
                 }
 
-                if (badge) {
-                    if (remainingSec <= 10) {
-                        badge.className = "trial-countdown-badge danger";
-                    } else if (remainingSec <= 30) {
-                        badge.className = "trial-countdown-badge warning";
-                    } else {
-                        badge.className = "trial-countdown-badge";
-                    }
+                // Dynamic severity styling
+                if (remainingSec <= 10) {
+                    if (badge) badge.className = "trial-countdown-badge danger";
+                    if (statusBar) statusBar.className = "trial-status-bar danger";
+                } else if (remainingSec <= 30) {
+                    if (badge) badge.className = "trial-countdown-badge warning";
+                    if (statusBar) statusBar.className = "trial-status-bar warning";
+                } else {
+                    if (badge) badge.className = "trial-countdown-badge";
+                    if (statusBar) statusBar.className = "trial-status-bar";
                 }
 
                 if (remainingMs <= 0) {
@@ -1869,7 +1934,25 @@
             if (badge) {
                 badge.style.display = "inline-flex";
                 badge.className = "trial-countdown-badge expired";
-                badge.innerHTML = '<i class="fa-solid fa-lock" style="color: #f87171;"></i> <span>Free session: <strong>0s remaining</strong></span>';
+                badge.innerHTML = '<i class="fa-solid fa-lock" style="color: #f87171;"></i> <span>Free session: <strong>00:00 remaining</strong></span>';
+            }
+
+            const statusBar = document.getElementById("trialStatusBar");
+            const statusTime = document.getElementById("trialStatusTimeText");
+            const progressBar = document.getElementById("trialProgressBar");
+            const progressPercent = document.getElementById("trialProgressPercent");
+            if (statusBar) {
+                statusBar.style.display = "block";
+                statusBar.className = "trial-status-bar expired";
+            }
+            if (statusTime) {
+                statusTime.textContent = "00:00 (Expired)";
+            }
+            if (progressBar) {
+                progressBar.style.width = "0%";
+            }
+            if (progressPercent) {
+                progressPercent.textContent = "0%";
             }
 
             const startTrialBtn = document.getElementById("startTrialBtn");
@@ -1891,7 +1974,7 @@
         function closeLoginModal() {
             const modal = document.getElementById("loginModal");
             if (modal) {
-                modal.style.display = "none";
+                modal.style.display = "none"
                 modal.classList.remove("active");
             }
         }

@@ -557,7 +557,7 @@
             if (!deadline) {
                 const now = Date.now();
                 localStorage.setItem("ai_trial_start_time", now.toString());
-                localStorage.setItem("ai_trial_deadline", (now + 90000).toString());
+                localStorage.setItem("ai_trial_deadline", (now + 120000).toString());
             }
 
             if (e) e.preventDefault();

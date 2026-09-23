@@ -1514,3 +1514,272 @@ body {
     transform: translateY(-1px);
     box-shadow: 0 6px 20px rgba(99, 102, 241, 0.45);
 }
+
+/* =========================================================
+   TRIAL TIMELIMIT STATUS BAR STYLES
+   ========================================================= */
+.trial-status-bar {
+    width: 100%;
+    background: rgba(15, 23, 42, 0.95);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid rgba(99, 102, 241, 0.25);
+    padding: 8px 24px;
+    z-index: 90;
+    position: relative;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
+    transition: all 0.3s ease;
+    animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.trial-status-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.trial-status-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    color: #cbd5e1;
+    white-space: nowrap;
+}
+
+.trial-status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: #6366f1;
+    box-shadow: 0 0 10px #6366f1;
+    animation: statusPulse 2s infinite;
+}
+
+@keyframes statusPulse {
+    0%, 100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.5;
+        transform: scale(1.3);
+    }
+}
+
+.trial-status-title {
+    font-weight: 600;
+    color: #94a3b8;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.trial-status-title i {
+    color: #818cf8;
+}
+
+.trial-status-time {
+    font-weight: 700;
+    color: #ffffff;
+    background: rgba(99, 102, 241, 0.15);
+    padding: 3px 10px;
+    border-radius: 6px;
+    border: 1px solid rgba(99, 102, 241, 0.35);
+    letter-spacing: 0.3px;
+    font-variant-numeric: tabular-nums;
+}
+
+.trial-progress-section {
+    flex: 1;
+    min-width: 180px;
+    max-width: 480px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.trial-progress-track {
+    flex: 1;
+    height: 8px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 999px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.trial-progress-fill {
+    height: 100%;
+    width: 100%;
+    background: linear-gradient(90deg, #6366f1 0%, #a855f7 50%, #06b6d4 100%);
+    border-radius: 999px;
+    transition: width 0.25s linear, background 0.3s ease;
+    box-shadow: 0 0 12px rgba(99, 102, 241, 0.6);
+}
+
+.trial-progress-percent {
+    font-size: 12px;
+    font-weight: 700;
+    color: #94a3b8;
+    min-width: 38px;
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+}
+
+.trial-status-action {
+    display: flex;
+    align-items: center;
+}
+
+.trial-status-login-btn {
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.2) 0%, rgba(168, 85, 247, 0.2) 100%);
+    border: 1px solid rgba(99, 102, 241, 0.5);
+    color: #e2e8f0;
+    padding: 6px 14px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.trial-status-login-btn:hover {
+    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+    color: #ffffff;
+    border-color: #6366f1;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 14px rgba(99, 102, 241, 0.4);
+}
+
+.trial-status-glow-line {
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    height: 2px;
+    width: 100%;
+    background: linear-gradient(90deg, transparent, rgba(99, 102, 241, 0.8), rgba(168, 85, 247, 0.8), transparent);
+    transition: all 0.3s ease;
+}
+
+/* Status Bar Dynamic States */
+.trial-status-bar.warning {
+    border-bottom-color: rgba(245, 158, 11, 0.4);
+}
+
+.trial-status-bar.warning .trial-status-dot {
+    background-color: #f59e0b;
+    box-shadow: 0 0 10px #f59e0b;
+}
+
+.trial-status-bar.warning .trial-status-time {
+    background: rgba(245, 158, 11, 0.15);
+    border-color: rgba(245, 158, 11, 0.4);
+    color: #fde68a;
+}
+
+.trial-status-bar.warning .trial-progress-fill {
+    background: linear-gradient(90deg, #f59e0b 0%, #f97316 100%);
+    box-shadow: 0 0 12px rgba(245, 158, 11, 0.6);
+}
+
+.trial-status-bar.warning .trial-status-glow-line {
+    background: linear-gradient(90deg, transparent, rgba(245, 158, 11, 0.8), transparent);
+}
+
+.trial-status-bar.danger {
+    border-bottom-color: rgba(239, 68, 68, 0.5);
+    animation: dangerBarPulse 1s infinite alternate;
+}
+
+@keyframes dangerBarPulse {
+    0% { background: rgba(15, 23, 42, 0.95); }
+    100% { background: rgba(30, 15, 20, 0.98); }
+}
+
+.trial-status-bar.danger .trial-status-dot {
+    background-color: #ef4444;
+    box-shadow: 0 0 12px #ef4444;
+    animation: statusPulse 0.6s infinite;
+}
+
+.trial-status-bar.danger .trial-status-time {
+    background: rgba(239, 68, 68, 0.2);
+    border-color: rgba(239, 68, 68, 0.5);
+    color: #fca5a5;
+    animation: dangerTimePulse 0.8s infinite alternate;
+}
+
+@keyframes dangerTimePulse {
+    0% { transform: scale(1); }
+    100% { transform: scale(1.05); }
+}
+
+.trial-status-bar.danger .trial-progress-fill {
+    background: linear-gradient(90deg, #ef4444 0%, #dc2626 100%);
+    box-shadow: 0 0 14px rgba(239, 68, 68, 0.8);
+}
+
+.trial-status-bar.danger .trial-status-glow-line {
+    background: linear-gradient(90deg, transparent, rgba(239, 68, 68, 0.9), transparent);
+}
+
+.trial-status-bar.expired {
+    background: rgba(26, 16, 20, 0.96);
+    border-bottom-color: rgba(239, 68, 68, 0.3);
+}
+
+.trial-status-bar.expired .trial-status-dot {
+    background-color: #6b7280;
+    box-shadow: none;
+    animation: none;
+}
+
+.trial-status-bar.expired .trial-status-time {
+    background: rgba(239, 68, 68, 0.15);
+    border-color: rgba(239, 68, 68, 0.3);
+    color: #f87171;
+}
+
+.trial-status-bar.expired .trial-progress-fill {
+    width: 0% !important;
+    background: #6b7280;
+    box-shadow: none;
+}
+
+@media (max-width: 768px) {
+    .trial-status-bar {
+        padding: 8px 14px;
+    }
+    .trial-status-container {
+        gap: 10px;
+    }
+    .trial-progress-section {
+        min-width: 100%;
+        order: 3;
+    }
+    .trial-status-action {
+        margin-left: auto;
+    }
+}
+
