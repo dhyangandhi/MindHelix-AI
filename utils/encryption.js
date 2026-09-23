@@ -2,9 +2,11 @@ const crypto = require("crypto");
 
 const algorithm = "aes-256-cbc";
 
+const encryptionKey = process.env.ENCRYPTION_KEY || "html-pages-default-32-byte-secret-key-fallback!!";
+
 const secretKey = crypto
   .createHash("sha256")
-  .update(process.env.ENCRYPTION_KEY)
+  .update(String(encryptionKey))
   .digest("base64")
   .substring(0, 32);
 
@@ -14,37 +16,32 @@ const secretKey = crypto
 // ======================
 
 function encrypt(text) {
-
-  const iv =
-    crypto.randomBytes(16);
-
-  const cipher =
-    crypto.createCipheriv(
-
+  if (!text) return "";
+  try {
+    const iv = crypto.randomBytes(16);
+    const cipher = crypto.createCipheriv(
       algorithm,
       secretKey,
       iv
     );
 
-  let encrypted =
-    cipher.update(
-
-      text,
+    let encrypted = cipher.update(
+      String(text),
       "utf8",
       "hex"
     );
 
-  encrypted +=
-    cipher.final("hex");
+    encrypted += cipher.final("hex");
 
-  return (
-
-    iv.toString("hex") +
-
-    ":" +
-
-    encrypted
-  );
+    return (
+      iv.toString("hex") +
+      ":" +
+      encrypted
+    );
+  } catch (err) {
+    console.error("Encryption error:", err.message);
+    return "";
+  }
 }
 
 
@@ -53,40 +50,35 @@ function encrypt(text) {
 // ======================
 
 function decrypt(hash) {
-
-  const parts =
-    hash.split(":");
-
-  const iv =
-    Buffer.from(
-
+  if (!hash || typeof hash !== "string" || !hash.includes(":")) return "";
+  try {
+    const parts = hash.split(":");
+    const iv = Buffer.from(
       parts.shift(),
       "hex"
     );
 
-  const encryptedText =
-    parts.join(":");
+    const encryptedText = parts.join(":");
 
-  const decipher =
-    crypto.createDecipheriv(
-
+    const decipher = crypto.createDecipheriv(
       algorithm,
       secretKey,
       iv
     );
 
-  let decrypted =
-    decipher.update(
-
+    let decrypted = decipher.update(
       encryptedText,
       "hex",
       "utf8"
     );
 
-  decrypted +=
-    decipher.final("utf8");
+    decrypted += decipher.final("utf8");
 
-  return decrypted;
+    return decrypted;
+  } catch (err) {
+    console.error("Decryption error:", err.message);
+    return "";
+  }
 }
 
 
@@ -95,16 +87,16 @@ function decrypt(hash) {
 // ======================
 
 function hashEmail(email) {
-
-  return crypto
-
-    .createHash("sha256")
-
-    .update(
-      email.toLowerCase()
-    )
-
-    .digest("hex");
+  if (!email || typeof email !== "string") return "";
+  try {
+    return crypto
+      .createHash("sha256")
+      .update(email.toLowerCase())
+      .digest("hex");
+  } catch (err) {
+    console.error("Hash email error:", err.message);
+    return "";
+  }
 }
 
 

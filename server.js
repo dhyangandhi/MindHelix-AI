@@ -3,7 +3,12 @@ require("dotenv").config();
 const express = require("express");
 const path = require("path");
 const cors = require("cors");
-const bcrypt = require("bcrypt");
+let bcrypt;
+try {
+    bcrypt = require("bcryptjs");
+} catch (e) {
+    bcrypt = require("bcrypt");
+}
 const { Pool } = require("pg");
 const { v4: uuidv4 } = require("uuid");
 const nodemailer = require("nodemailer");
@@ -221,66 +226,58 @@ const transporter =
 // DATABASE CONNECTION
 // ======================
 
-const pool = new Pool({
+const dbUrl = (process.env.DATABASE_URL || "").trim();
 
-    connectionString:
-        process.env.DATABASE_URL,
+const pool = dbUrl
+    ? new Pool({
+        connectionString: dbUrl,
+        ssl: {
+            rejectUnauthorized: false,
+        },
+        connectionTimeoutMillis: 10000,
+    })
+    : null;
 
-    ssl: {
-        rejectUnauthorized: false,
-    },
-
-    connectionTimeoutMillis:
-        10000,
-});
+function checkDbConfigured(res) {
+    if (!pool) {
+        res.status(503).json({
+            success: false,
+            error: "Database is not configured. Please set DATABASE_URL in Vercel Environment Variables."
+        });
+        return false;
+    }
+    return true;
+}
 
 
 // ======================
 // CREATE TABLE
 // ======================
 
-async function createTable() {
+let tableChecked = false;
 
+async function ensureTable() {
+    if (!pool || tableChecked) return;
     try {
-
         await pool.query(`
-
       CREATE TABLE IF NOT EXISTS users2 (
-
         id SERIAL PRIMARY KEY,
-
         fullname TEXT,
-
         username TEXT,
-
         email_hash TEXT UNIQUE,
-
         email_encrypted TEXT,
-
         phone TEXT,
-
         password TEXT,
-
         reset_token TEXT,
-
         reset_token_expiry BIGINT
       )
     `);
-
-        console.log(
-            "users2 table created"
-        );
-
+        tableChecked = true;
+        console.log("users2 table ready");
     } catch (error) {
-
-        console.log(
-            "TABLE ERROR:",
-            error
-        );
+        console.log("TABLE ERROR:", error.message || error);
     }
 }
-
-createTable();
 
 
 // ======================
@@ -289,6 +286,8 @@ createTable();
 
 app.post(["/register", "/api/register"], async (req, res) => {
     try {
+        if (!checkDbConfigured(res)) return;
+        await ensureTable();
         const {
             fullname,
             username,
@@ -373,6 +372,7 @@ app.post(["/register", "/api/register"], async (req, res) => {
 
 app.post(["/login", "/api/login"], async (req, res) => {
     try {
+        if (!checkDbConfigured(res)) return;
         const { email, password } = req.body || {};
 
         if (!email || !password || typeof email !== "string" || typeof password !== "string") {
@@ -632,6 +632,7 @@ app.post("/api/generate-image", async (req, res) => {
 
 app.post("/forgot-password", async (req, res) => {
     try {
+        if (!checkDbConfigured(res)) return;
         const { email } = req.body || {};
 
         if (!email || typeof email !== "string") {
@@ -705,6 +706,7 @@ app.post("/forgot-password", async (req, res) => {
 
 app.post("/reset-password", async (req, res) => {
     try {
+        if (!checkDbConfigured(res)) return;
         const { token, password } = req.body || {};
 
         if (!token || !password) {
@@ -767,6 +769,7 @@ app.post("/reset-password", async (req, res) => {
 
 app.get("/api/neon-masking", async (req, res) => {
     try {
+        if (!checkDbConfigured(res)) return;
         const result = await pool.query("SELECT id, fullname, username, email_encrypted, phone FROM users2 LIMIT 10");
         const maskedUsers = result.rows.map(user => {
             let rawEmail = "";
@@ -821,7 +824,7 @@ app.get("/test", (req, res) => {
 
 const PORT = process.env.PORT || 3000;
 
-if (require.main === module || !process.env.VERCEL) {
+if (require.main === module) {
     app.listen(PORT, "0.0.0.0", () => {
         console.log(`Server running on port ${PORT}`);
     });
