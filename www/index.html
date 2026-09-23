@@ -98,8 +98,8 @@
                     <i class="bx bxs-user-plus"></i> Create Free Account
                 </a>
                 <span class="cta-or">OR</span>
-                <a href="ai.html" class="btn btn-glow btn-lg">
-                    <i class="fa-solid fa-robot"></i> Try AI Assistant
+                <a href="ai.html" id="tryAiAssistantBtn" class="btn btn-glow btn-lg" onclick="handleTryAiClick(event)">
+                    <i class="fa-solid fa-robot"></i> Try AI Assistant Now
                 </a>
             </div>
 
@@ -527,6 +527,74 @@
                 }
             });
         });
+
+        // Auth & Trial Handler for Try AI Assistant Now
+        function isUserLoggedIn() {
+            try {
+                const u = localStorage.getItem("user");
+                return !!u && u !== "null" && u !== "undefined";
+            } catch(e) {
+                return false;
+            }
+        }
+
+        function handleTryAiClick(e) {
+            if (isUserLoggedIn()) {
+                window.location.href = "ai.html";
+                return;
+            }
+
+            const isExpired = localStorage.getItem("ai_trial_expired") === "true";
+            const deadline = parseInt(localStorage.getItem("ai_trial_deadline") || "0", 10);
+
+            if (isExpired || (deadline > 0 && Date.now() >= deadline)) {
+                if (e) e.preventDefault();
+                localStorage.setItem("ai_trial_expired", "true");
+                showHomeLoginModal();
+                return;
+            }
+
+            if (!deadline) {
+                const now = Date.now();
+                localStorage.setItem("ai_trial_start_time", now.toString());
+                localStorage.setItem("ai_trial_deadline", (now + 90000).toString());
+            }
+
+            if (e) e.preventDefault();
+            window.location.href = "ai.html?trial=active";
+        }
+
+        function showHomeLoginModal() {
+            const modal = document.getElementById("homeLoginModal");
+            if (modal) modal.style.display = "flex";
+        }
+
+        function closeHomeLoginModal() {
+            const modal = document.getElementById("homeLoginModal");
+            if (modal) modal.style.display = "none";
+        }
     </script>
+
+    <!-- LOGIN POPUP MODAL -->
+    <div id="homeLoginModal" class="login-popup-overlay" style="display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.78); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); z-index: 1000; align-items: center; justify-content: center; padding: 20px;">
+        <div class="login-popup-card" style="background: rgba(15, 23, 42, 0.95); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 20px; width: 100%; max-width: 440px; padding: 32px 28px; box-shadow: 0 25px 60px rgba(0,0,0,0.6); text-align: center; position: relative;">
+            <button onclick="closeHomeLoginModal()" style="position: absolute; top: 16px; right: 16px; background: rgba(255,255,255,0.08); border: none; color: #94a3b8; width: 32px; height: 32px; border-radius: 50%; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s;">✕</button>
+            <div style="width: 60px; height: 60px; border-radius: 16px; background: rgba(239, 68, 68, 0.12); border: 1px solid rgba(239, 68, 68, 0.3); display: flex; align-items: center; justify-content: center; margin: 0 auto 18px;">
+                <i class="fa-solid fa-lock" style="font-size: 26px; color: #f87171;"></i>
+            </div>
+            <h3 style="font-size: 20px; font-weight: 700; color: #fff; margin-bottom: 8px;">Session Locked</h3>
+            <p style="font-size: 15px; color: #fca5a5; font-weight: 600; margin-bottom: 22px; line-height: 1.5; background: rgba(239,68,68,0.1); padding: 10px 14px; border-radius: 10px; border: 1px solid rgba(239,68,68,0.25);">
+                You need to log in to continue the session.
+            </p>
+            <div style="display: flex; flex-direction: column; gap: 10px;">
+                <a href="login.html?reason=session_expired" class="btn btn-primary btn-lg" style="width: 100%; justify-content: center;">
+                    <i class="bx bxs-log-in-circle"></i> Login
+                </a>
+                <a href="register.html" class="btn btn-glass" style="width: 100%; justify-content: center;">
+                    <i class="bx bxs-user-plus"></i> Create Free Account
+                </a>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

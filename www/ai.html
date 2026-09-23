@@ -1461,6 +1461,75 @@
         .lightbox-close:hover {
             background: rgba(239, 68, 68, 0.4);
         }
+
+        /* TRIAL SESSION STYLING */
+        .trial-countdown-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(99, 102, 241, 0.15);
+            border: 1px solid rgba(99, 102, 241, 0.4);
+            color: #c7d2fe;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            box-shadow: 0 2px 10px rgba(99, 102, 241, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .trial-countdown-badge.warning {
+            background: rgba(245, 158, 11, 0.18);
+            border-color: rgba(245, 158, 11, 0.5);
+            color: #fde68a;
+            box-shadow: 0 2px 10px rgba(245, 158, 11, 0.2);
+        }
+
+        .trial-countdown-badge.danger {
+            background: rgba(239, 68, 68, 0.2);
+            border-color: rgba(239, 68, 68, 0.6);
+            color: #fca5a5;
+            animation: trialPulse 1s infinite alternate;
+        }
+
+        .trial-countdown-badge.expired {
+            background: rgba(239, 68, 68, 0.15);
+            border-color: rgba(239, 68, 68, 0.4);
+            color: #fca5a5;
+            animation: none;
+        }
+
+        @keyframes trialPulse {
+            0% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4);
+            }
+
+            100% {
+                transform: scale(1.03);
+                box-shadow: 0 0 12px 2px rgba(239, 68, 68, 0.4);
+            }
+        }
+
+        .trial-start-btn {
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%) !important;
+            color: white !important;
+            border: none !important;
+            font-weight: 600 !important;
+            padding: 7px 16px !important;
+            border-radius: 8px !important;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+            transition: all 0.2s ease;
+        }
+
+        .trial-start-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.45);
+        }
     </style>
 </head>
 
@@ -1506,13 +1575,25 @@
                 </div>
 
                 <div class="nav-actions">
+                    <!-- TRIAL COUNTDOWN BADGE -->
+                    <div id="trialCountdownBadge" class="trial-countdown-badge" style="display: none;">
+                        <i class="fa-solid fa-clock"></i>
+                        <span>Free session: <strong id="countdownTimerText">90s remaining</strong></span>
+                    </div>
+
+                    <!-- TRY AI ASSISTANT NOW BUTTON (for unauthenticated before starting) -->
+                    <button id="startTrialBtn" class="trial-start-btn" onclick="startTrialNow()" style="display: none;"
+                        title="Start 90-Second Free Preview">
+                        <i class="fa-solid fa-robot"></i> Try AI Assistant Now
+                    </button>
+
                     <button class="nav-btn clear-btn" onclick="clearChat()" title="Clear Current Chat">
                         <i class="fa-solid fa-trash-can"></i>
                         Clear Chat
                     </button>
-                    <button class="nav-btn logout-btn" onclick="logout()" title="Sign Out">
+                    <button class="nav-btn logout-btn" id="authNavBtn" onclick="handleAuthNavClick()" title="Sign Out">
                         <i class="fa-solid fa-right-from-bracket"></i>
-                        Sign Out
+                        <span id="authNavBtnText">Sign Out</span>
                     </button>
                 </div>
             </nav>
@@ -1615,6 +1696,38 @@
         </div>
     </div>
 
+    <!-- LOGIN POPUP MODAL -->
+    <div class="cn-dialog-overlay" id="loginModal" style="display: none; z-index: 1000;">
+        <div class="cn-dialog-content"
+            style="max-width: 440px; text-align: center; border-radius: 20px; padding: 32px 28px; background: rgba(15, 23, 42, 0.96); border: 1px solid rgba(255, 255, 255, 0.12); box-shadow: 0 25px 60px rgba(0,0,0,0.7); position: relative;">
+            <div
+                style="width: 60px; height: 60px; border-radius: 16px; background: rgba(239, 68, 68, 0.12); border: 1px solid rgba(239, 68, 68, 0.3); display: flex; align-items: center; justify-content: center; margin: 0 auto 16px;">
+                <i class="fa-solid fa-lock" style="font-size: 26px; color: #f87171;"></i>
+            </div>
+            <div class="cn-dialog-header" style="text-align: center; margin-bottom: 8px;">
+                <h3 style="font-size: 22px; font-weight: 700; color: #fff;">Session Locked</h3>
+            </div>
+            <div
+                style="background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.25); border-radius: 12px; padding: 14px 16px; margin: 12px 0 22px;">
+                <p style="font-size: 15px; color: #fca5a5; font-weight: 600; margin: 0; line-height: 1.5;">
+                    You need to log in to continue the session.
+                </p>
+            </div>
+            <div class="cn-dialog-footer"
+                style="display: flex; flex-direction: column; gap: 10px; width: 100%; margin-top: 0;">
+                <button class="cn-btn cn-btn-primary btn-lg" onclick="redirectToLogin()"
+                    style="width: 100%; justify-content: center; padding: 12px; font-size: 15px; font-weight: 600; cursor: pointer;">
+                    <i class="fa-solid fa-right-to-bracket" style="font-size: 16px; margin-right: 8px;"></i> Login
+                </button>
+                <a href="register.html" class="cn-btn cn-btn-outline"
+                    style="width: 100%; justify-content: center; padding: 10px; font-size: 14px; text-decoration: none;">
+                    <i class="fa-solid fa-user-plus" style="font-size: 14px; margin-right: 8px;"></i> Create Free
+                    Account
+                </a>
+            </div>
+        </div>
+    </div>
+
     <script>
         const langMap = {
             'js': 'javascript',
@@ -1711,6 +1824,7 @@
         }
 
         function createNewSession(autoFocus = true) {
+            if (checkTrialExpiredOrBlock()) return;
             stopGeneration();
             saveCurrentSession();
             activeSessionId = null;
@@ -2038,6 +2152,7 @@
         }
 
         function usePrompt(text) {
+            if (checkTrialExpiredOrBlock()) return;
             const input = document.getElementById("userInput");
             input.value = text;
             input.focus();
@@ -2045,6 +2160,7 @@
 
         function handleKeyPress(e) {
             if (e.key === "Enter") {
+                if (checkTrialExpiredOrBlock()) return;
                 sendMessage();
             }
         }
@@ -2052,6 +2168,7 @@
         let isImageMode = false;
 
         function toggleImageMode() {
+            if (checkTrialExpiredOrBlock()) return;
             isImageMode = !isImageMode;
             const btn = document.getElementById("modeToggleBtn");
             const bar = document.getElementById("imageOptionsBar");
@@ -2074,6 +2191,7 @@
         }
 
         function useImagePrompt(promptText) {
+            if (checkTrialExpiredOrBlock()) return;
             if (!isImageMode) {
                 toggleImageMode();
             }
@@ -2085,6 +2203,7 @@
         }
 
         async function generateImageFlow(prompt) {
+            if (checkTrialExpiredOrBlock()) return;
             const chatBox = document.getElementById("chatBox");
             hideEmptyState();
 
@@ -2337,6 +2456,8 @@
         }
 
         async function sendMessage() {
+            if (checkTrialExpiredOrBlock()) return;
+
             if (currentAbortController) {
                 stopGeneration();
                 return;
@@ -2677,6 +2798,7 @@
 
         function logout() {
             localStorage.removeItem("user");
+            localStorage.setItem("ai_trial_expired", "true");
             window.location.href = "/";
         }
 
@@ -3086,11 +3208,241 @@
             return txt.value;
         }
 
+        // ==========================================
+        // TRIAL SESSION MANAGEMENT SYSTEM
+        // ==========================================
+        let trialInterval = null;
+
+        function isUserLoggedIn() {
+            try {
+                const u = localStorage.getItem("user");
+                return !!u && u !== "null" && u !== "undefined";
+            } catch (e) {
+                return false;
+            }
+        }
+
+        function checkTrialExpiredOrBlock() {
+            if (isUserLoggedIn()) return false;
+            const isExpired = localStorage.getItem("ai_trial_expired") === "true";
+            const deadline = parseInt(localStorage.getItem("ai_trial_deadline") || "0", 10);
+            if (isExpired || (deadline > 0 && Date.now() >= deadline)) {
+                lockAiAssistantSession(true);
+                return true;
+            }
+            if (!deadline) {
+                startTrialNow();
+            }
+            return false;
+        }
+
+        function initTrialController() {
+            const countdownBadge = document.getElementById("trialCountdownBadge");
+            const startTrialBtn = document.getElementById("startTrialBtn");
+            const authNavBtnText = document.getElementById("authNavBtnText");
+            const authNavBtn = document.getElementById("authNavBtn");
+
+            if (isUserLoggedIn()) {
+                // Authenticated user: full unrestricted access
+                if (countdownBadge) countdownBadge.style.display = "none";
+                if (startTrialBtn) startTrialBtn.style.display = "none";
+                if (authNavBtnText) authNavBtnText.textContent = "Sign Out";
+                if (authNavBtn) authNavBtn.title = "Sign Out";
+
+                // Clear any trial restriction flags
+                localStorage.removeItem("ai_trial_expired");
+                localStorage.removeItem("ai_trial_deadline");
+                localStorage.removeItem("ai_trial_start_time");
+
+                // Ensure chat controls are enabled
+                const input = document.getElementById("userInput");
+                const sendBtn = document.getElementById("sendBtn");
+                if (input) {
+                    input.disabled = false;
+                    input.placeholder = isImageMode ? "Describe the AI image you want to generate..." : "Type your message here...";
+                }
+                if (sendBtn) {
+                    sendBtn.disabled = false;
+                    sendBtn.style.opacity = "1";
+                    sendBtn.style.cursor = "pointer";
+                    sendBtn.title = "Send Message";
+                }
+                const modeBtn = document.getElementById("modeToggleBtn");
+                if (modeBtn) modeBtn.style.pointerEvents = "auto";
+
+                closeLoginModal();
+                return;
+            }
+
+            // Unauthenticated user setup
+            if (authNavBtnText) authNavBtnText.textContent = "Log In";
+            if (authNavBtn) authNavBtn.title = "Log In to Account";
+
+            const isExpired = localStorage.getItem("ai_trial_expired") === "true";
+            const deadline = parseInt(localStorage.getItem("ai_trial_deadline") || "0", 10);
+
+            if (isExpired || (deadline > 0 && Date.now() >= deadline)) {
+                lockAiAssistantSession(true);
+                return;
+            }
+
+            if (deadline > 0 && Date.now() < deadline) {
+                startCountdown(deadline);
+                return;
+            }
+
+            // Check if user came from clicking "Try AI Assistant Now" (?trial=active or ?trial=start)
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get("trial") === "active" || urlParams.get("trial") === "start") {
+                startTrialNow();
+                return;
+            }
+
+            // Otherwise, unauthenticated user has not started trial yet
+            if (startTrialBtn) startTrialBtn.style.display = "inline-flex";
+            if (countdownBadge) countdownBadge.style.display = "none";
+        }
+
+        function startTrialNow() {
+            if (isUserLoggedIn()) return;
+            let deadline = parseInt(localStorage.getItem("ai_trial_deadline") || "0", 10);
+            if (!deadline || Date.now() >= deadline) {
+                const now = Date.now();
+                deadline = now + 90000;
+                localStorage.setItem("ai_trial_start_time", now.toString());
+                localStorage.setItem("ai_trial_deadline", deadline.toString());
+                localStorage.removeItem("ai_trial_expired");
+            }
+            const startTrialBtn = document.getElementById("startTrialBtn");
+            if (startTrialBtn) startTrialBtn.style.display = "none";
+            startCountdown(deadline);
+        }
+
+        function startCountdown(deadline) {
+            if (trialInterval) clearInterval(trialInterval);
+
+            const badge = document.getElementById("trialCountdownBadge");
+            const text = document.getElementById("countdownTimerText");
+            const startTrialBtn = document.getElementById("startTrialBtn");
+            if (startTrialBtn) startTrialBtn.style.display = "none";
+            if (badge) badge.style.display = "inline-flex";
+
+            function updateTick() {
+                const remainingMs = deadline - Date.now();
+                const remainingSec = Math.max(0, Math.ceil(remainingMs / 1000));
+
+                if (text) {
+                    text.textContent = remainingSec + "s remaining";
+                }
+
+                if (badge) {
+                    if (remainingSec <= 10) {
+                        badge.className = "trial-countdown-badge danger";
+                    } else if (remainingSec <= 30) {
+                        badge.className = "trial-countdown-badge warning";
+                    } else {
+                        badge.className = "trial-countdown-badge";
+                    }
+                }
+
+                if (remainingMs <= 0) {
+                    clearInterval(trialInterval);
+                    trialInterval = null;
+                    lockAiAssistantSession(true);
+                }
+            }
+
+            updateTick();
+            trialInterval = setInterval(updateTick, 200);
+        }
+
+        function lockAiAssistantSession(showModal = true) {
+            if (trialInterval) {
+                clearInterval(trialInterval);
+                trialInterval = null;
+            }
+
+            localStorage.setItem("ai_trial_expired", "true");
+            stopGeneration();
+
+            const input = document.getElementById("userInput");
+            if (input) {
+                input.disabled = true;
+                input.placeholder = "Session locked. You need to log in to continue.";
+                input.blur();
+            }
+
+            const sendBtn = document.getElementById("sendBtn");
+            if (sendBtn) {
+                sendBtn.disabled = true;
+                sendBtn.style.opacity = "0.5";
+                sendBtn.style.cursor = "not-allowed";
+                sendBtn.title = "Session locked. You need to log in.";
+            }
+
+            const modeBtn = document.getElementById("modeToggleBtn");
+            if (modeBtn) modeBtn.style.pointerEvents = "none";
+
+            const badge = document.getElementById("trialCountdownBadge");
+            if (badge) {
+                badge.style.display = "inline-flex";
+                badge.className = "trial-countdown-badge expired";
+                badge.innerHTML = '<i class="fa-solid fa-lock" style="color: #f87171;"></i> <span>Free session: <strong>0s remaining</strong></span>';
+            }
+
+            const startTrialBtn = document.getElementById("startTrialBtn");
+            if (startTrialBtn) startTrialBtn.style.display = "none";
+
+            if (showModal) {
+                showLoginModal();
+            }
+        }
+
+        function showLoginModal() {
+            const modal = document.getElementById("loginModal");
+            if (modal) {
+                modal.style.display = "flex";
+                modal.classList.add("active");
+            }
+        }
+
+        function closeLoginModal() {
+            const modal = document.getElementById("loginModal");
+            if (modal) {
+                modal.style.display = "none";
+                modal.classList.remove("active");
+            }
+        }
+
+        function redirectToLogin() {
+            window.location.href = "login.html?reason=session_expired";
+        }
+
+        function handleAuthNavClick() {
+            if (isUserLoggedIn()) {
+                logout();
+            } else {
+                redirectToLogin();
+            }
+        }
+
+        // Cross-tab synchronization
+        window.addEventListener("storage", function (e) {
+            if (e.key === "ai_trial_expired" && e.newValue === "true") {
+                if (!isUserLoggedIn()) {
+                    lockAiAssistantSession(true);
+                }
+            } else if (e.key === "user") {
+                initTrialController();
+            }
+        });
+
         // INITIALIZE CHAT SESSIONS INSTANTLY ON LOAD/REFRESH
         function startInit() {
             if (!isInitialized) {
                 isInitialized = true;
                 initSessions();
+                initTrialController();
             }
         }
         if (document.readyState === "complete" || document.readyState === "interactive") {
@@ -3103,11 +3455,13 @@
     <script src="shadcn.js"></script>
 
     <!-- SHADCN COMMAND PALETTE (CTRL + K) -->
-    <div class="cn-command-modal" id="cnCommandPalette" onclick="if(event.target === this) Shadcn.closeCommandPalette()">
+    <div class="cn-command-modal" id="cnCommandPalette"
+        onclick="if(event.target === this) Shadcn.closeCommandPalette()">
         <div class="cn-command-box">
             <div class="cn-command-header">
                 <i class="fa-solid fa-magnifying-glass" style="color: var(--muted-foreground);"></i>
-                <input class="cn-command-input" placeholder="Search commands, prompt templates, or navigate..." autofocus>
+                <input class="cn-command-input" placeholder="Search commands, prompt templates, or navigate..."
+                    autofocus>
                 <span class="cn-command-kbd">ESC</span>
             </div>
             <div class="cn-command-list">
@@ -3116,15 +3470,19 @@
                     <span class="cn-command-kbd">↵</span>
                 </div>
                 <div class="cn-command-item" onclick="window.location.href='/components';">
-                    <span><i class="fa-solid fa-shapes" style="margin-right:8px;"></i> Open Shadcn UI Component Catalog</span>
+                    <span><i class="fa-solid fa-shapes" style="margin-right:8px;"></i> Open Shadcn UI Component
+                        Catalog</span>
                     <span class="cn-command-kbd">↵</span>
                 </div>
                 <div class="cn-command-item" onclick="window.location.href='/dashboard';">
-                    <span><i class="fa-solid fa-chart-line" style="margin-right:8px;"></i> View Telemetry Dashboard</span>
+                    <span><i class="fa-solid fa-chart-line" style="margin-right:8px;"></i> View Telemetry
+                        Dashboard</span>
                     <span class="cn-command-kbd">↵</span>
                 </div>
-                <div class="cn-command-item" onclick="Shadcn.closeCommandPalette(); document.getElementById('userInput').value='Create a glassmorphic HTML card'; sendMessage();">
-                    <span><i class="fa-solid fa-wand-magic-sparkles" style="margin-right:8px;"></i> Prompt: Create Glassmorphic HTML Card</span>
+                <div class="cn-command-item"
+                    onclick="Shadcn.closeCommandPalette(); document.getElementById('userInput').value='Create a glassmorphic HTML card'; sendMessage();">
+                    <span><i class="fa-solid fa-wand-magic-sparkles" style="margin-right:8px;"></i> Prompt: Create
+                        Glassmorphic HTML Card</span>
                     <span class="cn-command-kbd">↵</span>
                 </div>
             </div>
