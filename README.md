@@ -410,25 +410,6 @@ sequenceDiagram
 
 ---
 
-## 🗄️ 6. Database Schema & Data Dictionary
-
-```sql
-CREATE TABLE IF NOT EXISTS users2 (
-    id                   SERIAL PRIMARY KEY,
-    fullname             TEXT NOT NULL,
-    username             TEXT NOT NULL,
-    email_hash           TEXT UNIQUE NOT NULL,       -- SHA-256 deterministic hash for O(1) lookups
-    email_encrypted      TEXT NOT NULL,              -- AES-256-CBC ciphertext (IV:Ciphertext)
-    phone                TEXT NOT NULL,              -- AES-256-CBC ciphertext (IV:Ciphertext)
-    password             TEXT NOT NULL,              -- 10-round salted bcrypt hash
-    reset_token          TEXT,                       -- RFC 4122 UUID v4 password recovery token
-    reset_token_expiry   BIGINT                      -- Millisecond epoch timestamp (15-minute TTL)
-);
-
-CREATE INDEX idx_users2_email_hash ON users2(email_hash);
-CREATE INDEX idx_users2_reset_token ON users2(reset_token);
-```
-
 ---
 
 ## 🚀 7. Multi-Platform Compilation & Deployment Architecture
