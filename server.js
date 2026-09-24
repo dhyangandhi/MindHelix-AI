@@ -31,17 +31,37 @@ const app = express();
 // ======================
 
 function resolveFilePath(...segments) {
+    const rel = path.join(...segments);
+    const cleanRel = rel.replace(/^www[\\\/]/, "");
     const candidates = [
-        path.join(process.cwd(), ...segments),
-        path.join(__dirname, ...segments),
-        path.join(__dirname, "..", ...segments)
+        path.join(process.cwd(), "www", cleanRel),
+        path.join(process.cwd(), rel),
+        path.join(__dirname, "www", cleanRel),
+        path.join(__dirname, rel),
+        path.join(__dirname, "..", "www", cleanRel),
+        path.join(__dirname, "..", rel)
     ];
     for (const p of candidates) {
         try {
-            if (fs.existsSync(p)) return p;
+            if (fs.existsSync(p) && fs.statSync(p).isFile()) return p;
         } catch (e) {}
     }
-    return path.join(process.cwd(), ...segments);
+    return path.join(process.cwd(), "www", cleanRel);
+}
+
+function resolveDir(...segments) {
+    const rel = path.join(...segments);
+    const candidates = [
+        path.join(process.cwd(), rel),
+        path.join(__dirname, rel),
+        path.join(__dirname, "..", rel)
+    ];
+    for (const p of candidates) {
+        try {
+            if (fs.existsSync(p) && fs.statSync(p).isDirectory()) return p;
+        } catch (e) {}
+    }
+    return path.join(process.cwd(), rel);
 }
 
 function sendFileSafe(res, filePath) {
@@ -64,8 +84,8 @@ app.use(cors());
 
 app.use(express.json());
 
-const wwwDir = resolveFilePath("www");
-const rootDir = resolveFilePath(".");
+const wwwDir = resolveDir("www");
+const rootDir = resolveDir(".");
 if (fs.existsSync(wwwDir)) {
     app.use(express.static(wwwDir));
 }
@@ -868,10 +888,24 @@ app.get("/test", (req, res) => {
 // 404 & ERROR HANDLING MIDDLEWARE
 // ======================
 
+// Static asset fallback for CSS, JS, images, SVG
+app.use((req, res, next) => {
+    if (req.method === "GET") {
+        const cleanPath = req.path.replace(/^\/+/, "");
+        if (cleanPath && !cleanPath.startsWith("api/")) {
+            const possibleFile = resolveFilePath(cleanPath);
+            if (fs.existsSync(possibleFile) && fs.statSync(possibleFile).isFile()) {
+                return sendFileSafe(res, possibleFile);
+            }
+        }
+    }
+    next();
+});
+
 // Handle unmapped routes gracefully instead of crashing
 app.use((req, res, next) => {
     if (req.accepts("html")) {
-        const homePath = resolveFilePath("www", "home.html");
+        const homePath = resolveFilePath("home.html");
         if (fs.existsSync(homePath)) {
             return sendFileSafe(res, homePath);
         }
