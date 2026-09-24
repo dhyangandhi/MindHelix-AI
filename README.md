@@ -121,7 +121,7 @@ flowchart TB
 ## 📁 4. Repository File & Folder Hierarchy
 
 ```
-c:\Users\Admin\Pictures\MindHelix AI\
+
 ├── ARCHITECTURE.md            # System Architecture & Blueprint Document
 ├── README.md                  # Project Quickstart & Overview Document
 ├── server.js                  # Main Express 5 Backend Server & API Routes
