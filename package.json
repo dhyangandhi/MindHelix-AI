@@ -1,17 +1,57 @@
 {
-  "name": "html-pages",
+  "name": "@dhyangandhi/mindhelix-ai",
   "version": "1.0.0",
-  "description": "",
+  "description": "MindHelix AI — Next-Gen Multi-Platform AI Automation, Conversational & Generative Image Synthesis Suite",
   "main": "server.js",
+  "bin": {
+    "mindhelix": "./bin/mindhelix.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dhyangandhi/MindHelix-AI.git"
+  },
+  "keywords": [
+    "mindhelix",
+    "ai",
+    "openrouter",
+    "flux",
+    "llm",
+    "express",
+    "glassmorphism",
+    "capacitor",
+    "electron"
+  ],
+  "author": "Dhyan Gandhi",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/dhyangandhi/MindHelix-AI/issues"
+  },
+  "homepage": "https://github.com/dhyangandhi/MindHelix-AI#readme",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com",
+    "access": "public"
+  },
+  "files": [
+    "server.js",
+    "main.js",
+    "worker.js",
+    "bin",
+    "utils",
+    "www",
+    "prisma",
+    "dashbord.html",
+    "Contact.html",
+    "capacitor.config.json",
+    "README.md",
+    "ARCHITECTURE.md",
+    "LICENSE"
+  ],
   "scripts": {
     "start": "node server.js",
     "dev": "node server.js",
     "electron": "electron main.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "type": "commonjs",
   "dependencies": {
     "@capacitor/android": "^8.3.3",

@@ -1,0 +1,21 @@
+# Secrets & environment
+.env
+.env.*
+
+# Git & IDEs
+.git
+.gitignore
+.idea
+.vscode
+
+# Build & heavy dependencies
+node_modules
+android/
+*.log
+
+# Temp & testing files
+pexels-*.jpg
+profile-*.jpg
+
+# GitHub Actions
+.github/
