@@ -19,7 +19,8 @@ body {
 }
 
 .wrapper {
-    width: 750px;
+    width: 100%;
+    max-width: 750px;
     background: rgba(15, 23, 42, 0.75);
     border: 1px solid rgba(255, 255, 255, 0.15);
     backdrop-filter: blur(24px);
@@ -27,32 +28,42 @@ body {
     box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), 0 0 35px rgba(255, 94, 54, 0.15);
     border-radius: 18px;
     color: #fff;
-    padding: 40px 35px 55px;
-    margin: 0 10px;
+    padding: clamp(24px, 4vw, 40px) clamp(16px, 4vw, 35px);
+    margin: 20px 14px;
     z-index: 1;
 }
 
 .wrapper h1 {
-    font-size: 36px;
+    font-size: clamp(24px, 4vw, 36px);
     text-align: center;
     margin-bottom: 20px;
     color: #fff;
-    padding: 40px 35px 55px;
+    padding: 10px 0;
 }
 
 .wrapper .input-box {
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
-    background: rgba(255, 255, 255, .1);
+    background: transparent;
+    gap: 12px;
 }
 .input-box .input-field {
     position: relative;
-    width: 48%;
+    width: calc(50% - 6px);
+    min-width: 240px;
+    flex: 1 1 calc(50% - 6px);
     height: 50px;
     background: rgba(255, 255, 255, .1);
-    margin: 13px 0;
-    border-radius: 6px; /* Added border-radius for consistent styling */
+    margin: 8px 0;
+    border-radius: 6px;
+}
+
+@media (max-width: 600px) {
+    .input-box .input-field {
+        width: 100% !important;
+        flex: 1 1 100% !important;
+    }
 }
 
 .input-box .input-field input {

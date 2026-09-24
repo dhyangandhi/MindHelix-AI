@@ -18,20 +18,22 @@ body {
 }
 
 .wrapper {
-    width: 420px;
+    width: 100%;
+    max-width: 440px;
+    margin: 20px 16px;
     background: rgba(15, 23, 42, 0.75);
     border: 1px solid rgba(255, 255, 255, 0.15);
     backdrop-filter: blur(24px);
     -webkit-backdrop-filter: blur(24px);
     box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), 0 0 35px rgba(255, 94, 54, 0.15);
     color: #fff;
-    padding: 35px 40px;
+    padding: clamp(24px, 5vw, 40px) clamp(18px, 5vw, 36px);
     border-radius: 18px;
     z-index: 1;
 }
 
 .wrapper h1 {
-    font-size: 36px;
+    font-size: clamp(24px, 4vw, 36px);
     text-align: center;
 }
 
