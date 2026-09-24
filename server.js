@@ -2,6 +2,8 @@ require("dotenv").config();
 
 const express = require("express");
 const path = require("path");
+const fs = require("fs");
+const crypto = require("crypto");
 const cors = require("cors");
 let bcrypt;
 try {
@@ -10,7 +12,8 @@ try {
     bcrypt = require("bcrypt");
 }
 const { Pool } = require("pg");
-const { v4: uuidv4 } = require("uuid");
+// Native RFC 4122 v4 UUID generator (prevents CommonJS/ESM module loading crash)
+const uuidv4 = () => crypto.randomUUID();
 const nodemailer = require("nodemailer");
 
 const {
@@ -23,6 +26,35 @@ const {
 
 const app = express();
 
+// ======================
+// PATH RESOLUTION HELPERS (Local & Vercel Serverless Compatible)
+// ======================
+
+function resolveFilePath(...segments) {
+    const candidates = [
+        path.join(process.cwd(), ...segments),
+        path.join(__dirname, ...segments),
+        path.join(__dirname, "..", ...segments)
+    ];
+    for (const p of candidates) {
+        try {
+            if (fs.existsSync(p)) return p;
+        } catch (e) {}
+    }
+    return path.join(process.cwd(), ...segments);
+}
+
+function sendFileSafe(res, filePath) {
+    const target = path.isAbsolute(filePath) ? filePath : resolveFilePath(filePath);
+    res.sendFile(target, (err) => {
+        if (err) {
+            console.error("Error sending file:", target, err.message);
+            if (!res.headersSent) {
+                res.status(err.status || 404).send(`File not found: ${path.basename(target)}`);
+            }
+        }
+    });
+}
 
 // ======================
 // MIDDLEWARE
@@ -32,15 +64,14 @@ app.use(cors());
 
 app.use(express.json());
 
-app.use(
-    express.static(
-        path.join(__dirname, "www")
-    )
-);
-
-app.use(
-    express.static(__dirname)
-);
+const wwwDir = resolveFilePath("www");
+const rootDir = resolveFilePath(".");
+if (fs.existsSync(wwwDir)) {
+    app.use(express.static(wwwDir));
+}
+if (fs.existsSync(rootDir)) {
+    app.use(express.static(rootDir));
+}
 
 
 // ======================
@@ -53,38 +84,47 @@ app.use(
 
 // Helper function to resolve target file from route name
 function resolveRouteFile(routeName) {
-    if (!routeName) return path.join(__dirname, "www", "home.html");
+    if (!routeName) return resolveFilePath("www", "home.html");
     const route = routeName.toLowerCase().trim().replace(/^\/+|\/+$/g, '');
     switch (route) {
         case 'home':
         case 'index':
         case '':
-            return path.join(__dirname, "www", "home.html");
+            return resolveFilePath("www", "home.html");
         case 'login':
-            return path.join(__dirname, "www", "login.html");
+            return resolveFilePath("www", "login.html");
         case 'register':
-            return path.join(__dirname, "www", "register.html");
+            return resolveFilePath("www", "register.html");
         case 'ai':
-            return path.join(__dirname, "www", "ai.html");
+            return resolveFilePath("www", "ai.html");
         case 'dashboard':
         case 'dashbord':
-            return path.join(__dirname, "dashbord.html");
+            return resolveFilePath("dashbord.html");
         case 'contact':
-            return path.join(__dirname, "Contact.html");
+            return resolveFilePath("Contact.html");
         case 'forgot-password':
-            return path.join(__dirname, "www", "forgot-password.html");
+            return resolveFilePath("www", "forgot-password.html");
         case 'reset-password':
-            return path.join(__dirname, "www", "reset-password.html");
+            return resolveFilePath("www", "reset-password.html");
         case 'components':
         case 'shadcn':
         case 'components.html':
-            return path.join(__dirname, "www", "components.html");
+            return resolveFilePath("www", "components.html");
         case 'forget-success':
-            return path.join(__dirname, "www", "forget succefull.html");
+            return resolveFilePath("www", "forget succefull.html");
         default:
             return null;
     }
 }
+
+// Favicon route - prevents 500 error when browser asks for /favicon.ico
+app.get("/favicon.ico", (req, res) => {
+    const iconPath = resolveFilePath("www", "1logo.svg");
+    if (fs.existsSync(iconPath)) {
+        return sendFileSafe(res, iconPath);
+    }
+    res.status(204).end();
+});
 
 // API endpoint to encrypt any path URL
 app.get("/api/encrypt-url", (req, res) => {
@@ -127,11 +167,11 @@ app.get("/e/:token", (req, res) => {
         }
 
         if (targetFile) {
-            return res.sendFile(targetFile);
+            return sendFileSafe(res, targetFile);
         }
-        res.sendFile(path.join(__dirname, "www", "home.html"));
+        sendFileSafe(res, resolveFilePath("www", "home.html"));
     } catch (err) {
-        res.sendFile(path.join(__dirname, "www", "home.html"));
+        sendFileSafe(res, resolveFilePath("www", "home.html"));
     }
 });
 
@@ -153,7 +193,7 @@ app.get("/secure", (req, res) => {
         }
         const targetFile = resolveRouteFile(decodedPath);
         if (targetFile) {
-            return res.sendFile(targetFile);
+            return sendFileSafe(res, targetFile);
         }
         res.redirect("/");
     } catch (err) {
@@ -162,43 +202,43 @@ app.get("/secure", (req, res) => {
 });
 
 app.get(["/", "/home", "/home.html", "/index.html", "/www/home.html", "/www/index.html"], (req, res) => {
-    res.sendFile(path.join(__dirname, "www", "home.html"));
+    sendFileSafe(res, resolveFilePath("www", "home.html"));
 });
 
 app.get(["/login", "/login.html", "/www/login.html"], (req, res) => {
-    res.sendFile(path.join(__dirname, "www", "login.html"));
+    sendFileSafe(res, resolveFilePath("www", "login.html"));
 });
 
 app.get(["/register", "/register.html", "/www/register.html"], (req, res) => {
-    res.sendFile(path.join(__dirname, "www", "register.html"));
+    sendFileSafe(res, resolveFilePath("www", "register.html"));
 });
 
 app.get(["/ai", "/ai.html", "/www/ai.html"], (req, res) => {
-    res.sendFile(path.join(__dirname, "www", "ai.html"));
+    sendFileSafe(res, resolveFilePath("www", "ai.html"));
 });
 
 app.get(["/components", "/shadcn", "/components.html", "/www/components.html"], (req, res) => {
-    res.sendFile(path.join(__dirname, "www", "components.html"));
+    sendFileSafe(res, resolveFilePath("www", "components.html"));
 });
 
 app.get(["/dashboard", "/dashbord", "/dashbord.html", "/dashboard.html", "/www/dashbord.html", "/www/dashboard.html"], (req, res) => {
-    res.sendFile(path.join(__dirname, "dashbord.html"));
+    sendFileSafe(res, resolveFilePath("dashbord.html"));
 });
 
 app.get(["/forgot-password", "/forgot-password.html", "/www/forgot-password.html"], (req, res) => {
-    res.sendFile(path.join(__dirname, "www", "forgot-password.html"));
+    sendFileSafe(res, resolveFilePath("www", "forgot-password.html"));
 });
 
 app.get(["/reset-password", "/reset-password.html", "/www/reset-password.html"], (req, res) => {
-    res.sendFile(path.join(__dirname, "www", "reset-password.html"));
+    sendFileSafe(res, resolveFilePath("www", "reset-password.html"));
 });
 
 app.get(["/contact", "/contact.html", "/Contact.html", "/www/contact.html"], (req, res) => {
-    res.sendFile(path.join(__dirname, "Contact.html"));
+    sendFileSafe(res, resolveFilePath("Contact.html"));
 });
 
 app.get(["/forget-success", "/forget-success.html", "/www/forget succefull.html"], (req, res) => {
-    res.sendFile(path.join(__dirname, "www", "forget succefull.html"));
+    sendFileSafe(res, resolveFilePath("www", "forget succefull.html"));
 });
 
 
@@ -237,6 +277,12 @@ const pool = dbUrl
         connectionTimeoutMillis: 10000,
     })
     : null;
+
+if (pool) {
+    pool.on("error", (err) => {
+        console.error("PostgreSQL pool idle client error:", err.message);
+    });
+}
 
 function checkDbConfigured(res) {
     if (!pool) {
@@ -817,6 +863,32 @@ app.get("/test", (req, res) => {
     res.send("TEST WORKING");
 });
 
+
+// ======================
+// 404 & ERROR HANDLING MIDDLEWARE
+// ======================
+
+// Handle unmapped routes gracefully instead of crashing
+app.use((req, res, next) => {
+    if (req.accepts("html")) {
+        const homePath = resolveFilePath("www", "home.html");
+        if (fs.existsSync(homePath)) {
+            return sendFileSafe(res, homePath);
+        }
+    }
+    res.status(404).json({ success: false, error: "Resource not found" });
+});
+
+// Global error handler middleware (catches unhandled exceptions and prevents 500 FUNCTION_INVOCATION_FAILED)
+app.use((err, req, res, next) => {
+    console.error("Unhandled Server Error:", err);
+    if (!res.headersSent) {
+        res.status(500).json({
+            success: false,
+            error: err.message || "Internal server error"
+        });
+    }
+});
 
 // ======================
 // START SERVER
