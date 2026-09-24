@@ -1,14 +1,15 @@
-    # 🧬 MindHelix AI — System Architecture & Blueprint
-
-> **Document Version:** 1.0.0  
-> **Last Updated:** July 31, 2026  
-> **Project Target:** Web Application, Mobile (Android), Desktop (Electron)
+🧬 MindHelix AI — System Architecture & Blueprint
+Document Version: 2.0.0 (Production Blueprint)
+> Last Updated: September 2026
+> Target Platforms: Web (Vercel / Node.js), Mobile (Capacitor Android), Desktop (Electron), Edge (Cloudflare Workers)
+> Status: Fully Integrated & Active
+> Reference File: ARCHITECTURE.md
 
 ---
 
 ## 📐 1. System Overview
 
-**MindHelix AI** is an intelligent, multi-platform AI automation and conversational suite. It features a glassmorphic frontend UI, a secure Express 5 backend gateway, a PostgreSQL database managed via Prisma ORM, and cross-platform native compilation targets via Capacitor (Android) and Electron (Desktop).
+MindHelix AI is an intelligent, multi-platform AI automation, conversational reasoning, and generative image synthesis suite. Engineered with a glassmorphic dark-mode interface, a high-performance Express 5 backend gateway, and a zero-plaintext data protection architecture, the platform delivers a seamless, synchronized experience across Web browsers, Android mobile devices, Windows desktop systems, and serverless edge networks.
 
 ### Core Technology Stack
 
@@ -26,88 +27,117 @@
 
 ---
 
-## 🏛️ 2. High-Level System Architecture Diagram
-
-```mermaid
 flowchart TB
-    subgraph Clients["📱 Client Targets"]
-        WebBrowser["🌐 Web Browser (Desktop / Mobile)"]
-        MobileApp["📱 Native Android App (Capacitor)"]
-        DesktopApp["💻 Desktop App (Electron)"]
+    %% Presentation Tier
+    subgraph Clients["📱 Client Presentation Tier"]
+        Web["🌐 Web Browser (Responsive Glassmorphism)"]
+        Mobile["📱 Native Android App (Capacitor Engine)"]
+        Desktop["💻 Native Desktop App (Electron Engine)"]
     end
 
-    subgraph Frontend["🎨 Presentation Layer (www/)"]
-        LandingPage["index.html / home.html\n(Landing Page & Hero UI)"]
-        AIAssistant["ai.html\n(MindHelix AI Chat Hub)"]
-        AuthPages["login.html / register.html\n(Auth Entry Points)"]
-        URLEncryptor["url-encryptor.js\n(Base64URL Token Encryptor)"]
+    %% Edge Ingress
+    subgraph Edge["☁️ Edge Gateway & Static Distribution"]
+        CFWorker["Cloudflare Worker (worker.js)"]
+        VercelEdge["Vercel Serverless Gateway (api/index.js)"]
+        StaticCDN["Static Asset Server (/www, Clean URLs)"]
     end
 
-    subgraph Backend["⚙️ Backend Layer (server.js)"]
-        ExpressServer["Express.js Server (v5)\n(Port 3000 / 5000)"]
-        AuthModule["Auth & Security Router\n(Bcrypt / JWT / Nodemailer)"]
-        AIGateway["OpenRouter AI Proxy\n(Model Gateway)"]
+    %% Security & Routing
+    subgraph Security["🛡️ Security & Routing Middleware"]
+        URLResolver["Route Resolver & Token Decryptor (/e/:token, /secure)"]
+        CryptoUtil["AES-256-CBC & SHA-256 Engine (utils/encryption.js)"]
+        AuthShield["Bcrypt & Session Guard"]
     end
 
-    subgraph Infrastructure["🗄️ Database & External Services"]
-        PostgreSQL[("🐘 PostgreSQL Database")]
-        PrismaORM["Prisma ORM (@prisma/client)"]
-        OpenRouterAPI["🧠 OpenRouter AI API\n(DeepSeek / Gemini / Claude)"]
-        SMTPServer["✉️ SMTP Email Server\n(Nodemailer)"]
+    %% Core Application Server
+    subgraph CoreBackend["⚙️ Core Backend Engine (server.js - Express 5)"]
+        AuthRouter["Auth Controller (/api/register, /api/login)"]
+        PasswordRecovery["Password Reset Controller (/forgot-password, /reset-password)"]
+        AIChatProxy["AI Chat Service (/chat - Model Fallback Cascade)"]
+        ImageGenService["AI Image Synthesis (/api/generate-image)"]
+        DataMasking["Neon Data Masking Service (/api/neon-masking)"]
     end
 
-    %% Connections
-    WebBrowser --> LandingPage
-    MobileApp --> LandingPage
-    DesktopApp --> LandingPage
+    %% Persistence & External Services
+    subgraph Persistence["🗄️ Persistence & External Cloud Services"]
+        NeonDB[("🐘 Neon Serverless PostgreSQL\n(users2 table: Encrypted PII & Hashes)")]
+        OpenRouter["🧠 OpenRouter AI Gateway\n(Liquid LFM / Nex N2.5 / GLM / Gemma)"]
+        FluxEngine["🎨 FLUX.1 & SDXL Synthesis Engine\n(Image Generation)"]
+        SMTPMail["✉️ Nodemailer SMTP Service\n(Gmail Automated Transporter)"]
+    end
 
-    LandingPage --> AuthPages
-    LandingPage --> AIAssistant
-    AuthPages --> URLEncryptor
+    %% Client Connections
+    Web --> VercelEdge & StaticCDN
+    Mobile --> StaticCDN
+    Desktop --> StaticCDN
+    VercelEdge --> URLResolver
+    CFWorker --> URLResolver
+    StaticCDN --> URLResolver
 
-    AuthPages -- "REST API: /api/register, /api/login" --> AuthModule
-    AIAssistant -- "REST API: /api/chat" --> AIGateway
-    LandingPage -- "Static Assets" --> ExpressServer
+    %% Middleware Connections
+    URLResolver --> CryptoUtil
+    URLResolver --> CoreBackend
+    AuthShield --> CoreBackend
 
-    AuthModule --> PrismaORM
-    PrismaORM --> PostgreSQL
-    AuthModule -- "Send Reset Emails" --> SMTPServer
-    AIGateway -- "Forward Chat Prompts" --> OpenRouterAPI
-```
+    %% Backend Services to External
+    AuthRouter --> CryptoUtil
+    AuthRouter --> NeonDB
+    PasswordRecovery --> NeonDB
+    PasswordRecovery --> SMTPMail
+    DataMasking --> NeonDB
+    DataMasking --> CryptoUtil
+
+    AIChatProxy --> OpenRouter
+    ImageGenService --> OpenRouter
+    ImageGenService --> FluxEngine
+
 
 ---
 
 ## 📁 3. Repository File & Folder Hierarchy
 
-```
-├── ARCHITECTURE.md            # System Architecture & Blueprint Document
-├── server.js                  # Main Express Backend Server & API Routes
-├── package.json               # Node Dependencies & Build Scripts
-├── capacitor.config.json      # Capacitor Mobile Configuration
-├── .env                       # Environment Variables & API Secrets
-├── prisma/
-│   ├── schema.prisma          # Database Schemas & Models
-│   └── prisma.config.ts       # Prisma Client Configuration
-├── android/                   # Native Android Studio Project Source
-└── www/                       # Frontend Web Files & Assets
-    ├── index.html             # Main MindHelix AI Landing Page
-    ├── home.html              # Secondary Landing Page Mirror
-    ├── ai.html                # MindHelix Interactive AI Assistant
-    ├── login.html             # User Login Interface
-    ├── register.html          # User Registration Interface
-    ├── forgot-password.html   # Password Recovery Page
-    ├── reset-password.html    # Password Reset Entry Page
-    ├── dashbord.html          # User Dashboard View
-    ├── home.css               # Main Landing Page Stylesheet
-    ├── style.css              # Login/Register Form Stylesheet
-    ├── 2style.css             # Registration Component Stylesheet
-    ├── form.js                # Auth Form Validation & API Call Handler
-    ├── url-encryptor.js       # Encrypted URL Token Generator
-    ├── logo.svg               # MindHelix Brand Logo Asset
-    └── profile.png            # User Avatar Fallback Asset
-```
-
 ---
+
+├── ARCHITECTURE.md            # System Architecture & Blueprint Document
+├── README.md                  # Project Quickstart & Overview Document
+├── server.js                  # Main Express 5 Backend Server & API Routes
+├── worker.js                  # Cloudflare Edge Worker Runtime (Neon Serverless Driver)
+├── main.js                    # Electron Native Desktop Application Wrapper
+├── package.json               # Node.js Dependencies, Engines & Execution Scripts
+├── capacitor.config.json      # Capacitor Mobile Engine Configuration
+├── vercel.json                # Vercel Serverless Deployment Configuration
+├── wrangler.toml              # Cloudflare Workers Deployment Configuration
+├── .env                       # Environment Secrets & Connection Strings
+├── api/
+│   └── index.js               # Vercel Serverless Entrypoint (Exports server.js)
+├── utils/
+│   └── encryption.js          # AES-256-CBC, SHA-256 Hashing & PII Data Masking Routines
+├── prisma/
+│   ├── schema.prisma          # Prisma Relational Database Schema
+│   └── prisma.config.ts       # Prisma Client Configuration
+├── android/                   # Native Android Studio Project Source Code
+├── dashbord.html              # Glassmorphic User Dashboard View
+├── Contact.html               # Contact Form Interface
+└── www/                       # Core Web Application Assets
+    ├── index.html             # Primary MindHelix AI Landing Page
+    ├── home.html              # Secondary Landing Page Mirror
+    ├── ai.html                # MindHelix Interactive AI Assistant & Image Studio
+    ├── login.html             # Secure User Login Interface
+    ├── register.html          # Secure User Registration Interface
+    ├── forgot-password.html   # Password Recovery Entry View
+    ├── reset-password.html    # Password Reset Submission View
+    ├── forget succefull.html  # Recovery Email Sent Confirmation View
+    ├── components.html        # Glassmorphic UI Components Showcase
+    ├── form.js                # Auth Form Client-side Validation & API Dispatch
+    ├── url-encryptor.js       # Client-side Route Token Obfuscation Engine
+    ├── home.css               # Landing Page Stylesheet
+    ├── ai.css                 # AI Chat & Studio Stylesheet
+    ├── Dashbord.css           # Dashboard Component Stylesheet
+    ├── Contact.css            # Contact Form Stylesheet
+    ├── style.css / 2style.css # Authentication Form Stylesheets
+    └── shadcn.css / shadcn.js # Modern UI Component Utilities
+
+```
 
 ## 🔄 4. Key Sequence & Workflow Diagrams
 
@@ -156,26 +186,34 @@ sequenceDiagram
 flowchart LR
     subgraph Source["💻 Core Web Application"]
         HTML_CSS_JS["www/ Directory\n(HTML5, CSS3, JS)"]
+        API["Node.js / Express 5 API\n(server.js, utils/encryption.js)"]
     end
 
     subgraph Web["🌐 Web Target"]
-        NodeServer["Node.js + Express\n(Hosted Server)"]
+        NodeServer["Node.js + Express\n(Hosted Server / Vercel Serverless)"]
     end
 
     subgraph Mobile["📱 Mobile Target"]
-        CapacitorCLI["Capacitor Sync\n(npx cap sync)"]
+        CapacitorCLI["Capacitor Sync\n(npx cap sync android)"]
         AndroidBuild["Android Gradle Build"]
         APK_Bundle["Native APK / AAB"]
     end
 
     subgraph Desktop["💻 Desktop Target"]
-        ElectronBuild["Electron Engine"]
+        ElectronBuild["Electron Engine (main.js)\n(npm run electron)"]
         ExeBundle["Windows .exe"]
     end
 
+    subgraph Edge["⚡ Edge Target"]
+        CFWorker["Cloudflare Worker\n(worker.js)"]
+    end
+
     HTML_CSS_JS --> NodeServer
+    API --> NodeServer
+    
     HTML_CSS_JS --> CapacitorCLI --> AndroidBuild --> APK_Bundle
     HTML_CSS_JS --> ElectronBuild --> ExeBundle
+    HTML_CSS_JS --> CFWorker
 ```
 
 ---
@@ -186,16 +224,15 @@ flowchart LR
 ```env
 PORT=3000
 DATABASE_URL="postgresql://user:password@localhost:5432/mindhelix_db?schema=public"
+ENCRYPTION_KEY="your-super-secret-32-byte-master-encryption-key"
 OPENROUTER_API_KEY="your_openrouter_api_key"
-SMTP_HOST="smtp.mailtrap.io"
-SMTP_PORT=2525
-SMTP_USER="your_smtp_user"
-SMTP_PASS="your_smtp_password"
+OPENROUTER_MODEL="liquid/lfm-2.5-2.6b:free"
+EMAIL_USER="your-email@gmail.com"
+EMAIL_PASS="your-google-app-password"
 ```
 
-### Execution Commands
-* **Run Server (Development)**: `npm run dev`
-* **Run Server (Production)**: `npm start`
-* **Run Desktop App (Electron)**: `npm run electron`
-* **Sync Mobile Build (Capacitor)**: `npx cap sync android`
-* **Run cloune form github commit git cloune 
+Execution Commands
+Run Server (Development): npm run dev
+Run Server (Production): npm start
+Run Desktop App (Electron): npm run electron
+Sync Mobile Android Assets (Capacitor): npx cap sync android
