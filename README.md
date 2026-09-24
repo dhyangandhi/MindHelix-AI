@@ -80,7 +80,6 @@ flowchart TB
 ## 📁 3. Repository File & Folder Hierarchy
 
 ```
-c:\Users\Admin\Pictures\html pages\
 ├── ARCHITECTURE.md            # System Architecture & Blueprint Document
 ├── server.js                  # Main Express Backend Server & API Routes
 ├── package.json               # Node Dependencies & Build Scripts
