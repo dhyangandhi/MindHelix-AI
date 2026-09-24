@@ -118,7 +118,53 @@ flowchart TB
 
 ---
 
-## 🔄 4. Complete Operational Flowcharts & Lifecycles
+## 📁 4. Repository File & Folder Hierarchy
+
+```
+c:\Users\Admin\Pictures\MindHelix AI\
+├── ARCHITECTURE.md            # System Architecture & Blueprint Document
+├── README.md                  # Project Quickstart & Overview Document
+├── server.js                  # Main Express 5 Backend Server & API Routes
+├── worker.js                  # Cloudflare Edge Worker Runtime (Neon Serverless Driver)
+├── main.js                    # Electron Native Desktop Application Wrapper
+├── package.json               # Node.js Dependencies, Engines & Execution Scripts
+├── capacitor.config.json      # Capacitor Mobile Engine Configuration
+├── vercel.json                # Vercel Serverless Deployment Configuration
+├── wrangler.toml              # Cloudflare Workers Deployment Configuration
+├── .env                       # Environment Secrets & Connection Strings
+├── api/
+│   └── index.js               # Vercel Serverless Entrypoint (Exports server.js)
+├── utils/
+│   └── encryption.js          # AES-256-CBC, SHA-256 Hashing & PII Data Masking Routines
+├── prisma/
+│   ├── schema.prisma          # Prisma Relational Database Schema
+│   └── prisma.config.ts       # Prisma Client Configuration
+├── android/                   # Native Android Studio Project Source Code
+├── dashbord.html              # Glassmorphic User Dashboard View
+├── Contact.html               # Contact Form Interface
+└── www/                       # Core Web Application Assets
+    ├── index.html             # Primary MindHelix AI Landing Page
+    ├── home.html              # Secondary Landing Page Mirror
+    ├── ai.html                # MindHelix Interactive AI Assistant & Image Studio
+    ├── login.html             # Secure User Login Interface
+    ├── register.html          # Secure User Registration Interface
+    ├── forgot-password.html   # Password Recovery Entry View
+    ├── reset-password.html    # Password Reset Submission View
+    ├── forget succefull.html  # Recovery Email Sent Confirmation View
+    ├── components.html        # Glassmorphic UI Components Showcase
+    ├── form.js                # Auth Form Client-side Validation & API Dispatch
+    ├── url-encryptor.js       # Client-side Route Token Obfuscation Engine
+    ├── home.css               # Landing Page Stylesheet
+    ├── ai.css                 # AI Chat & Studio Stylesheet
+    ├── Dashbord.css           # Dashboard Component Stylesheet
+    ├── Contact.css            # Contact Form Stylesheet
+    ├── style.css / 2style.css # Authentication Form Stylesheets
+    └── shadcn.css / shadcn.js # Modern UI Component Utilities
+```
+
+---
+
+## 🔄 5. Complete Operational Flowcharts & Lifecycles
 
 ### A. User Registration & AES-256 Encryption Lifecycle
 
@@ -364,7 +410,7 @@ sequenceDiagram
 
 ---
 
-## 🗄️ 5. Database Schema & Data Dictionary
+## 🗄️ 6. Database Schema & Data Dictionary
 
 ```sql
 CREATE TABLE IF NOT EXISTS users2 (
@@ -385,7 +431,7 @@ CREATE INDEX idx_users2_reset_token ON users2(reset_token);
 
 ---
 
-## 🚀 6. Multi-Platform Compilation & Deployment Architecture
+## 🚀 7. Multi-Platform Compilation & Deployment Architecture
 
 ```mermaid
 flowchart LR
@@ -423,7 +469,7 @@ flowchart LR
 
 ---
 
-## ⚙️ 7. Environment Configuration & Quick Start
+## ⚙️ 8. Environment Configuration & Quick Start
 
 ### Environment Variables (`.env`)
 ```env
