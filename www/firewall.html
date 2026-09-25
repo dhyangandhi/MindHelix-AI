@@ -199,6 +199,7 @@
             font-weight: 800;
             background: linear-gradient(135deg, #ffffff 30%, var(--primary-cyan) 100%);
             -webkit-background-clip: text;
+            background-clip: text;
             -webkit-text-fill-color: transparent;
             margin-bottom: 6px;
         }
@@ -713,11 +714,11 @@
                 </p>
 
                 <div class="sim-presets">
-                    <button class="preset-btn" onclick="setPreset(&quot;sqli&quot;)">SQLi (Tautology)</button>
-                    <button class="preset-btn" onclick="setPreset(&quot;xss&quot;)">XSS Script Tag</button>
-                    <button class="preset-btn" onclick="setPreset(&quot;traversal&quot;)">Path Traversal</button>
-                    <button class="preset-btn" onclick="setPreset(&quot;prompt&quot;)">AI Jailbreak (DAN)</button>
-                    <button class="preset-btn" onclick="setPreset(&quot;clean&quot;)">Clean Query</button>
+                    <button class="preset-btn" onclick="setPreset('sqli')">SQLi (Tautology)</button>
+                    <button class="preset-btn" onclick="setPreset('xss')">XSS Script Tag</button>
+                    <button class="preset-btn" onclick="setPreset('traversal')">Path Traversal</button>
+                    <button class="preset-btn" onclick="setPreset('prompt')">AI Jailbreak (DAN)</button>
+                    <button class="preset-btn" onclick="setPreset('clean')">Clean Query</button>
                 </div>
 
                 <textarea id="payloadInput" class="sim-input" placeholder="Type or select a malicious payload to test..."></textarea>
