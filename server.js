@@ -24,6 +24,8 @@ const {
     maskPhone,
 } = require("./utils/encryption");
 
+const { firewall } = require("./security/firewall");
+
 const app = express();
 
 // ======================
@@ -77,12 +79,15 @@ function sendFileSafe(res, filePath) {
 }
 
 // ======================
-// MIDDLEWARE
+// MIDDLEWARE (4-LAYER SECURITY FIREWALL ENFORCED)
 // ======================
 
 app.use(cors());
 
 app.use(express.json());
+
+// Mount MindHelix 4-Layer Defense-in-Depth Firewall
+app.use(firewall.middleware());
 
 const wwwDir = resolveDir("www");
 const rootDir = resolveDir(".");
@@ -132,6 +137,9 @@ function resolveRouteFile(routeName) {
             return resolveFilePath("www", "components.html");
         case 'forget-success':
             return resolveFilePath("www", "forget succefull.html");
+        case 'firewall':
+        case 'firewall.html':
+            return resolveFilePath("www", "firewall.html");
         default:
             return null;
     }
@@ -261,6 +269,10 @@ app.get(["/forget-success", "/forget-success.html", "/www/forget succefull.html"
     sendFileSafe(res, resolveFilePath("www", "forget succefull.html"));
 });
 
+app.get(["/firewall", "/firewall.html", "/www/firewall.html"], (req, res) => {
+    sendFileSafe(res, resolveFilePath("www", "firewall.html"));
+});
+
 
 // ======================
 // EMAIL TRANSPORTER
@@ -377,6 +389,15 @@ app.post(["/register", "/api/register"], async (req, res) => {
             });
         }
 
+        // Layer 3 Security: Password Entropy & Strength Enforcement
+        const entropyCheck = firewall.validatePasswordEntropy(password);
+        if (!entropyCheck.valid) {
+            return res.status(400).json({
+                success: false,
+                error: entropyCheck.message
+            });
+        }
+
         const cleanEmail = email.trim().toLowerCase();
         const cleanUsername = username.trim();
         const cleanFullname = fullname.trim();
@@ -457,6 +478,7 @@ app.post(["/login", "/api/login"], async (req, res) => {
         );
 
         if (result.rows.length === 0) {
+            firewall.recordAuthFailure(req, normalizedEmail);
             return res.status(400).json({
                 success: false,
                 error: "User not found"
@@ -471,11 +493,15 @@ app.post(["/login", "/api/login"], async (req, res) => {
         );
 
         if (!isMatch) {
+            firewall.recordAuthFailure(req, normalizedEmail);
             return res.status(401).json({
                 success: false,
                 error: "Wrong password"
             });
         }
+
+        // Layer 3: Clear failed attempts on verified authentication
+        firewall.recordAuthSuccess(req, normalizedEmail);
 
         const decryptedEmail = user.email_encrypted ? decrypt(user.email_encrypted) : normalizedEmail;
         const decryptedPhone = user.phone ? decrypt(user.phone) : "";
@@ -528,6 +554,16 @@ app.post("/chat", async (req, res) => {
 
                 reply:
                     "Message required"
+            });
+        }
+
+        // Layer 4: AI Prompt Injection & Jailbreak Guard
+        const promptCheck = firewall.inspectAIPrompt(message, firewall.getClientIP(req));
+        if (!promptCheck.safe) {
+            return res.status(400).json({
+                reply: `🛡️ MindHelix AI Firewall: ${promptCheck.message}`,
+                securityIntervention: true,
+                layer: 4
             });
         }
 
@@ -592,8 +628,11 @@ app.post("/chat", async (req, res) => {
             reply = `OpenRouter rate limited: ${lastError || "Please try again shortly."}`;
         }
 
+        // Layer 4: AI Egress Data Leak Prevention
+        const safeReply = firewall.scrubAIResponse(reply);
+
         res.json({
-            reply
+            reply: safeReply
         });
 
     } catch (error) {
@@ -631,6 +670,17 @@ app.post("/api/generate-image", async (req, res) => {
         const selectedHeight = height || 1024;
         const styleString = style && style !== 'none' ? `, ${style} style` : '';
         const fullPrompt = `${prompt.trim()}${styleString}`;
+
+        // Layer 4: AI Prompt Injection Guard
+        const promptCheck = firewall.inspectAIPrompt(fullPrompt, firewall.getClientIP(req));
+        if (!promptCheck.safe) {
+            return res.status(400).json({
+                success: false,
+                error: `🛡️ MindHelix AI Firewall: ${promptCheck.message}`,
+                securityIntervention: true,
+                layer: 4
+            });
+        }
         const apiKey = process.env.OPENROUTER_API_KEY;
 
         let imageUrl = null;
@@ -881,6 +931,59 @@ app.get("/api/neon-masking", async (req, res) => {
 app.get("/test", (req, res) => {
 
     res.send("TEST WORKING");
+});
+
+// ======================
+// 4-LAYER FIREWALL TELEMETRY & MANAGEMENT APIs
+// ======================
+
+app.get("/api/firewall/status", (req, res) => {
+    res.json(firewall.getMetrics());
+});
+
+app.get("/api/firewall/events", (req, res) => {
+    res.json({
+        success: true,
+        events: firewall.recentEvents
+    });
+});
+
+app.get("/api/firewall/rules", (req, res) => {
+    try {
+        const rulesPath = path.join(__dirname, "security", "firewall-rules.json");
+        if (fs.existsSync(rulesPath)) {
+            const data = JSON.parse(fs.readFileSync(rulesPath, "utf8"));
+            return res.json({ success: true, rules: data });
+        }
+    } catch (e) {}
+    res.json({ success: true, rules: firewall.getMetrics().layers });
+});
+
+app.post("/api/firewall/test", (req, res) => {
+    const { payload, layer } = req.body || {};
+    if (!payload) {
+        return res.status(400).json({ success: false, error: "Payload string required" });
+    }
+    const result = firewall.testPayload(payload, layer || "all");
+    res.json({ success: true, ...result });
+});
+
+app.post("/api/firewall/block-ip", (req, res) => {
+    const { ip, reason, durationMs } = req.body || {};
+    if (!ip) {
+        return res.status(400).json({ success: false, error: "IP address required" });
+    }
+    firewall.blockIP(ip, reason || "Manual administrator quarantine", durationMs || 3600000);
+    res.json({ success: true, message: `IP ${ip} quarantined`, bannedList: firewall.getBannedIPs() });
+});
+
+app.post("/api/firewall/unblock-ip", (req, res) => {
+    const { ip } = req.body || {};
+    if (!ip) {
+        return res.status(400).json({ success: false, error: "IP address required" });
+    }
+    const unblocked = firewall.unblockIP(ip);
+    res.json({ success: true, message: unblocked ? `IP ${ip} unblocked` : `IP ${ip} was not in quarantine` });
 });
 
 

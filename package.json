@@ -4,7 +4,8 @@
   "description": "MindHelix AI — Next-Gen Multi-Platform AI Automation, Conversational & Generative Image Synthesis Suite",
   "main": "server.js",
   "bin": {
-    "mindhelix": "./bin/mindhelix.js"
+    "mindhelix": "./bin/mindhelix.js",
+    "mindhelix-firewall": "./bin/firewall.js"
   },
   "repository": {
     "type": "git",
@@ -13,6 +14,9 @@
   "keywords": [
     "mindhelix",
     "ai",
+    "security",
+    "firewall",
+    "waf",
     "openrouter",
     "flux",
     "llm",
@@ -36,6 +40,7 @@
     "main.js",
     "worker.js",
     "bin",
+    "security",
     "utils",
     "www",
     "prisma",
@@ -49,8 +54,12 @@
   "scripts": {
     "start": "node server.js",
     "dev": "node server.js",
+    "firewall": "node bin/firewall.js",
+    "build:firewall": "node bin/firewall.js --build",
+    "test:firewall": "node bin/firewall.js --test",
+    "audit:firewall": "node bin/firewall.js --audit",
     "electron": "electron main.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node bin/firewall.js --test"
   },
   "type": "commonjs",
   "dependencies": {

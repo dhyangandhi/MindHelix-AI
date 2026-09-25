@@ -471,9 +471,40 @@ npm run dev
 # Start backend server in production mode
 npm start
 
+# Run 4-Layer Firewall Compiler & Attack Penetration Suite
+npm run firewall
+# or: npm test
+
+# Compile & generate cryptographic firewall policy hash
+npm run build:firewall
+
+# Generate comprehensive Security Audit Markdown Report
+npm run audit:firewall
+
 # Run native Windows desktop app (Electron)
 npm run electron
 
 # Sync mobile web assets with Android Studio (Capacitor)
 npx cap sync android
 ```
+
+---
+
+## 🛡️ 9. Enterprise 4-Layer Security Firewall Engine
+
+MindHelix AI features a comprehensive **4-Layer Defense-in-Depth Firewall Architecture** (`security/firewall.js` and `bin/firewall.js`) with an interactive real-time control center at `/firewall`:
+
+| Layer | Architecture Tier | Primary Protections |
+| :--- | :--- | :--- |
+| **Layer 1** | **Perimeter & Edge Shield** | Enterprise HTTP Headers (CSP, HSTS, X-Frame-Options, X-Content-Type), 180 req/min sliding-window rate limit, dynamic IP quarantine on DDoS bursts, HTTP method whitelist (blocks TRACE, TRACK, CONNECT). |
+| **Layer 2** | **Web App Firewall (WAF)** | Deep recursive query/body/header payload inspection against SQL Injection (UNION, tautologies, blind queries), Cross-Site Scripting (XSS), Directory & Path Traversal (`../../`, `%2e%2e`), and automated scanner bots (`sqlmap`, `nikto`). |
+| **Layer 3** | **Identity & Auth Shield** | 7-strike sliding-window brute-force lockout, account lockout mitigation, password entropy & complexity verification, timing-safe cryptographic comparisons (`crypto.timingSafeEqual`). |
+| **Layer 4** | **Data & AI Guardrails** | AI prompt injection & jailbreak interceptor (neutralizes "ignore previous instructions", DAN mode, system prompt leaks), egress data leak scrubber, AES-256-CBC zero-plaintext PII encryption, SHA-256 blind indexing, and dynamic PII masking. |
+
+### Live Firewall Control Center (`/firewall`)
+Access the interactive glassmorphism control center at `http://localhost:3000/firewall`:
+- **Real-time Telemetry:** Live counter of requests inspected, passed, and blocked per layer.
+- **Threat Interception Stream:** Real-time log of blocked attack vectors with severity badges.
+- **Attack Vector Simulator:** Interactive testing console to test SQLi, XSS, Path Traversal, and AI prompt injection vectors live.
+- **IP Quarantine Manager:** View and control quarantined IPs.
+

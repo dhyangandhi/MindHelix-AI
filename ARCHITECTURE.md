@@ -345,10 +345,122 @@ flowchart TD
 | `GET /` or `/home` | `sendFileSafe(home.html)` | Landing Page & Hero Section | Public |
 | `GET /e/:token` | `resolveRouteFile(decoded)` | Obfuscated Route Navigation | Base64URL + AES-256 Decrypt |
 | `GET /secure` | `resolveRouteFile(decrypt(token))`| Secure Parameter Navigation | AES-256-CBC Decrypt |
-| `POST /api/register` | `server.js` | User Registration | SHA-256 Email Hash, AES-256 PII, Bcrypt Passwords |
-| `POST /api/login` | `server.js` | User Authentication | SHA-256 Lookup, Bcrypt Compare, AES Decrypt Profile |
-| `POST /chat` | `server.js` | MindHelix AI Conversational Hub | OpenRouter Multi-Model Fallback Cascade |
-| `POST /api/generate-image` | `server.js` | AI Image Synthesis | OpenRouter FLUX Schnell + FLUX.1 Engine Fallback |
+| `GET /firewall` | `sendFileSafe(firewall.html)` | 4-Layer Security Control Center | Layer 1 Perimeter Protected |
+| `GET /api/firewall/status` | `firewall.getMetrics()` | Live Firewall Telemetry & Counters | Public / Admin Telemetry |
+| `GET /api/firewall/events` | `firewall.recentEvents` | Live Blocked Security Event Stream | Layer 1 Protected |
+| `POST /api/firewall/test` | `firewall.testPayload()` | Live Attack Vector Simulator | Layer 1-4 Deep Inspection |
+| `POST /api/firewall/block-ip` | `firewall.blockIP()` | Dynamic IP Quarantine Control | Admin Operation Guard |
+| `POST /api/firewall/unblock-ip`| `firewall.unblockIP()` | IP Quarantine Release | Admin Operation Guard |
+| `POST /api/register` | `server.js` | User Registration | L3 Entropy Guard, SHA-256 Hash, AES-256 PII, Bcrypt |
+| `POST /api/login` | `server.js` | User Authentication | L3 Brute-Force Shield, Bcrypt Compare, AES Decrypt |
+| `POST /chat` | `server.js` | MindHelix AI Conversational Hub | L4 Prompt Injection & Egress Leak Guard, Multi-Model |
+| `POST /api/generate-image` | `server.js` | AI Image Synthesis | L4 Prompt Injection Guard, FLUX.1 + OpenRouter |
 | `POST /forgot-password` | `server.js` | Reset Token Dispatch | UUID v4, 15-min TTL, Gmail Nodemailer |
 | `POST /reset-password` | `server.js` | Password Overwrite | Token Expiry Validation, Bcrypt Re-hash |
 | `GET /api/neon-masking`| `server.js` | Data Privacy Masking Audit | Decrypt -> Pattern Mask (`us***r@domain.com`) |
+
+---
+
+## 🛡️ 5. 4-Layer Defense-in-Depth Security Firewall Architecture
+
+MindHelix AI incorporates an enterprise-grade **4-Layer Security Firewall Engine** (`security/firewall.js` and `bin/firewall.js`), providing active defense across all platforms:
+
+```mermaid
+flowchart TD
+    Req(["Incoming Client Request (HTTP / HTTPS)"])
+
+    subgraph Layer1["🛡️ Layer 1: Perimeter & Edge Network Shield"]
+        L1_Headers["Enterprise Security Headers\n(CSP, HSTS, X-Frame-Options, X-Content-Type)"]
+        L1_RateLimit{"Sliding-Window Rate Limiter\n(180 req / 60s per IP)"}
+        L1_Method{"HTTP Method Whitelist\n(Block TRACE, TRACK, CONNECT)"}
+        L1_IPBan{"Dynamic IP Quarantine\n(Auto-ban on DDoS burst)"}
+    end
+
+    subgraph Layer2["🔥 Layer 2: Web Application Firewall (WAF)"]
+        L2_Parser["Deep Payload Unpacker\n(Query, URL Params, Body, Headers)"]
+        L2_SQLi{"SQL Injection Filter\n(UNION, Tautologies, Blind pg_sleep)"}
+        L2_XSS{"XSS & Script Injection Filter\n(<script>, event handlers, <iframe>)"}
+        L2_Traversal{"Path Traversal Neutralizer\n(../../, %2e%2e, null byte %00)"}
+        L2_Bot{"Scanner & Bad Bot Interceptor\n(sqlmap, nikto, wpscan)"}
+    end
+
+    subgraph Layer3["👤 Layer 3: Authentication & Identity Firewall"]
+        L3_BruteForce{"7-Strike Brute-Force Shield\n(15-min sliding lockout)"}
+        L3_Entropy{"Password Entropy Verifier\n(Length, character sets, entropy score)"}
+        L3_Timing["Timing-Safe Cryptography\n(crypto.timingSafeEqual comparison)"]
+        L3_RouteAuth["Obfuscated Route Token Verifier\n(AES-256 / Base64URL tamper check)"]
+    end
+
+    subgraph Layer4["🧠 Layer 4: Data Cryptography & AI Guardrail Firewall"]
+        L4_Prompt{"AI Prompt Injection & Jailbreak Guard\n('ignore previous instructions', DAN mode, system prompt leak)"}
+        L4_Crypto["Zero-Plaintext Persistence\n(AES-256-CBC PII + SHA-256 Blind Indexing)"]
+        L4_Masking["Dynamic PII Data Masking\n(Admin views & audit logs redaction)"]
+        L4_Egress{"AI Egress Leak Scrubber\n(Scans responses for DB strings & API keys)"}
+    end
+
+    AppController[("🚀 Controller / Neon DB / OpenRouter AI")]
+    Reject(["🚫 HTTP 400/403/405/429 Blocked Response\n(Telemetry Event Logged)"])
+
+    Req --> L1_Headers
+    L1_Headers --> L1_Method
+    L1_Method -- Invalid Method --> Reject
+    L1_Method -- Valid --> L1_IPBan
+    L1_IPBan -- Quarantined IP --> Reject
+    L1_IPBan -- Clear --> L1_RateLimit
+    L1_RateLimit -- Rate Exceeded --> Reject
+
+    L1_RateLimit -- Passed L1 --> L2_Parser
+    L2_Parser --> L2_SQLi
+    L2_SQLi -- Malicious Pattern --> Reject
+    L2_SQLi -- Clean --> L2_XSS
+    L2_XSS -- Malicious Script --> Reject
+    L2_XSS -- Clean --> L2_Traversal
+    L2_Traversal -- Traversal Attempt --> Reject
+    L2_Traversal -- Clean --> L2_Bot
+    L2_Bot -- Scanner Found --> Reject
+
+    L2_Bot -- Passed L2 --> L3_BruteForce
+    L3_BruteForce -- Locked Out --> Reject
+    L3_BruteForce -- Permitted --> L3_Entropy
+    L3_Entropy -- Weak Password --> Reject
+    L3_Entropy -- Valid --> L3_Timing & L3_RouteAuth
+
+    L3_Timing & L3_RouteAuth -- Passed L3 --> L4_Prompt
+    L4_Prompt -- Jailbreak Attempt --> Reject
+    L4_Prompt -- Clean Prompt --> AppController
+    AppController --> L4_Crypto & L4_Masking
+    AppController --> L4_Egress
+    L4_Egress -- Scrubbed Safe Output --> Output(["Client Clean Response (200 OK)"])
+```
+
+### 4-Layer Defense Capabilities
+
+| Layer | Component | Defense Mechanisms | Threat Mitigations |
+| :--- | :--- | :--- | :--- |
+| **Layer 1** | **Perimeter & Edge Shield** | CSP, HSTS, X-Frame-Options, 180 req/min rate limit, IP Quarantining, Method filter | DDoS floods, clickjacking, MIME sniffing, protocol abuse |
+| **Layer 2** | **Web App Firewall (WAF)** | Recursive payload scanning, regex signature heuristics for SQLi, XSS, Path Traversal | SQL Injection, Stored/Reflected XSS, Directory Traversal, automated scanners |
+| **Layer 3** | **Identity & Auth Shield** | 7-strike sliding-window lockout, password entropy calculator, constant-time compare | Brute-force attacks, credential stuffing, side-channel timing attacks |
+| **Layer 4** | **Data & AI Guardrails** | AI prompt injection detector, jailbreak interceptor, egress credential scrubber, AES-256-CBC | Prompt injections, system prompt extraction, credential leaks, plaintext PII leaks |
+
+---
+
+## 🔨 6. Firewall Build & Verification Pipeline
+
+MindHelix AI includes a dedicated CLI build tool (`bin/firewall.js`):
+
+```bash
+# 1. Compile & Hash the Firewall Rule Matrix
+npm run build:firewall
+# or: node bin/firewall.js --build
+
+# 2. Execute Automated 16-Vector Attack Penetration Test Suite
+npm run test:firewall
+# or: npm test
+
+# 3. Generate Formal Security Audit Markdown Report
+npm run audit:firewall
+
+# 4. View Real-Time Defense Telemetry
+node bin/firewall.js --status
+```
+
