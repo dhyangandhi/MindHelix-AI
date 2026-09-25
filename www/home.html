@@ -1,35 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
     <title>MindHelix AI | Next-Gen Intelligent AI Platform</title>
-    <meta name="description" content="Experience the power of MindHelix AI. Conversational AI, intelligent automation, smart analytics, and seamless workflows.">
-    
+    <meta name="description"
+        content="Experience the power of MindHelix AI. Conversational AI, intelligent automation, smart analytics, and seamless workflows.">
+
     <!-- Google Fonts & FontAwesome / Boxicons -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    
+
     <!-- Custom & Responsive Stylesheets -->
     <link rel="stylesheet" href="home.css">
     <link rel="stylesheet" href="responsive.css">
     <script src="responsive.js" defer></script>
 </head>
+
 <body>
+
+    <!-- TOP SCROLL PROGRESS BAR -->
+    <div id="scrollProgressBar" class="scroll-progress-bar"></div>
 
     <!-- WELCOME SPLASH SCREEN OVERLAY -->
     <div class="welcome-overlay" id="welcomeOverlay">
-        <script>if(sessionStorage.getItem('welcomeShown')){document.write('<style>#welcomeOverlay{display:none!important;}</style>');}</script>
+        <script>if (sessionStorage.getItem('welcomeShown')) { document.write('<style>#welcomeOverlay{display:none!important;}</style>'); }</script>
         <div class="welcome-card">
             <div class="welcome-logo">
                 <img src="logo.svg" alt="MindHelix AI Logo">
             </div>
-            <h2 class="welcome-title">Welcome to Mind<span style="background: linear-gradient(135deg, #ff8a65, #ff5e36); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Helix</span></h2>
+            <h2 class="welcome-title">Welcome to Mind<span
+                    style="background: linear-gradient(135deg, #ff8a65, #ff5e36); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Helix</span>
+            </h2>
             <p class="welcome-desc">Next-Gen Intelligent AI Platform & Neural Workflows</p>
-            
+
             <div class="welcome-progress-bar">
                 <div class="welcome-progress-fill" id="welcomeProgress"></div>
             </div>
@@ -39,6 +49,12 @@
             </button>
         </div>
     </div>
+
+    <!-- INTERACTIVE NEURAL PARTICLES CANVAS -->
+    <canvas id="neuralCanvas" class="neural-canvas"></canvas>
+
+    <!-- AMBIENT CURSOR GLOW -->
+    <div id="cursorGlow" class="cursor-glow"></div>
 
     <!-- BACKGROUND GLOW EFFECTS -->
     <div class="bg-ambient">
@@ -62,15 +78,14 @@
             <li class="nav-link"><a href="#features">Features</a></li>
             <li class="nav-link"><a href="#how-it-works">How It Works</a></li>
             <li class="nav-link"><a href="#demo">AI Demo</a></li>
-            <li class="nav-link"><a href="/firewall"><i class="bx bxs-shield"></i> Firewall</a></li>
             <li class="nav-link"><a href="Contact.html">Contact</a></li>
         </ul>
 
         <div class="nav-actions">
-            <a href="login.html" class="btn btn-glass" id="navLoginBtn">
+            <a href="login.html" class="btn btn-glass magnetic-btn" id="navLoginBtn">
                 <i class="bx bxs-lock-open-alt"></i> Login
             </a>
-            <a href="register.html" class="btn btn-primary" id="navRegisterBtn">
+            <a href="register.html" class="btn btn-primary magnetic-btn" id="navRegisterBtn">
                 <i class="bx bxs-user-plus"></i> Get Started
             </a>
         </div>
@@ -81,42 +96,44 @@
         <div class="hero-content">
             <div class="badge-pill">
                 <span class="badge-dot"></span>
-                <span>✨ MINDHELIX AI v2.0 • Intelligent Solutions</span>
+                <span>✨ MINDHELIX AI v2.5 • Next-Gen Neural Workflows</span>
+                <span class="badge-tag">PRO</span>
             </div>
 
             <h1 class="hero-title">
-                Transform Your Work with <span class="gradient-text">Intelligent AI</span>
+                Transform Your Work with <span class="animated-word-wrapper"><span class="gradient-text animated-word" id="animatedWord">Intelligent AI</span></span>
             </h1>
 
             <p class="hero-description">
-                Unlock the future of conversational intelligence, automated tasks, real-time analytics, and high-performance neural workflows—all designed to elevate your productivity.
+                Unlock the future of conversational intelligence, automated tasks, real-time analytics, and
+                high-performance neural workflows—all designed to elevate your productivity.
             </p>
 
             <div class="hero-cta">
-                <a href="login.html" class="btn btn-primary btn-lg">
+                <a href="login.html" class="btn btn-primary btn-lg magnetic-btn">
                     <i class="bx bxs-log-in-circle"></i> Login to Account
                 </a>
                 <span class="cta-or">OR</span>
-                <a href="register.html" class="btn btn-glass btn-lg">
+                <a href="register.html" class="btn btn-glass btn-lg magnetic-btn">
                     <i class="bx bxs-user-plus"></i> Create Free Account
                 </a>
                 <span class="cta-or">OR</span>
-                <a href="ai.html" id="tryAiAssistantBtn" class="btn btn-glow btn-lg" onclick="handleTryAiClick(event)">
+                <a href="ai.html" id="tryAiAssistantBtn" class="btn btn-glow btn-lg magnetic-btn" onclick="handleTryAiClick(event)">
                     <i class="fa-solid fa-robot"></i> Try AI Assistant Now
                 </a>
             </div>
 
             <div class="hero-stats-row">
                 <div class="stat-item">
-                    <h4>99.9%</h4>
+                    <h4 id="statUptime" data-target="99.9" data-suffix="%">99.9%</h4>
                     <p>Uptime & Reliability</p>
                 </div>
                 <div class="stat-item">
-                    <h4>50K+</h4>
+                    <h4 id="statUsers" data-target="50" data-suffix="K+">50K+</h4>
                     <p>Active Users</p>
                 </div>
                 <div class="stat-item">
-                    <h4>&lt;50ms</h4>
+                    <h4 id="statLatency" data-target="18" data-prefix="<" data-suffix="ms">&lt;18ms</h4>
                     <p>Response Latency</p>
                 </div>
             </div>
@@ -136,7 +153,7 @@
             </div>
 
             <!-- Main Mockup Container -->
-            <div class="hero-card">
+            <div class="hero-card tilt-card" id="heroCard">
                 <div class="card-header">
                     <div class="window-dots">
                         <span class="dot dot-red"></span>
@@ -155,14 +172,16 @@
 
                     <div class="chat-bubble ai">
                         <i class="fa-solid fa-sparkles" style="color: #ff8a65; margin-right: 6px;"></i>
-                        <strong>MindHelix AI:</strong> Absolutely! Your dashboard shows a <strong>34% increase</strong> in user engagement this week. All API endpoints are performing at 100% operational status.
+                        <strong>MindHelix AI:</strong> Absolutely! Your dashboard shows a <strong>34% increase</strong>
+                        in user engagement this week. All API endpoints are performing at 100% operational status.
                     </div>
 
                     <div class="ai-typing">
                         <span class="typing-dot"></span>
                         <span class="typing-dot"></span>
                         <span class="typing-dot"></span>
-                        <span style="font-size: 12px; color: #94a3b8; margin-left: 6px;">AI is generating analysis...</span>
+                        <span style="font-size: 12px; color: #94a3b8; margin-left: 6px;">AI is generating
+                            analysis...</span>
                     </div>
                 </div>
             </div>
@@ -180,138 +199,212 @@
         </div>
     </section>
 
+    <!-- ANIMATED INFINITE TECH MARQUEE RIBBON -->
+    <div class="marquee-strip">
+        <div class="marquee-track">
+            <div class="marquee-content">
+                <span class="marquee-item"><i class="fa-solid fa-brain"></i> Neural LLM Engine</span>
+                <span class="marquee-item"><i class="fa-solid fa-bolt"></i> 18ms Edge Inference</span>
+                <span class="marquee-item"><i class="fa-solid fa-shield-halved"></i> 4-Layer Defense Guard</span>
+                <span class="marquee-item"><i class="fa-solid fa-lock"></i> Zero-Plaintext AES-256</span>
+                <span class="marquee-item"><i class="fa-solid fa-network-wired"></i> Distributed WebSockets</span>
+                <span class="marquee-item"><i class="fa-solid fa-wand-magic-sparkles"></i> Autonomous AI Workflows</span>
+                <span class="marquee-item"><i class="fa-solid fa-code"></i> Developer API & SDK</span>
+            </div>
+            <div class="marquee-content" aria-hidden="true">
+                <span class="marquee-item"><i class="fa-solid fa-brain"></i> Neural LLM Engine</span>
+                <span class="marquee-item"><i class="fa-solid fa-bolt"></i> 18ms Edge Inference</span>
+                <span class="marquee-item"><i class="fa-solid fa-shield-halved"></i> 4-Layer Defense Guard</span>
+                <span class="marquee-item"><i class="fa-solid fa-lock"></i> Zero-Plaintext AES-256</span>
+                <span class="marquee-item"><i class="fa-solid fa-network-wired"></i> Distributed WebSockets</span>
+                <span class="marquee-item"><i class="fa-solid fa-wand-magic-sparkles"></i> Autonomous AI Workflows</span>
+                <span class="marquee-item"><i class="fa-solid fa-code"></i> Developer API & SDK</span>
+            </div>
+        </div>
+    </div>
+
     <!-- FEATURES SECTION -->
     <section class="section" id="features">
-        <div class="section-header">
+        <div class="section-header reveal">
             <span class="section-subtitle">Powerful Features</span>
             <h2 class="section-title">Built for Speed, Security & Scalability</h2>
-            <p class="section-desc">Discover the cutting-edge suite of tools engineered to make complex tasks simple and instantaneous.</p>
+            <p class="section-desc">Discover the cutting-edge suite of tools engineered to make complex tasks simple and
+                instantaneous.</p>
         </div>
 
         <div class="features-grid">
             <!-- Feature 1 -->
-            <div class="feature-card">
-                <div class="feature-icon">
-                    <i class="fa-solid fa-comments"></i>
+            <div class="feature-card tilt-card reveal delay-1">
+                <div class="feature-top">
+                    <div class="feature-icon">
+                        <i class="fa-solid fa-comments"></i>
+                    </div>
+                    <span class="feature-badge">CORE AI</span>
                 </div>
                 <h3 class="feature-title">Smart Conversational AI</h3>
-                <p class="feature-text">Engage in natural, intelligent dialogues with an AI context memory built to solve complex problems and answer queries instantly.</p>
+                <p class="feature-text">Engage in natural, intelligent dialogues with an AI context memory built to
+                    solve complex problems and answer queries instantly.</p>
             </div>
 
             <!-- Feature 2 -->
-            <div class="feature-card">
-                <div class="feature-icon">
-                    <i class="fa-solid fa-chart-line"></i>
+            <div class="feature-card tilt-card reveal delay-2">
+                <div class="feature-top">
+                    <div class="feature-icon">
+                        <i class="fa-solid fa-chart-line"></i>
+                    </div>
+                    <span class="feature-badge">ANALYTICS</span>
                 </div>
                 <h3 class="feature-title">Real-Time Analytics</h3>
-                <p class="feature-text">Track metrics, user activity, and AI token usages effortlessly through an intuitive interactive live dashboard.</p>
+                <p class="feature-text">Track metrics, user activity, and AI token usages effortlessly through an
+                    intuitive interactive live dashboard.</p>
             </div>
 
             <!-- Feature 3 -->
-            <div class="feature-card">
-                <div class="feature-icon">
-                    <i class="fa-solid fa-shield-virus"></i>
+            <div class="feature-card tilt-card reveal delay-3">
+                <div class="feature-top">
+                    <div class="feature-icon">
+                        <i class="fa-solid fa-shield-virus"></i>
+                    </div>
+                    <span class="feature-badge">SECURITY</span>
                 </div>
                 <h3 class="feature-title">Enterprise Security</h3>
-                <p class="feature-text">Your privacy is top priority. Built with AES-256 encryption, hashed authentication, and zero third-party data tracking.</p>
+                <p class="feature-text">Your privacy is top priority. Built with AES-256 encryption, hashed
+                    authentication, and zero third-party data tracking.</p>
             </div>
 
             <!-- Feature 4 -->
-            <div class="feature-card">
-                <div class="feature-icon">
-                    <i class="fa-solid fa-bolt"></i>
+            <div class="feature-card tilt-card reveal delay-1">
+                <div class="feature-top">
+                    <div class="feature-icon">
+                        <i class="fa-solid fa-bolt"></i>
+                    </div>
+                    <span class="feature-badge">SPEED</span>
                 </div>
                 <h3 class="feature-title">Instant Response Time</h3>
-                <p class="feature-text">Powered by ultra-optimized streaming web servers to deliver lightning fast code generation and textual answers.</p>
+                <p class="feature-text">Powered by ultra-optimized streaming web servers to deliver lightning fast code
+                    generation and textual answers.</p>
             </div>
 
             <!-- Feature 5 -->
-            <div class="feature-card">
-                <div class="feature-icon">
-                    <i class="fa-solid fa-laptop-code"></i>
+            <div class="feature-card tilt-card reveal delay-2">
+                <div class="feature-top">
+                    <div class="feature-icon">
+                        <i class="fa-solid fa-laptop-code"></i>
+                    </div>
+                    <span class="feature-badge">DEV API</span>
                 </div>
                 <h3 class="feature-title">Developer Friendly</h3>
-                <p class="feature-text">Seamless REST API integration, flexible database connectivity, and comprehensive backend documentation.</p>
+                <p class="feature-text">Seamless REST API integration, flexible database connectivity, and comprehensive
+                    backend documentation.</p>
             </div>
 
             <!-- Feature 6 -->
-            <div class="feature-card">
-                <div class="feature-icon">
-                    <i class="fa-solid fa-wand-magic-sparkles"></i>
+            <div class="feature-card tilt-card reveal delay-3">
+                <div class="feature-top">
+                    <div class="feature-icon">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i>
+                    </div>
+                    <span class="feature-badge">WORKFLOWS</span>
                 </div>
                 <h3 class="feature-title">Customizable Workflows</h3>
-                <p class="feature-text">Tailor system prompts, UI themes, and AI personas to fit your organization's exact operational requirements.</p>
+                <p class="feature-text">Tailor system prompts, UI themes, and AI personas to fit your organization's
+                    exact operational requirements.</p>
             </div>
         </div>
     </section>
 
     <!-- HOW IT WORKS SECTION -->
     <section class="section" id="how-it-works">
-        <div class="section-header">
+        <div class="section-header reveal">
             <span class="section-subtitle">Simple Setup</span>
             <h2 class="section-title">Get Started in 3 Easy Steps</h2>
-            <p class="section-desc">Experience seamless onboarding designed to get you up and running within seconds.</p>
+            <p class="section-desc">Experience seamless onboarding designed to get you up and running within seconds.
+            </p>
         </div>
 
         <div class="steps-container">
-            <div class="step-card">
+            <div class="step-card tilt-card reveal delay-1">
                 <div class="step-number">01</div>
                 <h3 class="step-title">Create Account</h3>
-                <p class="step-desc">Sign up with your credentials in seconds. No lengthy forms or complex verification steps required.</p>
+                <p class="step-desc">Sign up with your credentials in seconds. No lengthy forms or complex verification
+                    steps required.</p>
             </div>
 
-            <div class="step-card">
+            <div class="step-card tilt-card reveal delay-2">
                 <div class="step-number">02</div>
                 <h3 class="step-title">Access AI Suite</h3>
-                <p class="step-desc">Log into your personalized glassmorphic workspace and access our full suite of AI tools & analytics.</p>
+                <p class="step-desc">Log into your personalized glassmorphic workspace and access our full suite of AI
+                    tools & analytics.</p>
             </div>
 
-            <div class="step-card">
+            <div class="step-card tilt-card reveal delay-3">
                 <div class="step-number">03</div>
                 <h3 class="step-title">Scale Productivity</h3>
-                <p class="step-desc">Automate your workflow, chat with intelligent models, and accelerate your business growth effortlessly.</p>
+                <p class="step-desc">Automate your workflow, chat with intelligent models, and accelerate your business
+                    growth effortlessly.</p>
             </div>
         </div>
     </section>
 
     <!-- DEMO & INTERACTIVE PREVIEW SECTION -->
     <section class="section" id="demo">
-        <div class="demo-box">
+        <div class="demo-box reveal">
             <div class="demo-info">
+                <span class="section-subtitle"><i class="fa-solid fa-bolt"></i> Interactive Playground</span>
                 <h3>Ready to Experience MindHelix AI?</h3>
-                <p>Try our interactive AI interface right now or explore the full management dashboard.</p>
+                <p>Try our neural interactive interface below. Select an intelligent prompt or type your custom instruction to test live streaming generation.</p>
+
+                <div class="demo-prompt-chips">
+                    <button type="button" class="prompt-chip" onclick="runDemoPrompt('summarize')"><i class="fa-solid fa-chart-pie"></i> Summarize Metrics</button>
+                    <button type="button" class="prompt-chip" onclick="runDemoPrompt('pipeline')"><i class="fa-solid fa-code-merge"></i> Neural Pipeline</button>
+                    <button type="button" class="prompt-chip" onclick="runDemoPrompt('security')"><i class="fa-solid fa-shield-halved"></i> Security Audit</button>
+                    <button type="button" class="prompt-chip" onclick="runDemoPrompt('pitch')"><i class="fa-solid fa-lightbulb"></i> Product Pitch</button>
+                </div>
 
                 <ul class="demo-list">
-                    <li><i class="fa-solid fa-circle-check"></i> Instant Login & Session Persistence</li>
-                    <li><i class="fa-solid fa-circle-check"></i> Clean Glassmorphism User Interface</li>
-                    <li><i class="fa-solid fa-circle-check"></i> 100% Mobile & Desktop Responsive</li>
+                    <li><i class="fa-solid fa-circle-check"></i> Sub-50ms Neural Streaming Engine</li>
+                    <li><i class="fa-solid fa-circle-check"></i> AES-256 Multi-Layer Cryptographic Security</li>
+                    <li><i class="fa-solid fa-circle-check"></i> 100% Responsive Glassmorphism Canvas</li>
                 </ul>
 
                 <div style="display: flex; gap: 14px; flex-wrap: wrap;">
-                    <a href="login.html" class="btn btn-primary">
-                        <i class="bx bxs-key"></i> Go to Login Page
+                    <a href="login.html" class="btn btn-primary magnetic-btn">
+                        <i class="bx bxs-key"></i> Launch Full Platform
+                    </a>
+                    <a href="ai.html" class="btn btn-glass magnetic-btn" onclick="handleTryAiClick(event)">
+                        <i class="fa-solid fa-robot"></i> Open AI Studio
                     </a>
                 </div>
             </div>
 
-            <div class="demo-preview-card">
+            <div class="demo-preview-card tilt-card" id="demoPreviewCard">
                 <div class="preview-tabs">
-                    <button class="tab-btn active" onclick="switchTab(this, 'chat')">AI Assistant</button>
-                    <button class="tab-btn" onclick="switchTab(this, 'security')">Security</button>
+                    <button type="button" class="tab-btn active" id="tabBtnChat" onclick="switchTab(this, 'chat')"><i class="fa-solid fa-message"></i> Neural Assistant</button>
+                    <button type="button" class="tab-btn" id="tabBtnSec" onclick="switchTab(this, 'security')"><i class="fa-solid fa-shield-halved"></i> Security Shield</button>
+                    <div class="preview-badge"><span class="live-dot"></span> LIVE TELEMETRY</div>
                 </div>
 
                 <div class="preview-content" id="previewContent">
-                    <div class="chat-bubble user" style="margin-bottom: 10px;">
-                        What makes MindHelix AI unique?
+                    <div class="demo-messages-area" id="demoMessagesArea">
+                        <div class="chat-bubble user" id="demoUserBubble">
+                            What makes MindHelix AI unique?
+                        </div>
+                        <div class="chat-bubble ai" id="demoAiBubble">
+                            <i class="fa-solid fa-sparkles" style="color: #ff5e36; margin-right: 6px;"></i>
+                            <span id="demoAiText">MindHelix AI combines ultra-fast neural models, glassmorphic design elegance, and robust 4-layer server security in one unified platform!</span>
+                        </div>
                     </div>
-                    <div class="chat-bubble ai">
-                        <i class="fa-solid fa-fire" style="color: #ff5e36; margin-right: 6px;"></i>
-                        MindHelix AI combines ultra-fast neural models, glassmorphic design elegance, and robust server security in one unified platform!
+
+                    <div class="demo-metrics-bar" id="demoMetricsBar">
+                        <span><i class="fa-solid fa-bolt"></i> Latency: <strong id="demoLatency">18ms</strong></span>
+                        <span><i class="fa-solid fa-microchip"></i> Engine: <strong>MindHelix Neural v2.5</strong></span>
+                        <button type="button" onclick="copyDemoResponse()" style="background: transparent; border: none; color: #ff8a65; cursor: pointer; font-size: 11px; display: inline-flex; align-items: center; gap: 4px;" id="copyBtn"><i class="fa-solid fa-copy"></i> Copy</button>
                     </div>
-                    <div class="prompt-bar" style="margin-top: 15px;">
-                        <span>Type your prompt here...</span>
-                        <div class="send-icon"><i class="fa-solid fa-paper-plane"></i></div>
-                    </div>
+
+                    <form class="prompt-bar" id="demoPromptForm" onsubmit="handleDemoSubmit(event)">
+                        <input type="text" id="demoPromptInput" placeholder="Ask MindHelix AI anything or click a prompt above..." autocomplete="off">
+                        <button type="submit" class="send-icon" aria-label="Send prompt"><i class="fa-solid fa-paper-plane"></i></button>
+                    </form>
                 </div>
             </div>
         </div>
@@ -319,18 +412,20 @@
 
     <!-- TESTIMONIALS SECTION -->
     <section class="section">
-        <div class="section-header">
+        <div class="section-header reveal">
             <span class="section-subtitle">User Feedback</span>
             <h2 class="section-title">Trusted by Innovators</h2>
             <p class="section-desc">Here is what developers, creators, and teams say about our platform.</p>
         </div>
 
         <div class="testimonials-grid">
-            <div class="testimonial-card">
+            <div class="testimonial-card tilt-card reveal delay-1">
                 <div class="stars">
-                    <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i
+                        class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
                 </div>
-                <p class="testimonial-quote">"The UI is absolutely stunning! Glassmorphism combined with ultra-fast AI responses has drastically sped up our team workflow."</p>
+                <p class="testimonial-quote">"The UI is absolutely stunning! Glassmorphism combined with ultra-fast AI
+                    responses has drastically sped up our team workflow."</p>
                 <div class="user-meta">
                     <img src="profile-1.jpg" alt="User Avatar" class="user-avatar">
                     <div class="user-info">
@@ -340,11 +435,13 @@
                 </div>
             </div>
 
-            <div class="testimonial-card">
+            <div class="testimonial-card tilt-card reveal delay-2">
                 <div class="stars">
-                    <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i
+                        class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
                 </div>
-                <p class="testimonial-quote">"Effortless login experience, clean codebase, and top-tier AI performance. MindHelix AI is our go-to solution!"</p>
+                <p class="testimonial-quote">"Effortless login experience, clean codebase, and top-tier AI performance.
+                    MindHelix AI is our go-to solution!"</p>
                 <div class="user-meta">
                     <img src="profile-2.jpg" alt="User Avatar" class="user-avatar">
                     <div class="user-info">
@@ -354,11 +451,13 @@
                 </div>
             </div>
 
-            <div class="testimonial-card">
+            <div class="testimonial-card tilt-card reveal delay-3">
                 <div class="stars">
-                    <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i
+                        class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
                 </div>
-                <p class="testimonial-quote">"I love how smooth the navigation is from the home page straight into login and AI features. Highly recommended!"</p>
+                <p class="testimonial-quote">"I love how smooth the navigation is from the home page straight into login
+                    and AI features. Highly recommended!"</p>
                 <div class="user-meta">
                     <img src="profile-3.jpg" alt="User Avatar" class="user-avatar">
                     <div class="user-info">
@@ -372,15 +471,16 @@
 
     <!-- CALL TO ACTION BANNER -->
     <section class="section" style="padding-bottom: 0;">
-        <div class="cta-banner">
+        <div class="cta-banner reveal">
             <h2>Ready to Elevate Your AI Experience?</h2>
-            <p>Join thousands of users who rely on MindHelix AI for intelligent automation, chat, and analytics every single day.</p>
+            <p>Join thousands of users who rely on MindHelix AI for intelligent automation, chat, and analytics every
+                single day.</p>
             <div style="display: flex; gap: 16px; justify-content: center; align-items: center; flex-wrap: wrap;">
-                <a href="login.html" class="btn btn-primary btn-lg">
+                <a href="login.html" class="btn btn-primary btn-lg magnetic-btn">
                     <i class="bx bxs-user-check"></i> Login Now
                 </a>
                 <span class="cta-or">OR</span>
-                <a href="register.html" class="btn btn-glass btn-lg">
+                <a href="register.html" class="btn btn-glass btn-lg magnetic-btn">
                     <i class="bx bxs-rocket"></i> Register Free Account
                 </a>
             </div>
@@ -391,19 +491,20 @@
     <footer class="footer">
         <div class="footer-container">
             <div class="footer-brand">
-                <a href="index.html" class="brand">
+                <a href="home.html" class="brand">
                     <div class="brand-icon">
                         <img src="logo.svg" alt="MindHelix AI Logo">
                     </div>
                     <div class="brand-text">Mind<span>Helix</span></div>
                 </a>
-                <p>Empowering individuals and teams with next-generation artificial intelligence and modern web experiences.</p>
+                <p>Empowering individuals and teams with next-generation artificial intelligence and modern web
+                    experiences.</p>
             </div>
 
             <div class="footer-col">
                 <h4>Navigation</h4>
                 <ul class="footer-links">
-                    <li><a href="index.html">Home</a></li>
+                    <li><a href="home.html">Home</a></li>
                     <li><a href="login.html">Login</a></li>
                     <li><a href="register.html">Register</a></li>
                 </ul>
@@ -438,55 +539,250 @@
         </div>
     </footer>
 
+    <!-- BACK TO TOP BUTTON -->
+    <button type="button" class="back-to-top-btn" id="backToTopBtn" onclick="scrollToTop()" aria-label="Back to top">
+        <i class="fa-solid fa-arrow-up"></i>
+    </button>
+
     <!-- INTERACTIVE JAVASCRIPT -->
     <script>
-        // Navbar Scroll Effect
-        window.addEventListener('scroll', function() {
+        // 1. Navbar Scroll Effect & Scroll Progress Bar
+        window.addEventListener('scroll', function () {
             const nav = document.getElementById('navbar');
             if (window.scrollY > 50) {
                 nav.classList.add('scrolled');
             } else {
                 nav.classList.remove('scrolled');
             }
+
+            // Top Scroll Progress Bar
+            const scrollBar = document.getElementById('scrollProgressBar');
+            if (scrollBar) {
+                const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
+                const progress = totalHeight > 0 ? (window.scrollY / totalHeight) * 100 : 0;
+                scrollBar.style.width = progress + '%';
+            }
+
+            // Back to Top Button Visibility
+            const backBtn = document.getElementById('backToTopBtn');
+            if (backBtn) {
+                if (window.scrollY > 350) {
+                    backBtn.classList.add('visible');
+                } else {
+                    backBtn.classList.remove('visible');
+                }
+            }
         });
 
-        // Tab Switcher for Demo Preview
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // 2. Interactive Mouse Spotlight Glow on Cards
+        document.querySelectorAll('.feature-card, .step-card, .demo-box, .hero-card').forEach(card => {
+            card.addEventListener('mousemove', e => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                card.style.setProperty('--mouse-x', `${x}px`);
+                card.style.setProperty('--mouse-y', `${y}px`);
+            });
+        });
+
+        // 3. Interactive AI Demo Playground Generator
+        const demoPrompts = {
+            summarize: {
+                prompt: "Summarize our quarterly performance and highlight key growth metrics.",
+                response: "⚡ **Quarterly Executive Summary**\n• User Growth: +142% MoM (52,400 active sessions)\n• Neural API Latency: 22ms p95 across distributed edge nodes\n• System Availability: 99.98% SLA maintained\n• Cost Optimization: 38% reduction in inference overhead with neural caching.",
+                latency: "19ms",
+                tokens: "184 tokens/s"
+            },
+            pipeline: {
+                prompt: "Generate an automated neural processing pipeline for user data ingestion.",
+                response: "🧠 **Neural Pipeline Architecture (v2.5)**\nexport const IngestionStream = definePipeline({\n  source: 'edge.event_bus',\n  guardrails: [Firewall.inspect(), RedactPII()],\n  model: 'mindhelix-neural-fast',\n  sink: 'analytics.vector_store'\n});\nPipeline compiled with zero-leak cryptographic enforcement.",
+                latency: "24ms",
+                tokens: "210 tokens/s"
+            },
+            security: {
+                prompt: "Run an audit on system security guardrails and perimeter defense rules.",
+                response: "🛡️ **MindHelix 4-Layer Defense Status**\n• Layer 1 (Perimeter): Rate limits & HTTP methods: ENFORCED\n• Layer 2 (WAF): SQLi, XSS, Path Traversal signatures: 100% BLOCKED\n• Layer 3 (Identity): Timing-safe brute-force lockout: ACTIVE\n• Layer 4 (AI Shield): Zero-Plaintext AES-256-CBC cipher: ARMED\nAll 16 attack simulation vectors tested successfully.",
+                latency: "16ms",
+                tokens: "165 tokens/s"
+            },
+            pitch: {
+                prompt: "Draft an elevator pitch for enterprise teams considering MindHelix AI.",
+                response: "💡 **Enterprise Value Proposition**\n\"MindHelix AI delivers next-generation neural intelligence wrapped in military-grade 4-layer security. Accelerate engineering output, automate complex workflows, and safeguard proprietary data with sub-50ms conversational streaming.\"",
+                latency: "21ms",
+                tokens: "195 tokens/s"
+            }
+        };
+
+        let isStreaming = false;
+
+        function runDemoPrompt(key) {
+            const item = demoPrompts[key];
+            if (!item || isStreaming) return;
+
+            const chatTabBtn = document.getElementById('tabBtnChat');
+            if (chatTabBtn && !chatTabBtn.classList.contains('active')) {
+                switchTab(chatTabBtn, 'chat');
+            }
+
+            const userBubble = document.getElementById('demoUserBubble');
+            const latencyEl = document.getElementById('demoLatency');
+
+            if (userBubble) userBubble.textContent = item.prompt;
+            if (latencyEl) latencyEl.textContent = item.latency;
+
+            streamAiResponse(item.response);
+        }
+
+        function handleDemoSubmit(e) {
+            if (e) e.preventDefault();
+            const input = document.getElementById('demoPromptInput');
+            if (!input || !input.value.trim() || isStreaming) return;
+
+            const userPrompt = input.value.trim();
+            input.value = '';
+
+            const userBubble = document.getElementById('demoUserBubble');
+            if (userBubble) userBubble.textContent = userPrompt;
+
+            const customReply = `⚡ **MindHelix Neural Response**\nI've analyzed your instruction: "${userPrompt}". All automated parameters have been orchestrated with 99.9% confidence and deep contextual memory. Ready to deploy to your production workspace!`;
+            streamAiResponse(customReply);
+        }
+
+        function streamAiResponse(fullText) {
+            isStreaming = true;
+            const aiText = document.getElementById('demoAiText');
+            if (!aiText) {
+                isStreaming = false;
+                return;
+            }
+
+            aiText.innerHTML = '';
+            const formatted = fullText.replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\n/g, "<br>");
+            let i = 0;
+            const speed = 14;
+            aiText.innerHTML = '<span class="typing-cursor"></span>';
+
+            const interval = setInterval(() => {
+                if (i < formatted.length) {
+                    aiText.innerHTML = formatted.slice(0, i + 2) + '<span class="typing-cursor"></span>';
+                    i += 2;
+                } else {
+                    aiText.innerHTML = formatted;
+                    clearInterval(interval);
+                    isStreaming = false;
+                }
+            }, speed);
+        }
+
+        function copyDemoResponse() {
+            const aiText = document.getElementById('demoAiText');
+            const copyBtn = document.getElementById('copyBtn');
+            if (!aiText) return;
+
+            const text = aiText.innerText || aiText.textContent;
+            navigator.clipboard.writeText(text).then(() => {
+                if (copyBtn) {
+                    const original = copyBtn.innerHTML;
+                    copyBtn.innerHTML = '<i class="fa-solid fa-check" style="color: #34d399;"></i> Copied!';
+                    setTimeout(() => { copyBtn.innerHTML = original; }, 2000);
+                }
+            }).catch(() => {});
+        }
+
+        function runSecuritySimulation() {
+            const simBox = document.getElementById('secSimBox');
+            if (!simBox) return;
+
+            simBox.innerHTML = '<div style="color: #f59e0b; font-size: 13px; font-family: var(--font-mono);"><i class="fa-solid fa-spinner fa-spin"></i> Injecting test attack payload: \' OR 1=1-- into Layer 2 WAF...</div>';
+            setTimeout(() => {
+                simBox.innerHTML = `
+                    <div style="background: rgba(16, 185, 129, 0.12); border: 1px solid rgba(16, 185, 129, 0.4); border-radius: 8px; padding: 12px 16px; color: #34d399; font-size: 13px; font-family: var(--font-mono); text-align: left;">
+                        <i class="fa-solid fa-circle-check"></i> <strong>FIREWALL_SQLI_BLOCKED:</strong> Malicious pattern intercepted in 1.4ms! Request dropped, origin IP quarantined, zero data compromised.
+                    </div>
+                `;
+            }, 750);
+        }
+
+        // 4. Tab Switcher for Demo Preview
         function switchTab(btn, tabName) {
             const tabs = document.querySelectorAll('.tab-btn');
             tabs.forEach(t => t.classList.remove('active'));
-            btn.classList.add('active');
+            if (btn) btn.classList.add('active');
 
             const content = document.getElementById('previewContent');
             if (tabName === 'chat') {
                 content.innerHTML = `
-                    <div class="chat-bubble user" style="margin-bottom: 10px;">
-                        What makes MindHelix AI unique?
+                    <div class="demo-messages-area" id="demoMessagesArea">
+                        <div class="chat-bubble user" id="demoUserBubble">
+                            What makes MindHelix AI unique?
+                        </div>
+                        <div class="chat-bubble ai" id="demoAiBubble">
+                            <i class="fa-solid fa-sparkles" style="color: #ff5e36; margin-right: 6px;"></i>
+                            <span id="demoAiText">MindHelix AI combines ultra-fast neural models, glassmorphic design elegance, and robust 4-layer server security in one unified platform!</span>
+                        </div>
                     </div>
-                    <div class="chat-bubble ai">
-                        <i class="fa-solid fa-fire" style="color: #ff5e36; margin-right: 6px;"></i>
-                        MindHelix AI combines ultra-fast neural models, glassmorphic design elegance, and robust server security in one unified platform!
+
+                    <div class="demo-metrics-bar" id="demoMetricsBar">
+                        <span><i class="fa-solid fa-bolt"></i> Latency: <strong id="demoLatency">18ms</strong></span>
+                        <span><i class="fa-solid fa-microchip"></i> Engine: <strong>MindHelix Neural v2.5</strong></span>
+                        <button type="button" onclick="copyDemoResponse()" style="background: transparent; border: none; color: #ff8a65; cursor: pointer; font-size: 11px; display: inline-flex; align-items: center; gap: 4px;" id="copyBtn"><i class="fa-solid fa-copy"></i> Copy</button>
                     </div>
-                    <div class="prompt-bar" style="margin-top: 15px;">
-                        <span>Type your prompt here...</span>
-                        <div class="send-icon"><i class="fa-solid fa-paper-plane"></i></div>
-                    </div>
+
+                    <form class="prompt-bar" id="demoPromptForm" onsubmit="handleDemoSubmit(event)">
+                        <input type="text" id="demoPromptInput" placeholder="Ask MindHelix AI anything or click a prompt above..." autocomplete="off">
+                        <button type="submit" class="send-icon" aria-label="Send prompt"><i class="fa-solid fa-paper-plane"></i></button>
+                    </form>
                 `;
             } else if (tabName === 'security') {
                 content.innerHTML = `
-                    <div style="padding: 10px; text-align: center;">
-                        <i class="fa-solid fa-shield-halved" style="font-size: 36px; color: #ff5e36; margin-bottom: 10px;"></i>
-                        <h4 style="color: #fff; margin-bottom: 6px;">End-to-End Encrypted</h4>
-                        <p style="font-size: 13px; color: #94a3b8;">All credentials & user sessions are protected using industry-standard AES encryption algorithms.</p>
+                    <div class="security-matrix-grid">
+                        <div class="security-item">
+                            <div class="security-item-header">
+                                <span class="security-layer-title"><i class="fa-solid fa-globe"></i> Layer 1: Perimeter</span>
+                                <span class="security-pill">ACTIVE</span>
+                            </div>
+                            <p class="security-item-desc">HTTP method inspection, IP quarantine, and 180 req/min edge rate limiting.</p>
+                        </div>
+                        <div class="security-item">
+                            <div class="security-item-header">
+                                <span class="security-layer-title"><i class="fa-solid fa-shield"></i> Layer 2: WAF</span>
+                                <span class="security-pill">ACTIVE</span>
+                            </div>
+                            <p class="security-item-desc">Recursive payload scanner for SQLi, XSS, Path Traversal, and vulnerability bots.</p>
+                        </div>
+                        <div class="security-item">
+                            <div class="security-item-header">
+                                <span class="security-layer-title"><i class="fa-solid fa-user-shield"></i> Layer 3: Identity</span>
+                                <span class="security-pill">ACTIVE</span>
+                            </div>
+                            <p class="security-item-desc">Sliding-window brute-force lockout, timing-safe auth, and password entropy guard.</p>
+                        </div>
+                        <div class="security-item">
+                            <div class="security-item-header">
+                                <span class="security-layer-title"><i class="fa-solid fa-brain"></i> Layer 4: AI Guard</span>
+                                <span class="security-pill">ACTIVE</span>
+                            </div>
+                            <p class="security-item-desc">Zero-Plaintext AES-256 cipher, prompt injection filter & secret egress redaction.</p>
+                        </div>
+                    </div>
+                    <div id="secSimBox" style="text-align: center; margin-top: 10px;">
+                        <button type="button" class="btn btn-glass" onclick="runSecuritySimulation()" style="font-size: 12px; padding: 8px 18px;">
+                            <i class="fa-solid fa-play" style="color: #ff5e36;"></i> Run Live Threat Defense Simulation
+                        </button>
                     </div>
                 `;
             }
         }
 
-        // Welcome Screen Dismiss & Auto-progress logic
+        // 5. Welcome Screen Dismiss & Auto-progress logic
         function initWelcome() {
             const overlay = document.getElementById('welcomeOverlay');
             const fill = document.getElementById('welcomeProgress');
-            
+
             if (overlay && fill) {
                 if (sessionStorage.getItem('welcomeShown')) {
                     overlay.style.display = 'none';
@@ -514,9 +810,9 @@
             }
         }
 
-        // Clean Section Navigation (Does not pollute browser back-button history)
+        // 6. Clean Section Navigation (Does not pollute browser back-button history)
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
+            anchor.addEventListener('click', function (e) {
                 const targetId = this.getAttribute('href');
                 if (targetId && targetId !== '#') {
                     const targetElement = document.querySelector(targetId);
@@ -531,12 +827,12 @@
             });
         });
 
-        // Auth & Trial Handler for Try AI Assistant Now
+        // 7. Auth & Trial Handler for Try AI Assistant Now
         function isUserLoggedIn() {
             try {
                 const u = localStorage.getItem("user");
                 return !!u && u !== "null" && u !== "undefined";
-            } catch(e) {
+            } catch (e) {
                 return false;
             }
         }
@@ -576,21 +872,376 @@
             const modal = document.getElementById("homeLoginModal");
             if (modal) modal.style.display = "none";
         }
+
+        // =========================================================
+        // 8. ADVANCED ANIMATION WEBSITE ENGINE
+        // =========================================================
+
+        // 8.1 Interactive Neural Particle Canvas
+        function initNeuralCanvas() {
+            const canvas = document.getElementById('neuralCanvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            if (!ctx) return;
+
+            let width, height;
+            let particles = [];
+            const particleCount = Math.min(65, Math.max(35, Math.floor(window.innerWidth / 28)));
+            const mouse = { x: -9999, y: -9999, radius: 140, active: false };
+
+            function resize() {
+                const dpr = Math.min(window.devicePixelRatio || 1, 2);
+                width = window.innerWidth;
+                height = window.innerHeight;
+                canvas.width = width * dpr;
+                canvas.height = height * dpr;
+                canvas.style.width = width + 'px';
+                canvas.style.height = height + 'px';
+                ctx.scale(dpr, dpr);
+            }
+            resize();
+            window.addEventListener('resize', resize);
+
+            const colors = [
+                'rgba(255, 94, 54, 0.75)',
+                'rgba(255, 138, 101, 0.7)',
+                'rgba(168, 85, 247, 0.65)',
+                'rgba(56, 189, 248, 0.6)',
+                'rgba(255, 255, 255, 0.65)'
+            ];
+
+            for (let i = 0; i < particleCount; i++) {
+                particles.push({
+                    x: Math.random() * width,
+                    y: Math.random() * height,
+                    vx: (Math.random() - 0.5) * 0.7,
+                    vy: (Math.random() - 0.5) * 0.7,
+                    radius: Math.random() * 2 + 1,
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    pulse: Math.random() * Math.PI * 2,
+                    pulseSpeed: 0.02 + Math.random() * 0.02
+                });
+            }
+
+            window.addEventListener('mousemove', (e) => {
+                mouse.x = e.clientX;
+                mouse.y = e.clientY;
+                mouse.active = true;
+            });
+
+            window.addEventListener('mouseleave', () => {
+                mouse.active = false;
+            });
+
+            function animate() {
+                ctx.clearRect(0, 0, width, height);
+
+                for (let i = 0; i < particles.length; i++) {
+                    const p = particles[i];
+                    p.pulse += p.pulseSpeed;
+
+                    p.x += p.vx;
+                    p.y += p.vy;
+
+                    if (p.x < 0) { p.x = 0; p.vx *= -1; }
+                    else if (p.x > width) { p.x = width; p.vx *= -1; }
+                    if (p.y < 0) { p.y = 0; p.vy *= -1; }
+                    else if (p.y > height) { p.y = height; p.vy *= -1; }
+
+                    if (mouse.active) {
+                        const dx = p.x - mouse.x;
+                        const dy = p.y - mouse.y;
+                        const dist = Math.sqrt(dx * dx + dy * dy);
+                        if (dist < mouse.radius && dist > 0) {
+                            const force = (1 - dist / mouse.radius) * 1.8;
+                            p.x += (dx / dist) * force;
+                            p.y += (dy / dist) * force;
+                        }
+                    }
+
+                    const currentRadius = p.radius + Math.sin(p.pulse) * 0.5;
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, Math.max(0.6, currentRadius), 0, Math.PI * 2);
+                    ctx.fillStyle = p.color;
+                    ctx.fill();
+
+                    // Connect neighboring particles
+                    for (let j = i + 1; j < particles.length; j++) {
+                        const p2 = particles[j];
+                        const dx = p.x - p2.x;
+                        const dy = p.y - p2.y;
+                        const dist = Math.sqrt(dx * dx + dy * dy);
+                        const maxDist = 115;
+
+                        if (dist < maxDist) {
+                            const alpha = (1 - dist / maxDist) * 0.32;
+                            ctx.beginPath();
+                            ctx.moveTo(p.x, p.y);
+                            ctx.lineTo(p2.x, p2.y);
+                            ctx.strokeStyle = `rgba(255, 110, 60, ${alpha.toFixed(3)})`;
+                            ctx.lineWidth = 0.8;
+                            ctx.stroke();
+                        }
+                    }
+
+                    // Connect to mouse cursor
+                    if (mouse.active) {
+                        const dx = p.x - mouse.x;
+                        const dy = p.y - mouse.y;
+                        const dist = Math.sqrt(dx * dx + dy * dy);
+                        if (dist < 130) {
+                            const alpha = (1 - dist / 130) * 0.45;
+                            ctx.beginPath();
+                            ctx.moveTo(p.x, p.y);
+                            ctx.lineTo(mouse.x, mouse.y);
+                            ctx.strokeStyle = `rgba(255, 94, 54, ${alpha.toFixed(3)})`;
+                            ctx.lineWidth = 1;
+                            ctx.stroke();
+                        }
+                    }
+                }
+
+                requestAnimationFrame(animate);
+            }
+            animate();
+        }
+
+        // 8.2 Ambient Cursor Glow Follower
+        function initCursorGlow() {
+            const glow = document.getElementById('cursorGlow');
+            if (!glow) return;
+
+            let mouseX = window.innerWidth / 2;
+            let mouseY = window.innerHeight / 2;
+            let curX = mouseX;
+            let curY = mouseY;
+            let isMoving = false;
+
+            window.addEventListener('mousemove', (e) => {
+                mouseX = e.clientX;
+                mouseY = e.clientY;
+                if (!isMoving) {
+                    glow.style.opacity = '1';
+                    isMoving = true;
+                }
+            });
+
+            window.addEventListener('mouseleave', () => {
+                glow.style.opacity = '0';
+                isMoving = false;
+            });
+
+            function renderGlow() {
+                curX += (mouseX - curX) * 0.14;
+                curY += (mouseY - curY) * 0.14;
+                glow.style.left = curX + 'px';
+                glow.style.top = curY + 'px';
+                requestAnimationFrame(renderGlow);
+            }
+            renderGlow();
+        }
+
+        // 8.3 Dynamic Animated Word Flipper
+        function initWordFlipper() {
+            const el = document.getElementById('animatedWord');
+            if (!el) return;
+
+            const words = [
+                'Intelligent AI',
+                'Neural Workflows',
+                'Autonomous Agents',
+                'Deep Analytics',
+                'Zero-Trust Security',
+                'Sub-20ms Inference'
+            ];
+            let index = 0;
+
+            setInterval(() => {
+                el.classList.add('flip-out');
+                setTimeout(() => {
+                    index = (index + 1) % words.length;
+                    el.textContent = words[index];
+                    el.classList.remove('flip-out');
+                    el.classList.add('flip-in');
+                    setTimeout(() => {
+                        el.classList.remove('flip-in');
+                    }, 40);
+                }, 420);
+            }, 2800);
+        }
+
+        // 8.4 Scroll Reveal Observer
+        function initScrollReveal() {
+            const reveals = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
+            if (!reveals.length) return;
+
+            if ('IntersectionObserver' in window) {
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('revealed');
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                }, {
+                    threshold: 0.1,
+                    rootMargin: '0px 0px -40px 0px'
+                });
+
+                reveals.forEach(el => observer.observe(el));
+            } else {
+                reveals.forEach(el => el.classList.add('revealed'));
+            }
+        }
+
+        // 8.5 Animated Metric Count-Up Numbers
+        function initCountUp() {
+            const statsRow = document.querySelector('.hero-stats-row');
+            if (!statsRow) return;
+
+            let animated = false;
+            const runCounters = () => {
+                if (animated) return;
+                animated = true;
+
+                document.querySelectorAll('[data-target]').forEach(el => {
+                    const target = parseFloat(el.getAttribute('data-target'));
+                    const prefix = el.getAttribute('data-prefix') || '';
+                    const suffix = el.getAttribute('data-suffix') || '';
+                    const isDecimal = target % 1 !== 0;
+                    const duration = 1800;
+                    const startTime = performance.now();
+
+                    function update(now) {
+                        const elapsed = now - startTime;
+                        const progress = Math.min(elapsed / duration, 1);
+                        const ease = 1 - Math.pow(1 - progress, 4); // easeOutQuart
+                        const currentVal = target * ease;
+
+                        el.textContent = prefix + (isDecimal ? currentVal.toFixed(1) : Math.round(currentVal)) + suffix;
+
+                        if (progress < 1) {
+                            requestAnimationFrame(update);
+                        } else {
+                            el.textContent = prefix + (isDecimal ? target.toFixed(1) : target) + suffix;
+                        }
+                    }
+                    requestAnimationFrame(update);
+                });
+            };
+
+            if ('IntersectionObserver' in window) {
+                const obs = new IntersectionObserver(entries => {
+                    if (entries[0].isIntersecting) {
+                        runCounters();
+                        obs.disconnect();
+                    }
+                }, { threshold: 0.25 });
+                obs.observe(statsRow);
+            } else {
+                runCounters();
+            }
+        }
+
+        // 8.6 3D Perspective Tilt on Cards
+        function initTiltCards() {
+            const cards = document.querySelectorAll('.tilt-card');
+            cards.forEach(card => {
+                card.addEventListener('mouseenter', () => {
+                    card.style.transition = 'transform 0.12s ease-out, box-shadow 0.2s ease, border-color 0.2s ease';
+                });
+
+                card.addEventListener('mousemove', (e) => {
+                    const rect = card.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    const cx = rect.width / 2;
+                    const cy = rect.height / 2;
+                    const rotX = ((y - cy) / cy) * -6.5;
+                    const rotY = ((x - cx) / cx) * 6.5;
+                    card.style.transform = `perspective(1000px) rotateX(${rotX.toFixed(2)}deg) rotateY(${rotY.toFixed(2)}deg) scale3d(1.015, 1.015, 1.015)`;
+                });
+
+                card.addEventListener('mouseleave', () => {
+                    card.style.transition = 'transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.3s ease, border-color 0.3s ease';
+                    card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
+                });
+            });
+        }
+
+        // 8.7 Magnetic Button Pull Effect
+        function initMagneticButtons() {
+            const buttons = document.querySelectorAll('.magnetic-btn');
+            buttons.forEach(btn => {
+                btn.addEventListener('mousemove', (e) => {
+                    const rect = btn.getBoundingClientRect();
+                    const x = e.clientX - (rect.left + rect.width / 2);
+                    const y = e.clientY - (rect.top + rect.height / 2);
+                    btn.style.transform = `translate(${x * 0.22}px, ${y * 0.22}px)`;
+                });
+
+                btn.addEventListener('mouseleave', () => {
+                    btn.style.transform = 'translate(0px, 0px)';
+                });
+            });
+        }
+
+        // 8.8 Button Click Ripple Animation
+        function initButtonRipples() {
+            document.querySelectorAll('.btn').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    const rect = btn.getBoundingClientRect();
+                    const circle = document.createElement('span');
+                    circle.classList.add('btn-ripple');
+                    const diameter = Math.max(rect.width, rect.height);
+                    const radius = diameter / 2;
+                    circle.style.width = circle.style.height = `${diameter}px`;
+                    circle.style.left = `${e.clientX - rect.left - radius}px`;
+                    circle.style.top = `${e.clientY - rect.top - radius}px`;
+                    btn.appendChild(circle);
+                    setTimeout(() => circle.remove(), 600);
+                });
+            });
+        }
+
+        // Master Animation Initialization
+        function initAnimations() {
+            initNeuralCanvas();
+            initCursorGlow();
+            initWordFlipper();
+            initScrollReveal();
+            initCountUp();
+            initTiltCards();
+            initMagneticButtons();
+            initButtonRipples();
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initAnimations);
+        } else {
+            initAnimations();
+        }
     </script>
 
     <!-- LOGIN POPUP MODAL -->
-    <div id="homeLoginModal" class="login-popup-overlay" style="display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.78); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); z-index: 1000; align-items: center; justify-content: center; padding: 20px;">
-        <div class="login-popup-card" style="background: rgba(15, 23, 42, 0.95); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 20px; width: 100%; max-width: 440px; padding: 32px 28px; box-shadow: 0 25px 60px rgba(0,0,0,0.6); text-align: center; position: relative;">
-            <button onclick="closeHomeLoginModal()" style="position: absolute; top: 16px; right: 16px; background: rgba(255,255,255,0.08); border: none; color: #94a3b8; width: 32px; height: 32px; border-radius: 50%; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s;">✕</button>
-            <div style="width: 60px; height: 60px; border-radius: 16px; background: rgba(239, 68, 68, 0.12); border: 1px solid rgba(239, 68, 68, 0.3); display: flex; align-items: center; justify-content: center; margin: 0 auto 18px;">
+    <div id="homeLoginModal" class="login-popup-overlay"
+        style="display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.78); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); z-index: 1000; align-items: center; justify-content: center; padding: 20px;">
+        <div class="login-popup-card"
+            style="background: rgba(15, 23, 42, 0.95); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 20px; width: 100%; max-width: 440px; padding: 32px 28px; box-shadow: 0 25px 60px rgba(0,0,0,0.6); text-align: center; position: relative;">
+            <button onclick="closeHomeLoginModal()"
+                style="position: absolute; top: 16px; right: 16px; background: rgba(255,255,255,0.08); border: none; color: #94a3b8; width: 32px; height: 32px; border-radius: 50%; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s;">✕</button>
+            <div
+                style="width: 60px; height: 60px; border-radius: 16px; background: rgba(239, 68, 68, 0.12); border: 1px solid rgba(239, 68, 68, 0.3); display: flex; align-items: center; justify-content: center; margin: 0 auto 18px;">
                 <i class="fa-solid fa-lock" style="font-size: 26px; color: #f87171;"></i>
             </div>
             <h3 style="font-size: 20px; font-weight: 700; color: #fff; margin-bottom: 8px;">Session Locked</h3>
-            <p style="font-size: 15px; color: #fca5a5; font-weight: 600; margin-bottom: 22px; line-height: 1.5; background: rgba(239,68,68,0.1); padding: 10px 14px; border-radius: 10px; border: 1px solid rgba(239,68,68,0.25);">
+            <p
+                style="font-size: 15px; color: #fca5a5; font-weight: 600; margin-bottom: 22px; line-height: 1.5; background: rgba(239,68,68,0.1); padding: 10px 14px; border-radius: 10px; border: 1px solid rgba(239,68,68,0.25);">
                 You need to log in to continue the session.
             </p>
             <div style="display: flex; flex-direction: column; gap: 10px;">
-                <a href="login.html?reason=session_expired" class="btn btn-primary btn-lg" style="width: 100%; justify-content: center;">
+                <a href="login.html?reason=session_expired" class="btn btn-primary btn-lg"
+                    style="width: 100%; justify-content: center;">
                     <i class="bx bxs-log-in-circle"></i> Login
                 </a>
                 <a href="register.html" class="btn btn-glass" style="width: 100%; justify-content: center;">
@@ -600,4 +1251,5 @@
         </div>
     </div>
 </body>
+
 </html>
