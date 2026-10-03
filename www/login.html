@@ -8,7 +8,7 @@
     <!-- Google Fonts & Icons -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
@@ -20,7 +20,13 @@
 </head>
 <body>
 
-    <!-- BACKGROUND GLOW EFFECTS (Same as Home Page) -->
+    <!-- INTERACTIVE NEURAL PARTICLES CANVAS -->
+    <canvas id="neuralCanvas" class="neural-canvas"></canvas>
+
+    <!-- AMBIENT CURSOR GLOW FOLLOWER -->
+    <div id="cursorGlow" class="cursor-glow"></div>
+
+    <!-- BACKGROUND GLOW EFFECTS -->
     <div class="bg-ambient">
         <div class="bg-orb bg-orb-1"></div>
         <div class="bg-orb bg-orb-2"></div>
@@ -29,72 +35,433 @@
     <div class="bg-grid"></div>
 
     <!-- BACK TO HOME NAVIGATION BUTTON -->
-    <a href="home.html" class="btn btn-glass back-home-btn" style="position: absolute; top: 24px; left: 24px; z-index: 10;">
+    <a href="home.html" class="btn btn-glass back-home-btn magnetic-btn" id="backHomeBtn" style="position: absolute; top: 24px; left: 24px; z-index: 100;">
         <i class='bx bx-left-arrow-alt' style="font-size: 20px;"></i> Back to Home
     </a>
 
-    <div class="wrapper" style="position: relative; z-index: 2;">
-        <!-- LOGIN FORM -->
-        <form id="loginForm" onsubmit="loginUser(event)">
-            <h1>Login</h1>
+    <!-- 3D PERSPECTIVE STAGE -->
+    <div class="login-3d-scene" id="loginScene">
+
+        <!-- 3D ROTATING HOLOGRAPHIC CYBER RINGS -->
+        <div class="cyber-ring ring-1"></div>
+        <div class="cyber-ring ring-2"></div>
+
+        <!-- 3D GLASSMORPHISM CARD WITH PARALLAX DEPTH -->
+        <div class="login-card-3d" id="loginCard">
+
+            <!-- SPECULAR DYNAMIC CARD GLINT -->
+            <div class="card-glint" id="cardGlint"></div>
+
+            <!-- 3D FLOATING SATELLITE BADGES -->
+            <div class="sat-badge sat-top-right">
+                <span class="pulse-dot"></span>
+                <span>256-Bit SSL Secured</span>
+            </div>
+            <div class="sat-badge sat-bottom-left">
+                <i class="fa-solid fa-microchip" style="color: #ff8a65;"></i>
+                <span>Neural Engine v2.5</span>
+            </div>
+
+            <!-- CARD HEADER: BRAND & TITLES -->
+            <div class="card-layer-brand">
+                <div class="login-brand-icon">
+                    <img src="logo.svg" alt="MindHelix AI Logo">
+                </div>
+                <h1 class="login-title">Welcome <span class="gradient-text">Back</span></h1>
+                <p class="login-subtitle">Sign in to orchestrate your autonomous AI workflows</p>
+            </div>
 
             <!-- SESSION EXPIRATION NOTICE -->
-            <div id="sessionNotice" style="display:none; background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.4); color: #fecaca; padding: 12px 16px; border-radius: 12px; margin-bottom: 18px; font-size: 13.5px; align-items: center; gap: 10px; text-align: left; box-shadow: 0 4px 15px rgba(239, 68, 68, 0.15);">
+            <div id="sessionNotice" style="display:none; background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.4); color: #fecaca; padding: 12px 16px; border-radius: 12px; margin-bottom: 20px; font-size: 13.5px; align-items: center; gap: 10px; text-align: left; box-shadow: 0 4px 15px rgba(239, 68, 68, 0.15); transform: translateZ(30px);">
                 <i class="fa-solid fa-lock" style="font-size: 16px; color: #f87171; flex-shrink: 0;"></i>
                 <span style="font-weight: 500;">You need to log in to continue the session.</span>
             </div>
 
-            <!-- EMAIL -->
-            <div class="input-box">
-                <input type="email" id="email" placeholder="Email" required>
-                <i class='bx bxs-user'></i>
-            </div>
+            <!-- 3D FORM -->
+            <form id="loginForm" class="login-form-3d" onsubmit="loginUser(event)">
 
-            <!-- PASSWORD -->
-            <div class="input-box">
-                <input type="password" id="password" placeholder="Password" required>
-                <i class='bx bxs-lock-alt'></i>
-            </div>
+                <!-- EMAIL FIELD -->
+                <div class="input-box">
+                    <input type="email" id="email" placeholder="Email address" required autocomplete="email">
+                    <i class='bx bxs-envelope input-icon'></i>
+                </div>
 
-            <!-- REMEMBER + FORGOT -->
-            <div class="remember-forget">
-                <label>
-                    <input type="checkbox"> Remember me
-                </label>
-                <a href="forgot-password.html">Forgot Password?</a>
-            </div>
+                <!-- PASSWORD FIELD WITH SHOW/HIDE TOGGLE -->
+                <div class="input-box">
+                    <input type="password" id="password" placeholder="Password" required autocomplete="current-password">
+                    <button type="button" class="password-toggle-btn" id="togglePasswordBtn" onclick="togglePasswordVisibility()" aria-label="Toggle password visibility">
+                        <i class='bx bx-hide' id="togglePasswordIcon"></i>
+                    </button>
+                </div>
 
-            <!-- LOGIN BUTTON -->
-            <button type="submit" id="loginBtn" class="btn">Login</button>
+                <!-- REMEMBER ME & FORGOT PASSWORD -->
+                <div class="remember-forget">
+                    <label>
+                        <input type="checkbox" id="rememberMe">
+                        <span>Remember me</span>
+                    </label>
+                    <a href="forgot-password.html">Forgot Password?</a>
+                </div>
 
-            <!-- OR DIVIDER -->
-            <div class="or-divider">
-                <span>OR</span>
-            </div>
+                <!-- 3D PRIMARY ACTION BUTTON -->
+                <button type="submit" id="loginBtn" class="btn-login-3d magnetic-btn">
+                    <i class='bx bxs-lock-open-alt' style="font-size: 20px;"></i>
+                    <span>Login</span>
+                </button>
 
-            <!-- REGISTER -->
-            <div class="register-link" style="margin-top: 10px; text-align: center;">
-                <p>
-                    Don't Have an account?
-                    <a href="register.html" style="color: #fff; font-weight: 600; text-decoration: underline;">Register</a>
-                </p>
-            </div>
-        </form>
+                <!-- OR DIVIDER -->
+                <div class="or-divider">
+                    <span>OR</span>
+                </div>
+
+                <!-- REGISTRATION LINK -->
+                <div class="register-link">
+                    <p>
+                        Don't Have an account?
+                        <a href="register.html">Register</a>
+                    </p>
+                </div>
+            </form>
+        </div>
     </div>
 
-    <!-- LOGIN SCRIPT -->
+    <!-- 3D INTERACTIVE ANIMATION & AUTHENTICATION ENGINE -->
     <script>
+    // 1. Session & Auth Redirection
     if (localStorage.getItem("user")) {
         window.location.replace("ai.html");
     }
 
-    // Check if redirected due to session expiration
+    // 2. Check if redirected due to session expiration
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.get("reason") === "session_expired" || urlParams.get("msg") === "session" || localStorage.getItem("ai_trial_expired") === "true") {
         const notice = document.getElementById("sessionNotice");
         if (notice) notice.style.display = "flex";
     }
 
+    // 3. Password Show/Hide Toggle
+    function togglePasswordVisibility() {
+        const pwd = document.getElementById("password");
+        const icon = document.getElementById("togglePasswordIcon");
+        if (!pwd) return;
+        if (pwd.type === "password") {
+            pwd.type = "text";
+            if (icon) {
+                icon.classList.remove("bx-hide");
+                icon.classList.add("bx-show");
+            }
+        } else {
+            pwd.type = "password";
+            if (icon) {
+                icon.classList.remove("bx-show");
+                icon.classList.add("bx-hide");
+            }
+        }
+    }
+
+    // 4. Interactive Neural Particle Canvas
+    function initNeuralCanvas() {
+        const canvas = document.getElementById('neuralCanvas');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        if (!ctx) return;
+
+        let width, height;
+        let particles = [];
+        const particleCount = Math.min(60, Math.max(30, Math.floor(window.innerWidth / 30)));
+        const mouse = { x: -9999, y: -9999, radius: 140, active: false };
+
+        function resize() {
+            const dpr = Math.min(window.devicePixelRatio || 1, 2);
+            width = window.innerWidth;
+            height = window.innerHeight;
+            canvas.width = width * dpr;
+            canvas.height = height * dpr;
+            canvas.style.width = width + 'px';
+            canvas.style.height = height + 'px';
+            ctx.scale(dpr, dpr);
+        }
+        resize();
+        window.addEventListener('resize', resize);
+
+        const colors = [
+            'rgba(255, 94, 54, 0.75)',
+            'rgba(255, 138, 101, 0.7)',
+            'rgba(168, 85, 247, 0.65)',
+            'rgba(56, 189, 248, 0.6)',
+            'rgba(255, 255, 255, 0.65)'
+        ];
+
+        for (let i = 0; i < particleCount; i++) {
+            particles.push({
+                x: Math.random() * width,
+                y: Math.random() * height,
+                vx: (Math.random() - 0.5) * 0.7,
+                vy: (Math.random() - 0.5) * 0.7,
+                radius: Math.random() * 2 + 1,
+                color: colors[Math.floor(Math.random() * colors.length)],
+                pulse: Math.random() * Math.PI * 2,
+                pulseSpeed: 0.02 + Math.random() * 0.02
+            });
+        }
+
+        window.addEventListener('mousemove', (e) => {
+            mouse.x = e.clientX;
+            mouse.y = e.clientY;
+            mouse.active = true;
+        });
+
+        window.addEventListener('mouseleave', () => {
+            mouse.active = false;
+        });
+
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+
+            for (let i = 0; i < particles.length; i++) {
+                const p = particles[i];
+                p.pulse += p.pulseSpeed;
+
+                p.x += p.vx;
+                p.y += p.vy;
+
+                if (p.x < 0) { p.x = 0; p.vx *= -1; }
+                else if (p.x > width) { p.x = width; p.vx *= -1; }
+                if (p.y < 0) { p.y = 0; p.vy *= -1; }
+                else if (p.y > height) { p.y = height; p.vy *= -1; }
+
+                if (mouse.active) {
+                    const dx = p.x - mouse.x;
+                    const dy = p.y - mouse.y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    if (dist < mouse.radius && dist > 0) {
+                        const force = (1 - dist / mouse.radius) * 1.8;
+                        p.x += (dx / dist) * force;
+                        p.y += (dy / dist) * force;
+                    }
+                }
+
+                const currentRadius = p.radius + Math.sin(p.pulse) * 0.5;
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, Math.max(0.6, currentRadius), 0, Math.PI * 2);
+                ctx.fillStyle = p.color;
+                ctx.fill();
+
+                // Connect neighboring particles
+                for (let j = i + 1; j < particles.length; j++) {
+                    const p2 = particles[j];
+                    const dx = p.x - p2.x;
+                    const dy = p.y - p2.y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    const maxDist = 115;
+
+                    if (dist < maxDist) {
+                        const alpha = (1 - dist / maxDist) * 0.32;
+                        ctx.beginPath();
+                        ctx.moveTo(p.x, p.y);
+                        ctx.lineTo(p2.x, p2.y);
+                        ctx.strokeStyle = `rgba(255, 110, 60, ${alpha.toFixed(3)})`;
+                        ctx.lineWidth = 0.8;
+                        ctx.stroke();
+                    }
+                }
+
+                // Connect to mouse cursor
+                if (mouse.active) {
+                    const dx = p.x - mouse.x;
+                    const dy = p.y - mouse.y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    if (dist < 130) {
+                        const alpha = (1 - dist / 130) * 0.45;
+                        ctx.beginPath();
+                        ctx.moveTo(p.x, p.y);
+                        ctx.lineTo(mouse.x, mouse.y);
+                        ctx.strokeStyle = `rgba(255, 94, 54, ${alpha.toFixed(3)})`;
+                        ctx.lineWidth = 1;
+                        ctx.stroke();
+                    }
+                }
+            }
+
+            requestAnimationFrame(animate);
+        }
+        animate();
+    }
+
+    // 5. Ambient Cursor Glow Follower
+    function initCursorGlow() {
+        const glow = document.getElementById('cursorGlow');
+        if (!glow) return;
+
+        let mouseX = window.innerWidth / 2;
+        let mouseY = window.innerHeight / 2;
+        let curX = mouseX;
+        let curY = mouseY;
+
+        window.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+            glow.style.opacity = '1';
+        });
+
+        window.addEventListener('mouseleave', () => {
+            glow.style.opacity = '0';
+        });
+
+        function renderGlow() {
+            curX += (mouseX - curX) * 0.14;
+            curY += (mouseY - curY) * 0.14;
+            glow.style.left = curX + 'px';
+            glow.style.top = curY + 'px';
+            requestAnimationFrame(renderGlow);
+        }
+        renderGlow();
+    }
+
+    // 6. Realistic 3D Perspective Card Tilt & Specular Light Physics
+    function init3DCardTilt() {
+        const scene = document.getElementById('loginScene');
+        const card = document.getElementById('loginCard');
+        const glint = document.getElementById('cardGlint');
+        if (!card) return;
+
+        let targetRotX = 0;
+        let targetRotY = 0;
+        let currentRotX = 0;
+        let currentRotY = 0;
+        let isHovered = false;
+        let rafId = null;
+
+        function updateCardTransform() {
+            // Smooth spring lerp interpolation
+            currentRotX += (targetRotX - currentRotX) * 0.12;
+            currentRotY += (targetRotY - currentRotY) * 0.12;
+
+            const scale = isHovered ? 1.025 : 1;
+            card.style.transform = `perspective(1200px) rotateX(${currentRotX.toFixed(2)}deg) rotateY(${currentRotY.toFixed(2)}deg) scale3d(${scale}, ${scale}, ${scale})`;
+
+            // Continue animation loop until settled
+            if (isHovered || Math.abs(targetRotX - currentRotX) > 0.05 || Math.abs(targetRotY - currentRotY) > 0.05) {
+                rafId = requestAnimationFrame(updateCardTransform);
+            } else {
+                card.style.transform = `perspective(1200px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
+                rafId = null;
+            }
+        }
+
+        function handlePointerMove(e) {
+            const rect = card.getBoundingClientRect();
+            const clientX = e.clientX ?? (e.touches && e.touches[0].clientX);
+            const clientY = e.clientY ?? (e.touches && e.touches[0].clientY);
+            if (clientX === undefined || clientY === undefined) return;
+
+            const cx = rect.left + rect.width / 2;
+            const cy = rect.top + rect.height / 2;
+            const dx = clientX - cx;
+            const dy = clientY - cy;
+
+            // Compute tilt angles (max ~13 degrees)
+            targetRotX = Math.max(-13, Math.min(13, -(dy / (rect.height / 2)) * 11));
+            targetRotY = Math.max(-13, Math.min(13, (dx / (rect.width / 2)) * 11));
+
+            // Dynamic specular glint coordinates
+            if (glint) {
+                const glintX = Math.round(((clientX - rect.left) / rect.width) * 100);
+                const glintY = Math.round(((clientY - rect.top) / rect.height) * 100);
+                glint.style.setProperty('--glint-x', `${glintX}%`);
+                glint.style.setProperty('--glint-y', `${glintY}%`);
+                glint.style.opacity = '1';
+            }
+
+            isHovered = true;
+            if (!rafId) {
+                rafId = requestAnimationFrame(updateCardTransform);
+            }
+        }
+
+        function handlePointerLeave() {
+            targetRotX = 0;
+            targetRotY = 0;
+            isHovered = false;
+            if (glint) {
+                glint.style.opacity = '0.6';
+            }
+            if (!rafId) {
+                rafId = requestAnimationFrame(updateCardTransform);
+            }
+        }
+
+        // Window-wide gentle parallax tracking + card-focused high precision
+        window.addEventListener('mousemove', (e) => {
+            const rect = card.getBoundingClientRect();
+            const padding = 120;
+            // Check if cursor is near or over the card
+            if (
+                e.clientX >= rect.left - padding &&
+                e.clientX <= rect.right + padding &&
+                e.clientY >= rect.top - padding &&
+                e.clientY <= rect.bottom + padding
+            ) {
+                handlePointerMove(e);
+            } else if (isHovered) {
+                handlePointerLeave();
+            }
+        });
+
+        if (scene) {
+            scene.addEventListener('mouseleave', handlePointerLeave);
+        }
+
+        // Mobile Device Orientation Gyroscope Support
+        if (window.DeviceOrientationEvent) {
+            window.addEventListener('deviceorientation', (e) => {
+                if (e.gamma !== null && e.beta !== null && window.innerWidth <= 800) {
+                    targetRotY = Math.max(-14, Math.min(14, e.gamma * 0.7));
+                    targetRotX = Math.max(-14, Math.min(14, (e.beta - 45) * 0.7));
+                    if (!rafId) {
+                        rafId = requestAnimationFrame(updateCardTransform);
+                    }
+                }
+            });
+        }
+    }
+
+    // 7. Magnetic Button Pull Effect
+    function initMagneticButtons() {
+        const buttons = document.querySelectorAll('.magnetic-btn');
+        buttons.forEach(btn => {
+            btn.addEventListener('mousemove', (e) => {
+                const rect = btn.getBoundingClientRect();
+                const x = e.clientX - (rect.left + rect.width / 2);
+                const y = e.clientY - (rect.top + rect.height / 2);
+                btn.style.transform = `translate(${x * 0.25}px, ${y * 0.25}px)`;
+            });
+
+            btn.addEventListener('mouseleave', () => {
+                btn.style.transform = 'translate(0px, 0px)';
+            });
+        });
+    }
+
+    // 8. Button Ripple Animation
+    function initButtonRipples() {
+        document.querySelectorAll('.btn-login-3d, .btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                const rect = btn.getBoundingClientRect();
+                const circle = document.createElement('span');
+                circle.classList.add('btn-ripple');
+                const diameter = Math.max(rect.width, rect.height);
+                const radius = diameter / 2;
+                circle.style.width = circle.style.height = `${diameter}px`;
+                circle.style.left = `${e.clientX - rect.left - radius}px`;
+                circle.style.top = `${e.clientY - rect.top - radius}px`;
+                btn.appendChild(circle);
+                setTimeout(() => circle.remove(), 600);
+            });
+        });
+    }
+
+    // 9. Asynchronous User Authentication Handler
     async function loginUser(e) {
         e.preventDefault();
         const emailInput = document.getElementById("email");
@@ -109,12 +476,12 @@
             return;
         }
 
-        // Instant visual feedback
+        // Visual loading feedback
         const originalHtml = loginBtn.innerHTML;
         loginBtn.disabled = true;
-        loginBtn.style.opacity = "0.8";
+        loginBtn.style.opacity = "0.85";
         loginBtn.style.cursor = "wait";
-        loginBtn.innerHTML = "<i class='bx bx-loader-alt bx-spin' style='font-size: 18px; margin-right: 6px; vertical-align: middle;'></i> Logging in...";
+        loginBtn.innerHTML = "<i class='bx bx-loader-alt bx-spin' style='font-size: 20px; margin-right: 8px; vertical-align: middle;'></i> Authenticating...";
 
         try {
             const response = await fetch("/api/login", {
@@ -127,18 +494,24 @@
             const text = await response.text();
             try {
                 data = JSON.parse(text);
-            } catch (e) {
+            } catch (err) {
                 throw new Error(text || `Server returned error (${response.status})`);
             }
 
             if (data.success) {
-                loginBtn.innerHTML = "<i class='bx bx-check' style='font-size: 20px; margin-right: 6px; vertical-align: middle;'></i> Success!";
+                loginBtn.innerHTML = "<i class='bx bx-check-circle' style='font-size: 22px; margin-right: 8px; vertical-align: middle;'></i> Success!";
+                loginBtn.style.background = "linear-gradient(135deg, #10b981, #059669)";
+                loginBtn.style.boxShadow = "0 12px 30px rgba(16, 185, 129, 0.4)";
+                
                 // Unlock trial session completely for authenticated user
                 localStorage.removeItem("ai_trial_expired");
                 localStorage.removeItem("ai_trial_deadline");
                 localStorage.removeItem("ai_trial_start_time");
                 localStorage.setItem("user", JSON.stringify(data.user));
-                window.location.replace("ai.html");
+                
+                setTimeout(() => {
+                    window.location.replace("ai.html");
+                }, 400);
             } else {
                 alert(data.error || "Login failed");
                 loginBtn.disabled = false;
@@ -154,6 +527,21 @@
             loginBtn.style.cursor = "pointer";
             loginBtn.innerHTML = originalHtml;
         }
+    }
+
+    // 10. Master Animation Initializer
+    function initAnimations() {
+        initNeuralCanvas();
+        initCursorGlow();
+        init3DCardTilt();
+        initMagneticButtons();
+        initButtonRipples();
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initAnimations);
+    } else {
+        initAnimations();
     }
     </script>
 </body>

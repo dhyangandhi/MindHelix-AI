@@ -115,7 +115,8 @@ module.exports = {
     enabled: true,
     aiEndpoints: [
       "/chat",
-      "/api/generate-image"
+      "/api/generate-image",
+      "/api/generate-video"
     ],
     promptInjectionSignatures: [
       /(ignore|disregard|forget|override)\s+(all\s+)?(previous|prior|above|system)\s+(instructions|prompts|rules|commands)/i,
