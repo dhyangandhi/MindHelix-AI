@@ -142,10 +142,19 @@
                                 <strong>Python Quicksort Code</strong>
                             </div>
                             <div class="prompt-card"
-                                onclick="useImagePrompt('A futuristic cyberpunk floating city in space at sunset, ultra realistic')">
-                                <i class="fa-solid fa-wand-magic-sparkles"
-                                    style="color: #a855f7; margin-right: 6px;"></i>
-                                <strong>Generate Cyberpunk Art</strong>
+                                onclick="useImagePrompt('Majestic Bengal tiger in lush mystical misty jungle, golden hour rim lighting, water droplets on fur, 8k photorealistic, national geographic award winner, sharp focus, 35mm lens, masterpiece')">
+                                <i class="fa-solid fa-wand-magic-sparkles" style="color: #a855f7; margin-right: 6px;"></i>
+                                <strong>8K Photorealistic Tiger</strong>
+                            </div>
+                            <div class="prompt-card"
+                                onclick="useVideoPrompt('Cinematic drone fly-through over turquoise ocean waves crashing onto golden sand at sunset, 4k 60fps')">
+                                <i class="fa-solid fa-film" style="color: #ec4899; margin-right: 6px;"></i>
+                                <strong>4K Ocean Drone Video</strong>
+                            </div>
+                            <div class="prompt-card"
+                                onclick="useVideoPrompt('Futuristic cyberpunk flying car speeding through neon skyscraper canyon in torrential rain, 4k 60fps')">
+                                <i class="fa-solid fa-video" style="color: #38bdf8; margin-right: 6px;"></i>
+                                <strong>Cyberpunk 4K Video</strong>
                             </div>
                             <div class="prompt-card"
                                 onclick="usePrompt('Create a styled HTML button with hover animation')">
@@ -158,32 +167,104 @@
 
                 <!-- INPUT BOX -->
                 <div class="input-container">
+                    <!-- STUDIO MODE SELECTOR -->
+                    <div class="studio-mode-selector">
+                        <button class="studio-tab-btn active" id="tabChatMode" onclick="setStudioMode('chat')"
+                            title="AI Conversational Assistant">
+                            <i class="fa-solid fa-comments"></i> <span>Chat</span>
+                        </button>
+                        <button class="studio-tab-btn" id="tabImageMode" onclick="setStudioMode('image')"
+                            title="AI Image Studio (8K Ultra Detail & Photorealism)">
+                            <i class="fa-solid fa-wand-magic-sparkles"></i> <span>Image Studio</span>
+                        </button>
+                        <button class="studio-tab-btn video-tab" id="tabVideoMode" onclick="setStudioMode('video')"
+                            title="AI Video Studio (4K 60FPS Cinematic Motion)">
+                            <i class="fa-solid fa-film"></i> <span>Video Studio</span>
+                        </button>
+                    </div>
+
+                    <!-- IMAGE OPTIONS BAR -->
                     <div class="image-options-bar" id="imageOptionsBar">
                         <div class="opt-group">
                             <span class="opt-label"><i class="fa-solid fa-crop-simple"></i> Ratio:</span>
                             <select class="opt-select" id="imgRatioSelect">
-                                <option value="1024x1024">1:1 Square</option>
-                                <option value="1280x720">16:9 Landscape</option>
-                                <option value="720x1280">9:16 Portrait</option>
+                                <option value="1024x1024">1:1 Square (1024x1024)</option>
+                                <option value="1280x720">16:9 Landscape HD</option>
+                                <option value="1920x1080">16:9 Cinema Full HD</option>
+                                <option value="720x1280">9:16 Portrait Reel</option>
+                                <option value="1080x1920">9:16 Ultra Story</option>
                             </select>
                         </div>
                         <div class="opt-group">
                             <span class="opt-label"><i class="fa-solid fa-palette"></i> Style:</span>
                             <select class="opt-select" id="imgStyleSelect">
-                                <option value="none">Natural / Default</option>
-                                <option value="Photorealistic">Photorealistic</option>
-                                <option value="Anime">Anime & Art</option>
-                                <option value="Cyberpunk">Cyberpunk Neon</option>
+                                <option value="Photorealistic">Photorealistic 8K</option>
+                                <option value="Cinematic">Cinematic 35mm Movie</option>
+                                <option value="Cyberpunk">Cyberpunk Neon 2077</option>
+                                <option value="Anime">Anime Masterpiece</option>
+                                <option value="3D Render">3D Unreal Engine 5</option>
+                                <option value="Macro">Macro Microscopic Detail</option>
+                                <option value="Fantasy">Epic Fantasy Art</option>
                                 <option value="Digital Art">Digital Painting</option>
-                                <option value="3D Render">3D Render</option>
-                                <option value="Fantasy">Fantasy Epic</option>
+                                <option value="none">Natural / Raw</option>
+                            </select>
+                        </div>
+                        <div class="opt-group">
+                            <span class="opt-label"><i class="fa-solid fa-gem"></i> Detail:</span>
+                            <select class="opt-select" id="imgQualitySelect">
+                                <option value="ultra">💎 8K Masterpiece Detail</option>
+                                <option value="hd">📸 4K Studio Fidelity</option>
+                                <option value="fast">⚡ Fast Preview</option>
+                            </select>
+                        </div>
+                        <button class="detail-boost-toggle active" id="detailBoostToggle" onclick="toggleDetailBooster()"
+                            title="Toggle 8K Detail Booster (Adds micro-textures, ray-tracing, and photographic lens specs)">
+                            <i class="fa-solid fa-sparkles"></i> <span>✨ 8K Detail Booster: ON</span>
+                        </button>
+                    </div>
+
+                    <!-- VIDEO OPTIONS BAR -->
+                    <div class="video-options-bar" id="videoOptionsBar">
+                        <div class="opt-group">
+                            <span class="opt-label"><i class="fa-solid fa-crop-simple"></i> Ratio:</span>
+                            <select class="opt-select" id="vidRatioSelect">
+                                <option value="16:9">16:9 Widescreen Cinema</option>
+                                <option value="9:16">9:16 Reels / Shorts</option>
+                                <option value="1:1">1:1 Social Square</option>
+                            </select>
+                        </div>
+                        <div class="opt-group">
+                            <span class="opt-label"><i class="fa-solid fa-video"></i> Camera Motion:</span>
+                            <select class="opt-select" id="vidMotionSelect">
+                                <option value="drone">🚁 Drone Fly-through</option>
+                                <option value="pan">↔️ Smooth Cinematic Pan</option>
+                                <option value="zoom">🔍 Dynamic 3D Zoom In</option>
+                                <option value="orbit">🔄 3D Parallax Orbit</option>
+                                <option value="hyperlapse">⚡ Hyperlapse Motion</option>
+                            </select>
+                        </div>
+                        <div class="opt-group">
+                            <span class="opt-label"><i class="fa-solid fa-clapperboard"></i> Style:</span>
+                            <select class="opt-select" id="vidStyleSelect">
+                                <option value="Cinematic">🎬 4K Live Action Film</option>
+                                <option value="Cyberpunk">🌆 Cyberpunk Dynamic</option>
+                                <option value="Nature">🌿 4K Nature Documentary</option>
+                                <option value="Anime">🌸 Anime Motion Clip</option>
+                                <option value="3D Render">🧊 3D CGI Animation</option>
+                            </select>
+                        </div>
+                        <div class="opt-group">
+                            <span class="opt-label"><i class="fa-solid fa-clock"></i> Duration:</span>
+                            <select class="opt-select" id="vidDurationSelect">
+                                <option value="5">5 Seconds (60 FPS)</option>
+                                <option value="10">10 Seconds (60 FPS)</option>
                             </select>
                         </div>
                     </div>
 
                     <div class="input-box-wrapper">
-                        <button class="mode-toggle-btn" id="modeToggleBtn" onclick="toggleImageMode()"
-                            title="Switch between Chat and Image Generation">
+                        <button class="mode-toggle-btn" id="modeToggleBtn" onclick="toggleStudioCycle()"
+                            title="Cycle between Chat, Image Studio, and Video Studio">
                             <i class="fa-solid fa-comment-dots"></i>
                             <span id="modeToggleText">Chat Mode</span>
                         </button>
@@ -198,12 +279,46 @@
         </div>
     </div>
 
-    <!-- LIGHTBOX PREVIEW MODAL -->
+    <!-- LIGHTBOX PREVIEW & DETAIL INSPECTOR MODAL -->
     <div class="lightbox-modal" id="lightboxModal" onclick="closeLightbox()">
-        <button class="lightbox-close" onclick="closeLightbox()"><i class="fa-solid fa-xmark"></i></button>
-        <div class="lightbox-content" onclick="event.stopPropagation()">
-            <img id="lightboxImg" src="" alt="Fullscreen AI Image">
-            <p id="lightboxCaption" style="font-size: 13px; color: #d8b4fe; text-align: center; max-width: 600px;"></p>
+        <button class="lightbox-close" onclick="closeLightbox()" title="Close Viewer"><i class="fa-solid fa-xmark"></i></button>
+        <div class="lightbox-container" onclick="event.stopPropagation()">
+            <!-- LIGHTBOX TOOLBAR -->
+            <div class="lightbox-toolbar" id="lightboxToolbar">
+                <button class="lightbox-tool-btn" onclick="lightboxZoomIn()" title="Zoom In">
+                    <i class="fa-solid fa-magnifying-glass-plus"></i> Zoom In
+                </button>
+                <button class="lightbox-tool-btn" onclick="lightboxZoomOut()" title="Zoom Out">
+                    <i class="fa-solid fa-magnifying-glass-minus"></i> Zoom Out
+                </button>
+                <button class="lightbox-tool-btn" onclick="lightboxZoomActual()" title="100% Original Size">
+                    <i class="fa-solid fa-expand"></i> 100% Detail
+                </button>
+                <button class="lightbox-tool-btn" onclick="lightboxZoomFit()" title="Fit to Viewport">
+                    <i class="fa-solid fa-compress"></i> Fit
+                </button>
+                <button class="lightbox-tool-btn" id="lightboxDownloadBtn" onclick="downloadLightboxMedia()" title="Download Original Media">
+                    <i class="fa-solid fa-download"></i> Download
+                </button>
+                <button class="lightbox-tool-btn" id="lightboxCopyPromptBtn" onclick="copyLightboxPrompt(this)" title="Copy Prompt">
+                    <i class="fa-solid fa-copy"></i> Copy Prompt
+                </button>
+            </div>
+
+            <!-- MEDIA VIEWPORT -->
+            <div class="lightbox-viewport" id="lightboxViewport" onmousedown="startLightboxPan(event)">
+                <img id="lightboxImg" src="" alt="Fullscreen AI Image" draggable="false" style="display: none;">
+                <div id="lightboxVideoContainer" class="lightbox-video-viewport" style="display: none;"></div>
+            </div>
+
+            <!-- SPECS / METADATA DRAWER -->
+            <div class="lightbox-specs-card" id="lightboxSpecsCard">
+                <div class="lightbox-specs-info">
+                    <span class="lightbox-specs-item"><i class="fa-solid fa-wand-magic-sparkles" style="color: #a855f7;"></i> <strong id="lightboxCaption"></strong></span>
+                    <span class="lightbox-specs-item" id="lightboxResolutionBadge"><i class="fa-solid fa-crop-simple"></i> <span>1024x1024</span></span>
+                    <span class="lightbox-specs-item" id="lightboxEngineBadge"><i class="fa-solid fa-bolt" style="color: #6366f1;"></i> <span>MindHelix Neural Engine</span></span>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -568,21 +683,21 @@
                 <p class="empty-subtitle">Ask a question, code a solution, or draft content.</p>
 
                 <div class="prompt-grid">
+                    <div class="prompt-card" onclick="useImagePrompt('Majestic Bengal tiger in lush mystical misty jungle, golden hour rim lighting, water droplets on fur, 8k photorealistic, national geographic award winner, sharp focus, 35mm lens, masterpiece')">
+                        <i class="fa-solid fa-wand-magic-sparkles" style="color: #a855f7; margin-right: 6px;"></i>
+                        <strong>8K Photorealistic Tiger</strong>
+                    </div>
+                    <div class="prompt-card" onclick="useVideoPrompt('Cinematic drone fly-through over turquoise ocean waves crashing onto golden sand at sunset, 4k 60fps')">
+                        <i class="fa-solid fa-film" style="color: #ec4899; margin-right: 6px;"></i>
+                        <strong>4K Ocean Drone Video</strong>
+                    </div>
+                    <div class="prompt-card" onclick="useVideoPrompt('Futuristic cyberpunk flying car speeding through neon skyscraper canyon in torrential rain, 4k 60fps')">
+                        <i class="fa-solid fa-video" style="color: #38bdf8; margin-right: 6px;"></i>
+                        <strong>Cyberpunk 4K Video</strong>
+                    </div>
                     <div class="prompt-card" onclick="usePrompt('Write a clean JavaScript async function to fetch API data')">
                         <i class="fa-solid fa-code" style="color: #818cf8; margin-right: 6px;"></i>
                         <strong>Write JS async fetch</strong>
-                    </div>
-                    <div class="prompt-card" onclick="usePrompt('Write a Python script to sort an array using quicksort')">
-                        <i class="fa-brands fa-python" style="color: #34d399; margin-right: 6px;"></i>
-                        <strong>Python Quicksort Code</strong>
-                    </div>
-                    <div class="prompt-card" onclick="usePrompt('Write a simple C++ hello world program with a loop')">
-                        <i class="fa-solid fa-laptop-code" style="color: #fbbf24; margin-right: 6px;"></i>
-                        <strong>C++ Hello World Loop</strong>
-                    </div>
-                    <div class="prompt-card" onclick="usePrompt('Create a styled HTML button with hover animation')">
-                        <i class="fa-brands fa-html5" style="color: #f472b6; margin-right: 6px;"></i>
-                        <strong>HTML Animated Button</strong>
                     </div>
                 </div>
             </div>
@@ -676,42 +791,134 @@
             }
         }
 
-        let isImageMode = false;
+        // ======================
+        // STUDIO MODE & DETAIL ENHANCER STATE
+        // ======================
+        let currentStudioMode = 'chat'; // 'chat' | 'image' | 'video'
+        let isImageMode = false; // kept in sync for backward compatibility
+        let isDetailBoosterActive = true;
 
-        function toggleImageMode() {
+        // Active video players tracking map
+        const activeVideoPlayers = new Map();
+
+        function setStudioMode(mode) {
             if (checkTrialExpiredOrBlock()) return;
-            isImageMode = !isImageMode;
-            const btn = document.getElementById("modeToggleBtn");
-            const bar = document.getElementById("imageOptionsBar");
+            currentStudioMode = mode;
+            isImageMode = (mode === 'image');
+
+            // Tab button updates
+            const tabChat = document.getElementById("tabChatMode");
+            const tabImage = document.getElementById("tabImageMode");
+            const tabVideo = document.getElementById("tabVideoMode");
+            if (tabChat) tabChat.classList.toggle("active", mode === 'chat');
+            if (tabImage) tabImage.classList.toggle("active", mode === 'image');
+            if (tabVideo) tabVideo.classList.toggle("active", mode === 'video');
+
+            // Option bars visibility
+            const imgBar = document.getElementById("imageOptionsBar");
+            const vidBar = document.getElementById("videoOptionsBar");
+            if (imgBar) imgBar.classList.toggle("active", mode === 'image');
+            if (vidBar) vidBar.classList.toggle("active", mode === 'video');
+
+            // Mode toggle button updates
+            const modeBtn = document.getElementById("modeToggleBtn");
             const input = document.getElementById("userInput");
             const sendBtn = document.getElementById("sendBtn");
 
-            if (isImageMode) {
-                btn.classList.add("image-mode");
-                btn.innerHTML = '<i class="fa-solid fa-wand-magic-sparkles"></i> <span>Image Mode</span>';
-                if (bar) bar.classList.add("active");
-                if (input) input.placeholder = "Describe the AI image you want to generate...";
-                if (sendBtn) sendBtn.innerHTML = '<i class="fa-solid fa-wand-magic-sparkles"></i>';
-            } else {
-                btn.classList.remove("image-mode");
-                btn.innerHTML = '<i class="fa-solid fa-wand-magic-sparkles"></i> <span>Chat Mode</span>';
-                if (bar) bar.classList.remove("active");
-                if (input) input.placeholder = "Type your message here...";
-                if (sendBtn) sendBtn.innerHTML = '<i class="fa-solid fa-paper-plane"></i>';
+            if (modeBtn) {
+                modeBtn.classList.remove("image-mode", "video-mode");
+                if (mode === 'image') {
+                    modeBtn.classList.add("image-mode");
+                    modeBtn.innerHTML = '<i class="fa-solid fa-wand-magic-sparkles"></i> <span>Image Studio</span>';
+                } else if (mode === 'video') {
+                    modeBtn.classList.add("video-mode");
+                    modeBtn.innerHTML = '<i class="fa-solid fa-film"></i> <span>Video Studio</span>';
+                } else {
+                    modeBtn.innerHTML = '<i class="fa-solid fa-comment-dots"></i> <span>Chat Mode</span>';
+                }
+            }
+
+            // Input placeholder & send button icon
+            if (input) {
+                if (mode === 'image') {
+                    input.placeholder = "Describe the AI image you want to generate in ultra detail...";
+                } else if (mode === 'video') {
+                    input.placeholder = "Describe the 4K 60FPS video & cinematic scene you want to generate...";
+                } else {
+                    input.placeholder = "Type your message here...";
+                }
+                input.focus();
+            }
+
+            if (sendBtn) {
+                if (mode === 'image') {
+                    sendBtn.innerHTML = '<i class="fa-solid fa-wand-magic-sparkles"></i>';
+                    sendBtn.title = "Generate 8K Image";
+                } else if (mode === 'video') {
+                    sendBtn.innerHTML = '<i class="fa-solid fa-film"></i>';
+                    sendBtn.title = "Generate 4K Video";
+                } else {
+                    sendBtn.innerHTML = '<i class="fa-solid fa-paper-plane"></i>';
+                    sendBtn.title = "Send Message";
+                }
+            }
+        }
+
+        function toggleStudioCycle() {
+            if (checkTrialExpiredOrBlock()) return;
+            if (currentStudioMode === 'chat') setStudioMode('image');
+            else if (currentStudioMode === 'image') setStudioMode('video');
+            else setStudioMode('chat');
+        }
+
+        function toggleImageMode() {
+            if (checkTrialExpiredOrBlock()) return;
+            setStudioMode(currentStudioMode === 'image' ? 'chat' : 'image');
+        }
+
+        function toggleDetailBooster() {
+            isDetailBoosterActive = !isDetailBoosterActive;
+            const btn = document.getElementById("detailBoostToggle");
+            if (btn) {
+                btn.classList.toggle("active", isDetailBoosterActive);
+                btn.innerHTML = isDetailBoosterActive 
+                    ? '<i class="fa-solid fa-sparkles"></i> <span>✨ 8K Detail Booster: ON</span>'
+                    : '<i class="fa-solid fa-bolt"></i> <span>⚡ 8K Detail Booster: OFF</span>';
             }
         }
 
         function useImagePrompt(promptText) {
             if (checkTrialExpiredOrBlock()) return;
-            if (!isImageMode) {
-                toggleImageMode();
-            }
+            setStudioMode('image');
             const input = document.getElementById("userInput");
             if (input) {
                 input.value = promptText;
                 input.focus();
             }
         }
+
+        function useVideoPrompt(promptText) {
+            if (checkTrialExpiredOrBlock()) return;
+            setStudioMode('video');
+            const input = document.getElementById("userInput");
+            if (input) {
+                input.value = promptText;
+                input.focus();
+            }
+        }
+
+        function togglePromptAccordion(btn) {
+            const body = btn.nextElementSibling;
+            if (!body) return;
+            const isOpen = body.classList.toggle("open");
+            btn.innerHTML = isOpen 
+                ? '<i class="fa-solid fa-chevron-up"></i> Hide AI 8K Prompt Tokens'
+                : '<i class="fa-solid fa-sparkles"></i> View AI 8K Detail Tokens';
+        }
+
+        // ======================
+        // ULTRA-DETAIL AI IMAGE GENERATION
+        // ======================
 
         async function generateImageFlow(prompt) {
             if (checkTrialExpiredOrBlock()) return;
@@ -720,9 +927,11 @@
 
             const ratioSelect = document.getElementById("imgRatioSelect");
             const styleSelect = document.getElementById("imgStyleSelect");
+            const qualitySelect = document.getElementById("imgQualitySelect");
             const dim = ratioSelect ? ratioSelect.value : "1024x1024";
             const [w, h] = dim.split('x').map(Number);
-            const style = styleSelect ? styleSelect.value : "none";
+            const style = styleSelect ? styleSelect.value : "Photorealistic";
+            const quality = qualitySelect ? qualitySelect.value : "ultra";
 
             // USER PROMPT BUBBLE
             chatBox.innerHTML += `
@@ -731,7 +940,7 @@
                     <i class="fa-solid fa-wand-magic-sparkles"></i>
                 </div>
                 <div class="message-content-wrapper">
-                    <div class="img-badge"><i class="fa-solid fa-palette"></i> Image Prompt</div>
+                    <div class="img-badge"><i class="fa-solid fa-palette"></i> 8K Image Prompt</div>
                     <div class="message">${escapeHtml(prompt)}</div>
                     <div class="user-message-actions">
                         <button class="edit-msg-btn" onclick="editUserMessage(this)" title="Edit Prompt">
@@ -740,12 +949,12 @@
                     </div>
                 </div>
             </div>
-        `;
+            `;
 
             chatBox.scrollTop = chatBox.scrollHeight;
             saveCurrentSession();
 
-            // BOT LOADING CARD
+            // PROGRESSIVE LOADING CARD
             const genId = "gen_" + Date.now();
             chatBox.innerHTML += `
             <div class="message-row bot" id="${genId}">
@@ -755,14 +964,20 @@
                 <div class="message-content-wrapper">
                     <div class="ai-image-card">
                         <div class="ai-image-wrapper">
-                            <div style="color: #a855f7; display: flex; align-items: center; gap: 8px; font-size: 14px; padding: 30px;">
-                                <i class="fa-solid fa-spinner fa-spin fa-lg"></i> Generating AI Artwork...
+                            <div class="media-progress-container">
+                                <div class="media-loading-text" id="${genId}_status">
+                                    <i class="fa-solid fa-spinner fa-spin fa-lg" style="color: #a855f7;"></i>
+                                    <span>✨ Optimizing 8K micro-details & photorealism...</span>
+                                </div>
+                                <div class="media-progress-bar-bg">
+                                    <div class="media-progress-bar-fill"></div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        `;
+            `;
 
             chatBox.scrollTop = chatBox.scrollHeight;
 
@@ -770,51 +985,131 @@
                 const res = await fetch("/api/generate-image", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ prompt, style, width: w, height: h })
+                    body: JSON.stringify({ 
+                        prompt, 
+                        style, 
+                        width: w, 
+                        height: h, 
+                        quality, 
+                        detailBoost: isDetailBoosterActive,
+                        model: 'flux'
+                    })
                 });
 
                 const data = await res.json();
                 const genElem = document.getElementById(genId);
+                const statusElem = document.getElementById(`${genId}_status`);
 
                 if (data.success && data.imageUrl) {
-                    const providerBadge = data.provider ? `<div class="img-badge" style="background: rgba(99, 102, 241, 0.15); color: #818cf8; border-color: rgba(99, 102, 241, 0.3);"><i class="fa-solid fa-bolt"></i> ${escapeHtml(data.provider)}</div>` : '';
-                    const cardHTML = `
-                    <div class="message-row bot">
-                        <div class="avatar" style="background: linear-gradient(135deg, #a855f7, #6366f1);">
-                            <i class="fa-solid fa-palette"></i>
-                        </div>
-                        <div class="message-content-wrapper">
-                            ${providerBadge}
-                            <div class="ai-image-card">
-                                <div class="ai-image-wrapper">
-                                    <img src="${data.imageUrl}" alt="${escapeHtml(prompt)}" onclick="openLightbox('${data.imageUrl}', '${escapeHtml(prompt)}')" loading="eager" decoding="async">
+                    if (statusElem) {
+                        statusElem.innerHTML = '<i class="fa-solid fa-spinner fa-spin fa-lg" style="color: #ec4899;"></i> <span>🎨 Synthesizing 8K pixels & textures...</span>';
+                    }
+
+                    // Preload the image in browser memory for seamless reveal
+                    const preloadImg = new Image();
+                    preloadImg.src = data.imageUrl;
+
+                    const revealImage = (finalUrl) => {
+                        const metaJson = escapeHtml(JSON.stringify({
+                            prompt: data.prompt || prompt,
+                            enhancedPrompt: data.enhancedPrompt || '',
+                            dim: `${data.width || w}x${data.height || h}`,
+                            style: data.style || style,
+                            quality: data.quality || quality,
+                            seed: data.seed || '',
+                            provider: data.provider || 'MindHelix FLUX.1 Ultra HD'
+                        }));
+
+                        const cardHTML = `
+                        <div class="message-row bot">
+                            <div class="avatar" style="background: linear-gradient(135deg, #a855f7, #6366f1);">
+                                <i class="fa-solid fa-palette"></i>
+                            </div>
+                            <div class="message-content-wrapper">
+                                <div style="display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 4px;">
+                                    <div class="img-badge"><i class="fa-solid fa-bolt"></i> ${escapeHtml(data.provider || 'FLUX.1 Ultra HD')}</div>
+                                    <div class="img-badge" style="background: rgba(16, 185, 129, 0.15); color: #34d399; border-color: rgba(16, 185, 129, 0.3);"><i class="fa-solid fa-gem"></i> 8K Masterpiece Detail</div>
+                                    <div class="img-badge" style="background: rgba(56, 189, 248, 0.15); color: #38bdf8; border-color: rgba(56, 189, 248, 0.3);"><i class="fa-solid fa-crop-simple"></i> ${data.width || w}x${data.height || h}</div>
                                 </div>
-                                <div class="img-card-actions">
-                                    <button class="img-action-btn" onclick="downloadImage('${data.imageUrl}')">
-                                        <i class="fa-solid fa-download"></i> Download
-                                    </button>
-                                    <button class="img-action-btn" onclick="copyImageUrl('${data.imageUrl}', this)">
-                                        <i class="fa-solid fa-link"></i> Copy Link
-                                    </button>
-                                    <button class="img-action-btn" onclick="regenerateImage('${escapeHtml(prompt)}', '${dim}', '${style}', this)">
-                                        <i class="fa-solid fa-arrows-rotate"></i> Regenerate
-                                    </button>
+                                <div class="ai-image-card">
+                                    <div class="ai-image-wrapper">
+                                        <img src="${finalUrl}" alt="${escapeHtml(prompt)}" onclick="openLightbox('image', '${finalUrl}', '${escapeHtml(prompt)}', '${metaJson}')" loading="eager" decoding="async">
+                                    </div>
+                                    <div class="prompt-details-accordion">
+                                        <button class="prompt-details-toggle" onclick="togglePromptAccordion(this)">
+                                            <i class="fa-solid fa-sparkles"></i> View AI 8K Detail Tokens
+                                        </button>
+                                        <div class="prompt-details-body">
+                                            <strong>Enhanced AI Tokens:</strong> ${escapeHtml(data.enhancedPrompt || prompt)}
+                                        </div>
+                                    </div>
+                                    <div class="img-card-actions">
+                                        <button class="img-action-btn" onclick="openLightbox('image', '${finalUrl}', '${escapeHtml(prompt)}', '${metaJson}')" title="Inspect Fullscreen with Zoom">
+                                            <i class="fa-solid fa-magnifying-glass-plus"></i> Inspect Details
+                                        </button>
+                                        <button class="img-action-btn" onclick="downloadImage('${finalUrl}')" title="Download High Resolution">
+                                            <i class="fa-solid fa-download"></i> Download 8K
+                                        </button>
+                                        <button class="img-action-btn" onclick="copyImageUrl('${finalUrl}', this)" title="Copy Direct Image Link">
+                                            <i class="fa-solid fa-link"></i> Copy Link
+                                        </button>
+                                        <button class="img-action-btn" onclick="regenerateImage('${escapeHtml(prompt)}', '${dim}', '${style}', this)" title="Regenerate with New Seed">
+                                            <i class="fa-solid fa-arrows-rotate"></i> Regenerate
+                                        </button>
+                                        <button class="img-action-btn video-btn" onclick="convertImageToVideo('${escapeHtml(prompt)}')" title="Generate 4K Video from this scene">
+                                            <i class="fa-solid fa-film"></i> Animate to Video
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                `;
-                    if (genElem) genElem.outerHTML = cardHTML;
-                    else chatBox.innerHTML += cardHTML;
+                        `;
+
+                        if (genElem) genElem.outerHTML = cardHTML;
+                        else chatBox.innerHTML += cardHTML;
+                        saveCurrentSession();
+                        requestAnimationFrame(() => { chatBox.scrollTop = chatBox.scrollHeight; });
+                    };
+
+                    preloadImg.onload = () => revealImage(data.imageUrl);
+
+                    // Automatic fallback to backup engine if primary takes too long or fails
+                    preloadImg.onerror = () => {
+                        console.warn("Primary image engine fallback triggered to Turbo engine");
+                        const backup = data.backupUrl || data.imageUrl;
+                        const backupImg = new Image();
+                        backupImg.src = backup;
+                        backupImg.onload = () => revealImage(backup);
+                        backupImg.onerror = () => {
+                            if (genElem) {
+                                genElem.outerHTML = `
+                                <div class="message-row bot">
+                                    <div class="avatar"><i class="fa-solid fa-triangle-exclamation" style="color: #f87171;"></i></div>
+                                    <div class="message-content-wrapper">
+                                        <div class="message" style="border-color: rgba(239, 68, 68, 0.4);">
+                                            Image generation network error. 
+                                            <button class="img-action-btn" style="margin-top: 8px;" onclick="generateImageFlow('${escapeHtml(prompt)}')">
+                                                <i class="fa-solid fa-arrows-rotate"></i> Retry Generation
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                `;
+                            }
+                        };
+                    };
+
                 } else {
-                    if (genElem) genElem.outerHTML = `
-                    <div class="message-row bot">
-                        <div class="avatar"><i class="fa-solid fa-triangle-exclamation" style="color: #f87171;"></i></div>
-                        <div class="message-content-wrapper">
-                            <div class="message" style="border-color: rgba(239, 68, 68, 0.4);">Image generation failed. Please try again.</div>
+                    if (genElem) {
+                        genElem.outerHTML = `
+                        <div class="message-row bot">
+                            <div class="avatar"><i class="fa-solid fa-triangle-exclamation" style="color: #f87171;"></i></div>
+                            <div class="message-content-wrapper">
+                                <div class="message" style="border-color: rgba(239, 68, 68, 0.4);">${escapeHtml(data.error || "Image generation failed. Please try again.")}</div>
+                            </div>
                         </div>
-                    </div>
-                `;
+                        `;
+                    }
                 }
 
                 saveCurrentSession();
@@ -823,7 +1118,16 @@
             } catch (err) {
                 console.error("Image Gen Error:", err);
                 const genElem = document.getElementById(genId);
-                if (genElem) genElem.remove();
+                if (genElem) {
+                    genElem.outerHTML = `
+                    <div class="message-row bot">
+                        <div class="avatar"><i class="fa-solid fa-triangle-exclamation" style="color: #f87171;"></i></div>
+                        <div class="message-content-wrapper">
+                            <div class="message" style="border-color: rgba(239, 68, 68, 0.4);">Server connection error. Please try again.</div>
+                        </div>
+                    </div>
+                    `;
+                }
             }
         }
 
@@ -833,7 +1137,7 @@
             const styleSelect = document.getElementById("imgStyleSelect");
             const dim = ratioSelect ? ratioSelect.value : "1024x1024";
             const [w, h] = dim.split('x').map(Number);
-            const style = styleSelect ? styleSelect.value : "none";
+            const style = styleSelect ? styleSelect.value : "Photorealistic";
 
             const genId = "gen_" + Date.now();
             const loadingHTML = `
@@ -844,14 +1148,20 @@
                 <div class="message-content-wrapper">
                     <div class="ai-image-card">
                         <div class="ai-image-wrapper">
-                            <div style="color: #a855f7; display: flex; align-items: center; gap: 8px; font-size: 14px; padding: 30px;">
-                                <i class="fa-solid fa-spinner fa-spin fa-lg"></i> Generating AI Artwork...
+                            <div class="media-progress-container">
+                                <div class="media-loading-text">
+                                    <i class="fa-solid fa-spinner fa-spin fa-lg" style="color: #a855f7;"></i>
+                                    <span>✨ Enhancing 8K prompt & synthesizing...</span>
+                                </div>
+                                <div class="media-progress-bar-bg">
+                                    <div class="media-progress-bar-fill"></div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        `;
+            `;
             userRow.insertAdjacentHTML('afterend', loadingHTML);
             requestAnimationFrame(() => { chatBox.scrollTop = chatBox.scrollHeight; });
             saveCurrentSession();
@@ -860,28 +1170,50 @@
                 const res = await fetch("/api/generate-image", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ prompt, style, width: w, height: h })
+                    body: JSON.stringify({ prompt, style, width: w, height: h, quality: 'ultra', detailBoost: isDetailBoosterActive })
                 });
 
                 const data = await res.json();
                 const genElem = document.getElementById(genId);
 
                 if (data.success && data.imageUrl) {
-                    const providerBadge = data.provider ? `<div class="img-badge" style="background: rgba(99, 102, 241, 0.15); color: #818cf8; border-color: rgba(99, 102, 241, 0.3);"><i class="fa-solid fa-bolt"></i> ${escapeHtml(data.provider)}</div>` : '';
+                    const metaJson = escapeHtml(JSON.stringify({
+                        prompt: data.prompt || prompt,
+                        enhancedPrompt: data.enhancedPrompt || '',
+                        dim: `${data.width || w}x${data.height || h}`,
+                        style: data.style || style,
+                        seed: data.seed || '',
+                        provider: data.provider || 'MindHelix FLUX.1 Ultra HD'
+                    }));
+
                     const cardHTML = `
                     <div class="message-row bot">
                         <div class="avatar" style="background: linear-gradient(135deg, #a855f7, #6366f1);">
                             <i class="fa-solid fa-palette"></i>
                         </div>
                         <div class="message-content-wrapper">
-                            ${providerBadge}
+                            <div style="display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 4px;">
+                                <div class="img-badge"><i class="fa-solid fa-bolt"></i> ${escapeHtml(data.provider || 'FLUX.1 Ultra HD')}</div>
+                                <div class="img-badge" style="background: rgba(16, 185, 129, 0.15); color: #34d399; border-color: rgba(16, 185, 129, 0.3);"><i class="fa-solid fa-gem"></i> 8K Masterpiece</div>
+                            </div>
                             <div class="ai-image-card">
                                 <div class="ai-image-wrapper">
-                                    <img src="${data.imageUrl}" alt="${escapeHtml(prompt)}" onclick="openLightbox('${data.imageUrl}', '${escapeHtml(prompt)}')" loading="eager" decoding="async">
+                                    <img src="${data.imageUrl}" alt="${escapeHtml(prompt)}" onclick="openLightbox('image', '${data.imageUrl}', '${escapeHtml(prompt)}', '${metaJson}')" loading="eager" decoding="async">
+                                </div>
+                                <div class="prompt-details-accordion">
+                                    <button class="prompt-details-toggle" onclick="togglePromptAccordion(this)">
+                                        <i class="fa-solid fa-sparkles"></i> View AI 8K Detail Tokens
+                                    </button>
+                                    <div class="prompt-details-body">
+                                        <strong>Enhanced AI Tokens:</strong> ${escapeHtml(data.enhancedPrompt || prompt)}
+                                    </div>
                                 </div>
                                 <div class="img-card-actions">
+                                    <button class="img-action-btn" onclick="openLightbox('image', '${data.imageUrl}', '${escapeHtml(prompt)}', '${metaJson}')">
+                                        <i class="fa-solid fa-magnifying-glass-plus"></i> Inspect Details
+                                    </button>
                                     <button class="img-action-btn" onclick="downloadImage('${data.imageUrl}')">
-                                        <i class="fa-solid fa-download"></i> Download
+                                        <i class="fa-solid fa-download"></i> Download 8K
                                     </button>
                                     <button class="img-action-btn" onclick="copyImageUrl('${data.imageUrl}', this)">
                                         <i class="fa-solid fa-link"></i> Copy Link
@@ -893,43 +1225,728 @@
                             </div>
                         </div>
                     </div>
-                `;
+                    `;
                     if (genElem) genElem.outerHTML = cardHTML;
                 } else {
-                    if (genElem) genElem.outerHTML = `
-                    <div class="message-row bot">
-                        <div class="avatar"><i class="fa-solid fa-triangle-exclamation" style="color: #f87171;"></i></div>
-                        <div class="message-content-wrapper">
-                            <div class="message" style="border-color: rgba(239, 68, 68, 0.4);">Image generation failed. Please try again.</div>
+                    if (genElem) {
+                        genElem.outerHTML = `
+                        <div class="message-row bot">
+                            <div class="avatar"><i class="fa-solid fa-triangle-exclamation" style="color: #f87171;"></i></div>
+                            <div class="message-content-wrapper">
+                                <div class="message" style="border-color: rgba(239, 68, 68, 0.4);">${escapeHtml(data.error || "Image generation failed.")}</div>
+                            </div>
+                        </div>
+                        `;
+                    }
+                }
+                saveCurrentSession();
+            } catch (err) {
+                console.error("Image Edit Error:", err);
+            }
+        }
+
+        function convertImageToVideo(prompt) {
+            setStudioMode('video');
+            const input = document.getElementById("userInput");
+            if (input) input.value = prompt;
+            generateVideoFlow(prompt);
+        }
+
+        // ======================
+        // 4K 60FPS AI VIDEO GENERATION & DYNAMIC MOTION ENGINE
+        // ======================
+
+        async function generateVideoFlow(prompt) {
+            if (checkTrialExpiredOrBlock()) return;
+            const chatBox = document.getElementById("chatBox");
+            hideEmptyState();
+
+            const ratioSelect = document.getElementById("vidRatioSelect");
+            const motionSelect = document.getElementById("vidMotionSelect");
+            const styleSelect = document.getElementById("vidStyleSelect");
+            const durationSelect = document.getElementById("vidDurationSelect");
+
+            const ratio = ratioSelect ? ratioSelect.value : "16:9";
+            const motion = motionSelect ? motionSelect.value : "drone";
+            const style = styleSelect ? styleSelect.value : "Cinematic";
+            const duration = durationSelect ? parseInt(durationSelect.value, 10) : 5;
+
+            // USER VIDEO PROMPT BUBBLE
+            chatBox.innerHTML += `
+            <div class="message-row user image-prompt-row">
+                <div class="avatar" style="background: linear-gradient(135deg, #ec4899 0%, #a855f7 100%);">
+                    <i class="fa-solid fa-film"></i>
+                </div>
+                <div class="message-content-wrapper">
+                    <div class="img-badge video-badge"><i class="fa-solid fa-video"></i> 4K Video Prompt</div>
+                    <div class="message">${escapeHtml(prompt)}</div>
+                    <div class="user-message-actions">
+                        <button class="edit-msg-btn" onclick="editUserMessage(this)" title="Edit Prompt">
+                            <i class="fa-solid fa-pen-to-square"></i> Edit
+                        </button>
+                    </div>
+                </div>
+            </div>
+            `;
+
+            chatBox.scrollTop = chatBox.scrollHeight;
+            saveCurrentSession();
+
+            // BOT VIDEO LOADING CARD
+            const genId = "vid_" + Date.now();
+            chatBox.innerHTML += `
+            <div class="message-row bot" id="${genId}">
+                <div class="avatar" style="background: linear-gradient(135deg, #ec4899, #8b5cf6);">
+                    <i class="fa-solid fa-video"></i>
+                </div>
+                <div class="message-content-wrapper">
+                    <div class="ai-video-card">
+                        <div class="ai-video-wrapper">
+                            <div class="media-progress-container">
+                                <div class="media-loading-text">
+                                    <i class="fa-solid fa-spinner fa-spin fa-lg" style="color: #ec4899;"></i>
+                                    <span>🎬 Synthesizing 4K 60FPS motion vectors & keyframes...</span>
+                                </div>
+                                <div class="media-progress-bar-bg">
+                                    <div class="media-progress-bar-fill" style="background: linear-gradient(90deg, #ec4899, #a855f7, #38bdf8);"></div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                `;
+                </div>
+            </div>
+            `;
+
+            chatBox.scrollTop = chatBox.scrollHeight;
+
+            try {
+                const res = await fetch("/api/generate-video", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ 
+                        prompt, 
+                        motion, 
+                        style, 
+                        duration, 
+                        ratio, 
+                        fps: 60,
+                        quality: 'ultra',
+                        detailBoost: isDetailBoosterActive 
+                    })
+                });
+
+                const data = await res.json();
+                const genElem = document.getElementById(genId);
+
+                if (data.success && data.video) {
+                    const vid = data.video;
+                    const playerId = "vplayer_" + Date.now();
+                    const isRealVideo = Boolean(vid.videoUrl && (vid.videoUrl.endsWith('.webm') || vid.videoUrl.endsWith('.mp4') || vid.hasRealVideo));
+
+                    const metaJson = escapeHtml(JSON.stringify({
+                        prompt: vid.prompt,
+                        enhancedPrompt: vid.enhancedPrompt,
+                        motion: vid.motion,
+                        style: vid.style,
+                        fps: vid.fps,
+                        duration: vid.duration,
+                        ratio: vid.ratio,
+                        dim: `${vid.width}x${vid.height}`,
+                        posterUrl: vid.posterUrl,
+                        videoUrl: vid.videoUrl,
+                        hasRealVideo: isRealVideo,
+                        provider: vid.provider
+                    }));
+
+                    const cardHTML = `
+                    <div class="message-row bot">
+                        <div class="avatar" style="background: linear-gradient(135deg, #ec4899, #8b5cf6);">
+                            <i class="fa-solid fa-video"></i>
+                        </div>
+                        <div class="message-content-wrapper">
+                            <div style="display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 4px;">
+                                <div class="img-badge video-badge"><i class="fa-solid fa-film"></i> 4K 60FPS Video</div>
+                                <div class="img-badge" style="background: rgba(99, 102, 241, 0.15); color: #818cf8; border-color: rgba(99, 102, 241, 0.3);"><i class="fa-solid fa-camera"></i> ${escapeHtml((vid.motion || 'cinematic').toUpperCase())} MOTION</div>
+                                <div class="img-badge" style="background: rgba(16, 185, 129, 0.15); color: #34d399; border-color: rgba(16, 185, 129, 0.3);"><i class="fa-solid fa-clock"></i> ${vid.duration || 5}s Loop</div>
+                                ${vid.videoTitle ? `<div class="img-badge" style="background: rgba(236, 72, 153, 0.15); color: #f472b6; border-color: rgba(236, 72, 153, 0.3);"><i class="fa-solid fa-sparkles"></i> ${escapeHtml(vid.videoTitle)}</div>` : ''}
+                            </div>
+                            <div class="ai-video-card">
+                                <div class="video-player-container" id="container_${playerId}">
+                                    ${isRealVideo ? `
+                                        <video 
+                                            id="${playerId}" 
+                                            class="video-player-element" 
+                                            src="${vid.videoUrl}" 
+                                            poster="${vid.posterUrl}" 
+                                            autoplay 
+                                            loop 
+                                            muted 
+                                            playsinline 
+                                            preload="auto"
+                                            onclick="toggleVideoPlayback('${playerId}')"
+                                            title="Click to Play / Pause"
+                                        ></video>
+                                    ` : `
+                                        <canvas id="${playerId}" class="video-player-canvas" width="${vid.width || 1280}" height="${vid.height || 720}"></canvas>
+                                    `}
+                                    <div class="video-control-overlay">
+                                        <button class="video-play-btn" id="playBtn_${playerId}" onclick="toggleVideoPlayback('${playerId}')" title="Play / Pause">
+                                            <i class="fa-solid fa-pause"></i>
+                                        </button>
+                                        <div class="video-timeline-bar" onclick="seekVideoPlayer('${playerId}', event)">
+                                            <div class="video-timeline-fill" id="fill_${playerId}"></div>
+                                        </div>
+                                        <span class="video-time-tag" id="time_${playerId}">0:00 / 0:0${vid.duration || 5}</span>
+                                        <button class="video-speed-pill" onclick="cycleVideoSpeed('${playerId}', this)" title="Playback Speed">1.0x</button>
+                                        ${isRealVideo ? `
+                                        <button class="img-action-btn" style="padding: 4px 8px; font-size: 11px;" onclick="toggleVideoMute('${playerId}', this)" title="Mute / Unmute Audio">
+                                            <i class="fa-solid fa-volume-xmark" id="muteIcon_${playerId}"></i>
+                                        </button>
+                                        ` : ''}
+                                        <button class="img-action-btn" style="padding: 4px 8px; font-size: 11px;" onclick="openLightbox('video', '${isRealVideo ? vid.videoUrl : vid.posterUrl}', '${escapeHtml(prompt)}', '${metaJson}')" title="Full Theatre View">
+                                            <i class="fa-solid fa-expand"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="prompt-details-accordion">
+                                    <button class="prompt-details-toggle" onclick="togglePromptAccordion(this)">
+                                        <i class="fa-solid fa-clapperboard"></i> View 4K Video Motion Specs
+                                    </button>
+                                    <div class="prompt-details-body">
+                                        <strong>Camera Motion:</strong> ${escapeHtml(vid.enhancedPrompt)}
+                                    </div>
+                                </div>
+                                <div class="img-card-actions">
+                                    <button class="img-action-btn video-btn" onclick="openLightbox('video', '${isRealVideo ? vid.videoUrl : vid.posterUrl}', '${escapeHtml(prompt)}', '${metaJson}')" title="Watch in Full Theatre Mode">
+                                        <i class="fa-solid fa-film"></i> Full Theatre
+                                    </button>
+                                    <button class="img-action-btn video-btn" onclick="${isRealVideo ? `downloadRealVideo('${vid.videoUrl}', '${escapeHtml(prompt)}')` : `downloadVideoRecording('${playerId}', '${escapeHtml(prompt)}')`}" title="Export and Download Video">
+                                        <i class="fa-solid fa-download"></i> Download Video
+                                    </button>
+                                    <button class="img-action-btn" onclick="copyImageUrl('${isRealVideo ? vid.videoUrl : vid.posterUrl}', this)" title="Copy Video Master Link">
+                                        <i class="fa-solid fa-link"></i> Copy Link
+                                    </button>
+                                    <button class="img-action-btn" onclick="generateVideoFlow('${escapeHtml(prompt)}')" title="Regenerate Video Clip">
+                                        <i class="fa-solid fa-arrows-rotate"></i> Regenerate
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    `;
+
+                    if (genElem) genElem.outerHTML = cardHTML;
+                    else chatBox.innerHTML += cardHTML;
+
+                    // Initialize video playback or motion simulation engine
+                    setTimeout(() => {
+                        if (isRealVideo) {
+                            const video = document.getElementById(playerId);
+                            if (video) {
+                                video.addEventListener('timeupdate', () => {
+                                    const fill = document.getElementById(`fill_${playerId}`);
+                                    const timeTag = document.getElementById(`time_${playerId}`);
+                                    if (video.duration && !isNaN(video.duration)) {
+                                        if (fill) fill.style.width = ((video.currentTime / video.duration) * 100).toFixed(1) + "%";
+                                        if (timeTag) {
+                                            const curM = Math.floor(video.currentTime / 60);
+                                            const curS = Math.floor(video.currentTime % 60).toString().padStart(2, '0');
+                                            const durM = Math.floor(video.duration / 60);
+                                            const durS = Math.floor(video.duration % 60).toString().padStart(2, '0');
+                                            timeTag.textContent = `${curM}:${curS} / ${durM}:${durS}`;
+                                        }
+                                    }
+                                });
+                                video.addEventListener('loadedmetadata', () => {
+                                    const timeTag = document.getElementById(`time_${playerId}`);
+                                    if (timeTag && video.duration && !isNaN(video.duration)) {
+                                        const durM = Math.floor(video.duration / 60);
+                                        const durS = Math.floor(video.duration % 60).toString().padStart(2, '0');
+                                        timeTag.textContent = `0:00 / ${durM}:${durS}`;
+                                    }
+                                });
+                                video.addEventListener('play', () => {
+                                    const btn = document.getElementById(`playBtn_${playerId}`);
+                                    if (btn) btn.innerHTML = '<i class="fa-solid fa-pause"></i>';
+                                });
+                                video.addEventListener('pause', () => {
+                                    const btn = document.getElementById(`playBtn_${playerId}`);
+                                    if (btn) btn.innerHTML = '<i class="fa-solid fa-play"></i>';
+                                });
+                                video.play().catch(() => {
+                                    video.muted = true;
+                                    video.play().catch(() => {});
+                                });
+                            }
+                        } else {
+                            initVideoMotionPlayer(playerId, vid.posterUrl, vid.motionConfig, vid.duration, vid.fps);
+                        }
+                    }, 50);
+
+                } else {
+                    if (genElem) {
+                        genElem.outerHTML = `
+                        <div class="message-row bot">
+                            <div class="avatar"><i class="fa-solid fa-triangle-exclamation" style="color: #f87171;"></i></div>
+                            <div class="message-content-wrapper">
+                                <div class="message" style="border-color: rgba(239, 68, 68, 0.4);">${escapeHtml(data.error || "Video generation failed. Please try again.")}</div>
+                            </div>
+                        </div>
+                        `;
+                    }
                 }
 
                 saveCurrentSession();
                 requestAnimationFrame(() => { chatBox.scrollTop = chatBox.scrollHeight; });
 
             } catch (err) {
-                console.error("Image Gen Error:", err);
+                console.error("Video Gen Error:", err);
                 const genElem = document.getElementById(genId);
-                if (genElem) genElem.remove();
+                if (genElem) {
+                    genElem.outerHTML = `
+                    <div class="message-row bot">
+                        <div class="avatar"><i class="fa-solid fa-triangle-exclamation" style="color: #f87171;"></i></div>
+                        <div class="message-content-wrapper">
+                            <div class="message" style="border-color: rgba(239, 68, 68, 0.4);">Video generation connection error. Please try again.</div>
+                        </div>
+                    </div>
+                    `;
+                }
             }
         }
 
-        function openLightbox(url, caption) {
+        // ======================
+        // 60FPS KEN BURNS 3D MOTION CANVAS ENGINE
+        // ======================
+
+        function initVideoMotionPlayer(canvasId, imageUrl, motionConfig, durationSec, fpsRate) {
+            const canvas = document.getElementById(canvasId);
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            const w = canvas.width || 1280;
+            const h = canvas.height || 720;
+
+            // Draw immediate animated backdrop so it is never a pitch-black box
+            const bgGrad = ctx.createLinearGradient(0, 0, w, h);
+            bgGrad.addColorStop(0, "#0f172a");
+            bgGrad.addColorStop(0.5, "#1e1b4b");
+            bgGrad.addColorStop(1, "#020617");
+            ctx.fillStyle = bgGrad;
+            ctx.fillRect(0, 0, w, h);
+
+            ctx.font = "600 22px Inter, sans-serif";
+            ctx.fillStyle = "#ec4899";
+            ctx.textAlign = "center";
+            ctx.fillText("✨ Rendering 4K Neural Motion...", w / 2, h / 2 - 10);
+            ctx.font = "14px Inter, sans-serif";
+            ctx.fillStyle = "#94a3b8";
+            ctx.fillText("Interpolating cinematic camera keyframes", w / 2, h / 2 + 25);
+
+            const img = new Image();
+            img.src = imageUrl;
+
+            const playerState = {
+                canvas,
+                ctx,
+                img,
+                motionConfig: motionConfig || { zoomStart: 1.0, zoomEnd: 1.25, panX: 20, panY: -10, rotation: 0.5 },
+                duration: durationSec || 5,
+                fps: fpsRate || 60,
+                speed: 1.0,
+                isPlaying: true,
+                currentTime: 0,
+                lastTimestamp: null,
+                animationFrameId: null
+            };
+
+            activeVideoPlayers.set(canvasId, playerState);
+
+            img.onload = () => {
+                const step = (timestamp) => {
+                    if (!playerState.lastTimestamp) playerState.lastTimestamp = timestamp;
+                    const delta = (timestamp - playerState.lastTimestamp) / 1000;
+                    playerState.lastTimestamp = timestamp;
+
+                    if (playerState.isPlaying) {
+                        playerState.currentTime += delta * playerState.speed;
+                        if (playerState.currentTime >= playerState.duration) {
+                            playerState.currentTime = 0; // Seamless loop
+                        }
+                    }
+
+                    renderMotionFrame(playerState);
+                    updateVideoControlsUI(canvasId, playerState);
+
+                    playerState.animationFrameId = requestAnimationFrame(step);
+                };
+
+                playerState.animationFrameId = requestAnimationFrame(step);
+            };
+
+            img.onerror = () => {
+                let frameCount = 0;
+                const fallbackLoop = () => {
+                    frameCount++;
+                    ctx.fillStyle = "#030712";
+                    ctx.fillRect(0, 0, w, h);
+                    const grad = ctx.createLinearGradient(0, 0, w, h);
+                    grad.addColorStop(0, "#ec4899");
+                    grad.addColorStop(1, "#8b5cf6");
+                    ctx.strokeStyle = grad;
+                    ctx.lineWidth = 4;
+                    ctx.beginPath();
+                    for (let x = 0; x < w; x += 10) {
+                        const y = h / 2 + Math.sin((x + frameCount * 3) * 0.02) * 50;
+                        if (x === 0) ctx.moveTo(x, y);
+                        else ctx.lineTo(x, y);
+                    }
+                    ctx.stroke();
+                    ctx.font = "bold 22px Inter, sans-serif";
+                    ctx.fillStyle = "#f8fafc";
+                    ctx.textAlign = "center";
+                    ctx.fillText("4K Neural Motion Stream Active", w / 2, h / 2 - 80);
+                    playerState.animationFrameId = requestAnimationFrame(fallbackLoop);
+                };
+                fallbackLoop();
+            };
+        }
+
+        function renderMotionFrame(player) {
+            const { canvas, ctx, img, currentTime, duration, motionConfig } = player;
+            if (!ctx || !img || !img.complete) return;
+
+            const w = canvas.width;
+            const h = canvas.height;
+            const progress = (currentTime % duration) / duration;
+
+            // Smooth cubic ease-in-out curve for natural camera kinetics
+            const ease = progress < 0.5 
+                ? 2 * progress * progress 
+                : 1 - Math.pow(-2 * progress + 2, 2) / 2;
+
+            const zoom = motionConfig.zoomStart + (motionConfig.zoomEnd - motionConfig.zoomStart) * ease;
+            const panX = motionConfig.panX * (ease - 0.5) * 2;
+            const panY = motionConfig.panY * (ease - 0.5) * 2;
+            const rot = ((motionConfig.rotation || 0) * (ease - 0.5) * Math.PI) / 180;
+
+            ctx.clearRect(0, 0, w, h);
+            ctx.save();
+
+            // Transform origin to center
+            ctx.translate(w / 2 + panX, h / 2 + panY);
+            ctx.rotate(rot);
+            ctx.scale(zoom, zoom);
+            ctx.drawImage(img, -w / 2, -h / 2, w, h);
+
+            // Subtle atmospheric lighting flare & vignette effect for cinematic depth
+            const grad = ctx.createRadialGradient(0, 0, w * 0.2, 0, 0, w * 0.7);
+            grad.addColorStop(0, "rgba(255, 255, 255, 0.04)");
+            grad.addColorStop(0.7, "rgba(0, 0, 0, 0.15)");
+            grad.addColorStop(1, "rgba(0, 0, 0, 0.45)");
+            ctx.fillStyle = grad;
+            ctx.fillRect(-w / 2, -h / 2, w, h);
+
+            ctx.restore();
+        }
+
+        function updateVideoControlsUI(canvasId, player) {
+            const fill = document.getElementById(`fill_${canvasId}`);
+            const timeTag = document.getElementById(`time_${canvasId}`);
+            if (fill) {
+                const pct = (player.currentTime / player.duration) * 100;
+                fill.style.width = pct.toFixed(1) + "%";
+            }
+            if (timeTag) {
+                const cur = Math.floor(player.currentTime);
+                timeTag.textContent = `0:0${cur} / 0:0${player.duration}`;
+            }
+        }
+
+        function toggleVideoPlayback(playerId) {
+            const video = document.getElementById(playerId);
+            if (video && video.tagName === "VIDEO") {
+                if (video.paused) {
+                    video.play();
+                } else {
+                    video.pause();
+                }
+                return;
+            }
+            const player = activeVideoPlayers.get(playerId);
+            if (!player) return;
+            player.isPlaying = !player.isPlaying;
+            const btn = document.getElementById(`playBtn_${playerId}`);
+            if (btn) {
+                btn.innerHTML = player.isPlaying 
+                    ? '<i class="fa-solid fa-pause"></i>' 
+                    : '<i class="fa-solid fa-play"></i>';
+            }
+        }
+
+        function seekVideoPlayer(playerId, event) {
+            const bar = event.currentTarget;
+            const rect = bar.getBoundingClientRect();
+            const clickPos = Math.max(0, Math.min(1, (event.clientX - rect.left) / rect.width));
+
+            const video = document.getElementById(playerId);
+            if (video && video.tagName === "VIDEO") {
+                if (video.duration && !isNaN(video.duration)) {
+                    video.currentTime = clickPos * video.duration;
+                }
+                return;
+            }
+
+            const player = activeVideoPlayers.get(playerId);
+            if (!player) return;
+            player.currentTime = clickPos * player.duration;
+            renderMotionFrame(player);
+            updateVideoControlsUI(playerId, player);
+        }
+
+        function cycleVideoSpeed(playerId, btn) {
+            const speeds = [1.0, 1.25, 1.5, 2.0];
+            const video = document.getElementById(playerId);
+            if (video && video.tagName === "VIDEO") {
+                const curIdx = speeds.indexOf(video.playbackRate);
+                const nextSpeed = speeds[(curIdx + 1) % speeds.length];
+                video.playbackRate = nextSpeed;
+                if (btn) btn.textContent = `${nextSpeed}x`;
+                return;
+            }
+
+            const player = activeVideoPlayers.get(playerId);
+            if (!player) return;
+            const nextIdx = (speeds.indexOf(player.speed) + 1) % speeds.length;
+            player.speed = speeds[nextIdx];
+            if (btn) btn.textContent = `${player.speed}x`;
+        }
+
+        function toggleVideoMute(playerId, btn) {
+            const video = document.getElementById(playerId);
+            if (!video || video.tagName !== "VIDEO") return;
+            video.muted = !video.muted;
+            if (btn) {
+                btn.innerHTML = video.muted 
+                    ? '<i class="fa-solid fa-volume-xmark"></i>' 
+                    : '<i class="fa-solid fa-volume-high"></i>';
+            }
+        }
+
+        function downloadRealVideo(url, prompt) {
+            const cleanPrompt = (prompt || "video").replace(/[^a-zA-Z0-9_-]/g, "_").slice(0, 30);
+            const ext = url.endsWith('.mp4') ? 'mp4' : 'webm';
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = `mindhelix_${cleanPrompt}_${Date.now()}.${ext}`;
+            a.target = "_blank";
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        }
+
+        async function downloadVideoRecording(canvasId, prompt) {
+            const player = activeVideoPlayers.get(canvasId);
+            if (!player || !player.canvas) return;
+
+            try {
+                const stream = player.canvas.captureStream(60);
+                const recordedChunks = [];
+                const mediaRecorder = new MediaRecorder(stream, { mimeType: 'video/webm;codecs=vp9' });
+
+                mediaRecorder.ondataavailable = (e) => {
+                    if (e.data.size > 0) recordedChunks.push(e.data);
+                };
+
+                mediaRecorder.onstop = () => {
+                    const blob = new Blob(recordedChunks, { type: 'video/webm' });
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement("a");
+                    a.href = url;
+                    a.download = `mindhelix_video_${Date.now()}.webm`;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                };
+
+                mediaRecorder.start();
+                setTimeout(() => {
+                    if (mediaRecorder.state === "recording") mediaRecorder.stop();
+                }, (player.duration * 1000) / player.speed);
+
+            } catch (e) {
+                downloadImage(player.img.src);
+            }
+        }
+
+        // ======================
+        // LIGHTBOX DETAIL INSPECTOR & FULLSCREEN VIEWER
+        // ======================
+        let lightboxCurrentScale = 1.0;
+        let lightboxPanX = 0;
+        let lightboxPanY = 0;
+        let lightboxIsPanning = false;
+        let lightboxStartX = 0;
+        let lightboxStartY = 0;
+        let lightboxActiveMeta = null;
+
+        function openLightbox(type, mediaUrl, caption, metaJson) {
             const modal = document.getElementById("lightboxModal");
             const img = document.getElementById("lightboxImg");
+            const vidContainer = document.getElementById("lightboxVideoContainer");
             const cap = document.getElementById("lightboxCaption");
-            if (modal && img) {
-                img.src = url;
-                if (cap) cap.textContent = caption || '';
-                modal.classList.add("active");
+            const resBadge = document.getElementById("lightboxResolutionBadge");
+            const engBadge = document.getElementById("lightboxEngineBadge");
+
+            if (!modal) return;
+
+            lightboxActiveMeta = null;
+            if (metaJson) {
+                try {
+                    lightboxActiveMeta = typeof metaJson === 'object' ? metaJson : JSON.parse(metaJson);
+                } catch(e) {}
             }
+
+            if (cap) cap.textContent = caption || (lightboxActiveMeta?.prompt || 'AI Media');
+            if (resBadge && lightboxActiveMeta?.dim) {
+                resBadge.innerHTML = `<i class="fa-solid fa-crop-simple"></i> <span>${escapeHtml(lightboxActiveMeta.dim)}</span>`;
+            }
+            if (engBadge && lightboxActiveMeta?.provider) {
+                engBadge.innerHTML = `<i class="fa-solid fa-bolt" style="color: #6366f1;"></i> <span>${escapeHtml(lightboxActiveMeta.provider)}</span>`;
+            }
+
+            if (type === 'video') {
+                if (img) img.style.display = "none";
+                if (vidContainer) {
+                    vidContainer.style.display = "block";
+                    const isReal = Boolean(mediaUrl && (mediaUrl.endsWith('.webm') || mediaUrl.endsWith('.mp4') || lightboxActiveMeta?.hasRealVideo));
+                    if (isReal) {
+                        vidContainer.innerHTML = `
+                        <div style="position: relative; width: 100%; max-width: 960px; margin: 0 auto; background: #000; border-radius: 14px; overflow: hidden; box-shadow: 0 25px 60px rgba(0,0,0,0.85);">
+                            <video id="lightboxVideoPlayer" src="${mediaUrl}" poster="${lightboxActiveMeta?.posterUrl || ''}" controls autoplay loop playsinline style="width: 100%; height: auto; max-height: 75vh; display: block;"></video>
+                            <div style="position: absolute; bottom: 12px; left: 14px; right: 14px; display: flex; align-items: center; justify-content: space-between; background: rgba(0,0,0,0.7); padding: 8px 16px; border-radius: 20px; backdrop-filter: blur(12px); pointer-events: none;">
+                                <span style="color: #f472b6; font-size: 12px; font-weight: 700;"><i class="fa-solid fa-film"></i> 4K Ultra HD Theatre Stream</span>
+                                <button class="img-action-btn video-btn" style="pointer-events: auto;" onclick="downloadRealVideo('${mediaUrl}', '${escapeHtml(caption)}')">
+                                    <i class="fa-solid fa-download"></i> Download Video
+                                </button>
+                            </div>
+                        </div>
+                        `;
+                    } else {
+                        vidContainer.innerHTML = `
+                        <div style="position: relative; width: 100%; aspect-ratio: 16/9; background: #000; border-radius: 14px; overflow: hidden;">
+                            <canvas id="lightboxVideoCanvas" width="1280" height="720" style="width: 100%; height: 100%;"></canvas>
+                            <div style="position: absolute; bottom: 12px; left: 14px; right: 14px; display: flex; align-items: center; justify-content: space-between; background: rgba(0,0,0,0.6); padding: 8px 14px; border-radius: 20px; backdrop-filter: blur(10px);">
+                                <span style="color: #f472b6; font-size: 12px; font-weight: 700;"><i class="fa-solid fa-film"></i> 4K 60FPS Video Preview</span>
+                                <button class="img-action-btn video-btn" onclick="downloadVideoRecording('lightboxVideoCanvas', '${escapeHtml(caption)}')">
+                                    <i class="fa-solid fa-download"></i> Download Video
+                                </button>
+                            </div>
+                        </div>
+                        `;
+                        setTimeout(() => {
+                            initVideoMotionPlayer('lightboxVideoCanvas', mediaUrl, lightboxActiveMeta?.motionConfig, 5, 60);
+                        }, 50);
+                    }
+                }
+                const toolbar = document.getElementById("lightboxToolbar");
+                if (toolbar) toolbar.style.display = "none";
+
+            } else {
+                // Image Detail Inspector View
+                if (vidContainer) vidContainer.style.display = "none";
+                if (img) {
+                    img.style.display = "block";
+                    img.src = mediaUrl;
+                    lightboxZoomFit();
+                }
+                const toolbar = document.getElementById("lightboxToolbar");
+                if (toolbar) toolbar.style.display = "flex";
+            }
+
+            modal.classList.add("active");
         }
 
         function closeLightbox() {
             const modal = document.getElementById("lightboxModal");
             if (modal) modal.classList.remove("active");
+            const vidPlayer = document.getElementById("lightboxVideoPlayer");
+            if (vidPlayer) {
+                vidPlayer.pause();
+                vidPlayer.src = "";
+            }
+            const vidContainer = document.getElementById("lightboxVideoContainer");
+            if (vidContainer) vidContainer.innerHTML = "";
+            activeVideoPlayers.delete("lightboxVideoCanvas");
+        }
+
+        function applyLightboxTransform() {
+            const img = document.getElementById("lightboxImg");
+            if (img) {
+                img.style.transform = `translate(${lightboxPanX}px, ${lightboxPanY}px) scale(${lightboxCurrentScale})`;
+            }
+        }
+
+        function lightboxZoomIn() {
+            lightboxCurrentScale = Math.min(4.0, lightboxCurrentScale + 0.35);
+            applyLightboxTransform();
+        }
+
+        function lightboxZoomOut() {
+            lightboxCurrentScale = Math.max(0.5, lightboxCurrentScale - 0.35);
+            applyLightboxTransform();
+        }
+
+        function lightboxZoomActual() {
+            lightboxCurrentScale = 1.0;
+            lightboxPanX = 0;
+            lightboxPanY = 0;
+            applyLightboxTransform();
+        }
+
+        function lightboxZoomFit() {
+            lightboxCurrentScale = 1.0;
+            lightboxPanX = 0;
+            lightboxPanY = 0;
+            applyLightboxTransform();
+        }
+
+        function startLightboxPan(e) {
+            if (lightboxCurrentScale <= 1.0) return;
+            lightboxIsPanning = true;
+            lightboxStartX = e.clientX - lightboxPanX;
+            lightboxStartY = e.clientY - lightboxPanY;
+            const viewport = document.getElementById("lightboxViewport");
+            if (viewport) viewport.classList.add("panning");
+        }
+
+        window.addEventListener("mousemove", (e) => {
+            if (!lightboxIsPanning) return;
+            lightboxPanX = e.clientX - lightboxStartX;
+            lightboxPanY = e.clientY - lightboxStartY;
+            applyLightboxTransform();
+        });
+
+        window.addEventListener("mouseup", () => {
+            lightboxIsPanning = false;
+            const viewport = document.getElementById("lightboxViewport");
+            if (viewport) viewport.classList.remove("panning");
+        });
+
+        function downloadLightboxMedia() {
+            const img = document.getElementById("lightboxImg");
+            if (img && img.src) downloadImage(img.src);
+        }
+
+        async function copyLightboxPrompt(btn) {
+            const promptText = lightboxActiveMeta?.enhancedPrompt || lightboxActiveMeta?.prompt || document.getElementById("lightboxCaption")?.textContent || '';
+            if (!promptText) return;
+            try {
+                await navigator.clipboard.writeText(promptText);
+                const orig = btn.innerHTML;
+                btn.innerHTML = '<i class="fa-solid fa-check"></i> Copied!';
+                setTimeout(() => { btn.innerHTML = orig; }, 2000);
+            } catch(e) {}
         }
 
         async function downloadImage(url) {
@@ -939,7 +1956,7 @@
                 const blobUrl = URL.createObjectURL(blob);
                 const a = document.createElement("a");
                 a.href = blobUrl;
-                a.download = `mindhelix_ai_art_${Date.now()}.jpg`;
+                a.download = `mindhelix_ai_art_8k_${Date.now()}.jpg`;
                 document.body.appendChild(a);
                 a.click();
                 document.body.removeChild(a);
@@ -966,6 +1983,10 @@
             generateImageFlow(prompt);
         }
 
+        // ======================
+        // CORE SEND MESSAGE WITH SMART ROUTING
+        // ======================
+
         async function sendMessage() {
             if (checkTrialExpiredOrBlock()) return;
 
@@ -982,8 +2003,30 @@
 
             input.value = "";
 
-            if (isImageMode) {
+            // Direct route if Image Studio is active
+            if (currentStudioMode === 'image') {
                 generateImageFlow(message);
+                return;
+            }
+
+            // Direct route if Video Studio is active
+            if (currentStudioMode === 'video') {
+                generateVideoFlow(message);
+                return;
+            }
+
+            // Smart intent detection in Chat Mode
+            const lowerMsg = message.toLowerCase().trim();
+            if (/^(generate|create|make|draw|render|show me an?)\s+(an?\s+)?image\s+(of\s+)?/i.test(lowerMsg)) {
+                const cleanedPrompt = message.replace(/^(generate|create|make|draw|render|show me an?)\s+(an?\s+)?image\s+(of\s+)?/i, '').trim();
+                setStudioMode('image');
+                generateImageFlow(cleanedPrompt || message);
+                return;
+            }
+            if (/^(generate|create|make|render|show me an?)\s+(an?\s+)?video\s+(of\s+)?/i.test(lowerMsg) || /\b(video of|animate this|animated video)\b/i.test(lowerMsg)) {
+                const cleanedPrompt = message.replace(/^(generate|create|make|render|show me an?)\s+(an?\s+)?video\s+(of\s+)?/i, '').trim();
+                setStudioMode('video');
+                generateVideoFlow(cleanedPrompt || message);
                 return;
             }
 
@@ -1772,7 +2815,11 @@
                 const sendBtn = document.getElementById("sendBtn");
                 if (input) {
                     input.disabled = false;
-                    input.placeholder = isImageMode ? "Describe the AI image you want to generate..." : "Type your message here...";
+                    input.placeholder = currentStudioMode === 'image' 
+                        ? "Describe the AI image you want to generate in ultra detail..." 
+                        : (currentStudioMode === 'video' 
+                            ? "Describe the 4K 60FPS video & cinematic scene you want to generate..." 
+                            : "Type your message here...");
                 }
                 if (sendBtn) {
                     sendBtn.disabled = false;

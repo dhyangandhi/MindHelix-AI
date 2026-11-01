@@ -1,8 +1,8 @@
 # 🧬 MindHelix AI — Complete System Architecture & Workflows
 
-> **Document Version:** 2.0.0 (Production Blueprint)  
-> **Target Platforms:** Web (Vercel / Node.js), Mobile (Capacitor Android), Desktop (Electron), Edge (Cloudflare Workers)  
-> **Status:** Fully Integrated & Active
+> **Document Version:** 2.4.0 (Enterprise Clustered Server Edition)  
+> **Target Platforms:** Web (Vercel / Node.js Cluster), Mobile (Capacitor Android), Desktop (Electron), Edge (Cloudflare Workers)  
+> **Status:** Fully Integrated, Clustered & Active
 
 ---
 
@@ -357,6 +357,21 @@ flowchart TD
 | `POST /api/generate-image` | `server.js` | AI Image Synthesis | L4 Prompt Injection Guard, FLUX.1 + OpenRouter |
 | `POST /forgot-password` | `server.js` | Reset Token Dispatch | UUID v4, 15-min TTL, Gmail Nodemailer |
 | `POST /reset-password` | `server.js` | Password Overwrite | Token Expiry Validation, Bcrypt Re-hash |
+| `GET /server` | `sendFileSafe(server.html)` | Large Server Infrastructure Console | Layer 1 Protected |
+| `GET /api/server/stats` | `telemetry.getStats()` | System, CPU, RAM, & Throughput Metrics | Live Telemetry Stream |
+| `GET /api/server/health` | `server.js` | Liveness & Readiness Deep Health Probe | Subsystem Audit |
+| `GET /api/server/workers`| `clusterManager.getClusterStatus()` | Multi-Core Worker Cluster State | Cluster Supervisor |
+| `POST /api/server/restart-worker` | `clusterManager.restartWorker()` | Zero-Downtime Worker Rolling Restart | Admin Operations |
+| `GET /api/server/cache` | `serverCache.getStats()` | In-Memory LRU/TTL Cache Analytics | Memory Telemetry |
+| `POST /api/server/cache/purge` | `serverCache.clear()` | Invalidate & Purge Server Cache | Admin Operations |
+| `GET /api/server/live-stream` | `telemetry.addSSEClient()` | Server-Sent Events (SSE) Live Feed | Real-Time Push (1s) |
+| `POST /api/server/benchmark` | `server.js` | Live High-Speed Concurrency Benchmark | Performance Testing |
+| `GET /api/server/vm/list` | `vmSandboxManager.getAllVMs()` | Active Virtual Machine Fleet & Telemetry | Multi-Instance V8 Sandbox |
+| `GET /api/server/vm/presets` | `vmSandboxManager.getSamplePresets()`| Pre-built Code Execution Templates | Sandbox Presets |
+| `POST /api/server/vm/execute` | `vmSandboxManager.executeCode()` | Isolated Code Execution in Sandbox | L4 Shield & Timeout Guard |
+| `POST /api/server/vm/create` | `vmSandboxManager.createVM()` | Spawn New Isolated MicroVM Instance | Custom Quotas |
+| `POST /api/server/vm/reset` | `vmSandboxManager.resetVM()` | Flush Sandbox Context & Variables | Admin Operations |
+| `POST /api/server/vm/terminate`| `vmSandboxManager.terminateVM()` | Terminate & Dispose Virtual Machine | Admin Operations |
 | `GET /api/neon-masking`| `server.js` | Data Privacy Masking Audit | Decrypt -> Pattern Mask (`us***r@domain.com`) |
 
 ---
@@ -442,25 +457,7 @@ flowchart TD
 | **Layer 3** | **Identity & Auth Shield** | 7-strike sliding-window lockout, password entropy calculator, constant-time compare | Brute-force attacks, credential stuffing, side-channel timing attacks |
 | **Layer 4** | **Data & AI Guardrails** | AI prompt injection detector, jailbreak interceptor, egress credential scrubber, AES-256-CBC | Prompt injections, system prompt extraction, credential leaks, plaintext PII leaks |
 
----
 
-## 🔨 6. Firewall Build & Verification Pipeline
 
-MindHelix AI includes a dedicated CLI build tool (`bin/firewall.js`):
 
-```bash
-# 1. Compile & Hash the Firewall Rule Matrix
-npm run build:firewall
-# or: node bin/firewall.js --build
-
-# 2. Execute Automated 16-Vector Attack Penetration Test Suite
-npm run test:firewall
-# or: npm test
-
-# 3. Generate Formal Security Audit Markdown Report
-npm run audit:firewall
-
-# 4. View Real-Time Defense Telemetry
-node bin/firewall.js --status
-```
 
