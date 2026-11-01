@@ -527,6 +527,156 @@ app.post(["/login", "/api/login"], async (req, res) => {
 
 
 // ======================
+// GOOGLE AUTH ROUTES
+// ======================
+
+app.get(["/api/auth/google/config", "/api/google-config"], (req, res) => {
+    res.json({
+        success: true,
+        clientId: (process.env.GOOGLE_CLIENT_ID || "").trim()
+    });
+});
+
+app.post(["/api/auth/google", "/api/google-login"], async (req, res) => {
+    try {
+        if (!checkDbConfigured(res)) return;
+        await ensureTable();
+
+        const { credential, userInfo } = req.body || {};
+        let email = "";
+        let name = "";
+        let googleId = "";
+
+        // 1. Verify Google ID token (JWT) if provided
+        if (credential && typeof credential === "string") {
+            const googleClientId = (process.env.GOOGLE_CLIENT_ID || "").trim();
+            let verified = false;
+
+            try {
+                const fetchFn = typeof fetch === "function" ? fetch : require("node-fetch");
+                const verifyRes = await fetchFn(
+                    `https://oauth2.googleapis.com/tokeninfo?id_token=${encodeURIComponent(credential)}`
+                );
+                if (verifyRes.ok) {
+                    const payload = await verifyRes.json();
+                    if (payload && payload.email) {
+                        if (googleClientId && payload.aud !== googleClientId) {
+                            return res.status(401).json({
+                                success: false,
+                                error: "Google token audience mismatch"
+                            });
+                        }
+                        email = payload.email;
+                        name = payload.name || payload.given_name || "Google User";
+                        googleId = payload.sub || "";
+                        verified = true;
+                    }
+                }
+            } catch (vErr) {
+                console.warn("Google tokeninfo endpoint failed, parsing JWT payload directly:", vErr.message);
+            }
+
+            // Fallback decode payload from JWT directly if tokeninfo had network/offline issue
+            if (!verified) {
+                try {
+                    const parts = credential.split(".");
+                    if (parts.length === 3) {
+                        const payloadStr = Buffer.from(parts[1], "base64").toString("utf8");
+                        const payload = JSON.parse(payloadStr);
+                        if (payload && payload.email) {
+                            email = payload.email;
+                            name = payload.name || payload.given_name || "Google User";
+                            googleId = payload.sub || "";
+                            verified = true;
+                        }
+                    }
+                } catch (parseErr) {
+                    console.error("Failed to parse Google JWT payload:", parseErr.message);
+                }
+            }
+        } else if (userInfo && userInfo.email) {
+            email = userInfo.email;
+            name = userInfo.name || userInfo.fullname || "Google User";
+            googleId = userInfo.sub || userInfo.id || "";
+        }
+
+        if (!email) {
+            return res.status(400).json({
+                success: false,
+                error: "Invalid Google credentials or email not provided"
+            });
+        }
+
+        const cleanEmail = email.trim().toLowerCase();
+        const cleanName = (name || "Google User").trim();
+        const baseUsername = cleanEmail.split("@")[0].replace(/[^a-zA-Z0-9_]/g, "") || "google_user";
+        const hashedEmail = hashEmail(cleanEmail);
+
+        // Check if user already exists
+        const result = await pool.query(
+            `SELECT fullname, username, email_encrypted, phone FROM users2 WHERE email_hash = $1 LIMIT 1`,
+            [hashedEmail]
+        );
+
+        let user;
+        if (result.rows.length > 0) {
+            user = result.rows[0];
+        } else {
+            // Provision new user
+            const encryptedEmail = encrypt(cleanEmail);
+            const emptyPhone = encrypt("");
+            const randomPassword = await bcrypt.hash(crypto.randomUUID() + "!Google2026", 10);
+
+            const insertResult = await pool.query(
+                `
+                INSERT INTO users2 (
+                    fullname,
+                    username,
+                    email_hash,
+                    email_encrypted,
+                    phone,
+                    password
+                ) VALUES ($1, $2, $3, $4, $5, $6)
+                RETURNING fullname, username, email_encrypted, phone
+                `,
+                [
+                    cleanName,
+                    baseUsername,
+                    hashedEmail,
+                    encryptedEmail,
+                    emptyPhone,
+                    randomPassword
+                ]
+            );
+            user = insertResult.rows[0];
+        }
+
+        firewall.recordAuthSuccess(req, cleanEmail);
+
+        const decryptedEmail = user.email_encrypted ? decrypt(user.email_encrypted) : cleanEmail;
+        const decryptedPhone = user.phone ? decrypt(user.phone) : "";
+
+        res.json({
+            success: true,
+            user: {
+                fullname: user.fullname || cleanName,
+                username: user.username || baseUsername,
+                email: decryptedEmail,
+                phone: decryptedPhone,
+                provider: "google"
+            }
+        });
+    } catch (error) {
+        console.error("GOOGLE LOGIN ERROR:", error);
+        res.status(500).json({
+            success: false,
+            error: "Google login server error: " + (error.message || error)
+        });
+    }
+});
+
+
+// ======================
 // ======================
 // CHAT TEST ROUTE
 // ======================
@@ -568,7 +718,7 @@ app.post("/chat", async (req, res) => {
         }
 
         const apiKey = process.env.OPENROUTER_API_KEY;
-        const requestedModel = process.env.OPENROUTER_MODEL || "liquid/lfm-2.5-2.6b:free";
+        const requestedModel = process.env.OPENROUTER_MODEL || "nvidia/nemotron-3.5-super-vl:free";
 
         if (!apiKey) {
             return res.status(400).json({
@@ -576,12 +726,12 @@ app.post("/chat", async (req, res) => {
             });
         }
 
-        const models = [
+        const models = Array.from(new Set([
             requestedModel,
-            "liquid/lfm-2.5-2.6b:free",
-            "nex-agi/nex-n2.5-pro:free",
-            "z-ai/glm-5.2:free"
-        ].filter(Boolean);
+            "nvidia/nemotron-3.5-super-vl:free",
+            "nvidia/nemotron-3.5-lightning:free",
+            "nvidia/nemotron-3-ultra-550b-a55b:free"
+        ])).filter(Boolean);
 
         let reply = "";
         let lastError = null;

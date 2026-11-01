@@ -2,7 +2,7 @@ import { neon } from "@neondatabase/serverless";
 import bcrypt from "bcryptjs";
 import crypto from "node:crypto";
 
-const DEFAULT_OPENROUTER_MODEL = "google/gemma-4-26b-a4b-it:free";
+const DEFAULT_OPENROUTER_MODEL = "nvidia/nemotron-3.5-super-vl:free";
 
 const algorithm = "aes-256-cbc";
 
