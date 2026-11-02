@@ -21,6 +21,17 @@
     <link rel="stylesheet" href="home.css">
     <link rel="stylesheet" href="responsive.css">
     <script src="responsive.js" defer></script>
+    <!-- Immediate theme initialization to prevent flash -->
+    <script>
+        (function() {
+            const savedTheme = localStorage.getItem('mindhelix_theme') || 
+                (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+            if (savedTheme === 'light') {
+                document.documentElement.setAttribute('data-theme', 'light');
+                document.body ? document.body.classList.add('light-theme') : document.addEventListener('DOMContentLoaded', () => document.body.classList.add('light-theme'));
+            }
+        })();
+    </script>
 </head>
 
 <body>
@@ -82,6 +93,10 @@
         </ul>
 
         <div class="nav-actions">
+            <!-- LIGHT / DARK MODE TOGGLE BUTTON -->
+            <button type="button" class="theme-toggle-btn magnetic-btn" id="themeToggleBtn" onclick="toggleTheme()" aria-label="Toggle Light and Dark Mode" title="Switch Theme">
+                <i class="bx bx-sun" id="themeIcon"></i>
+            </button>
             <a href="login.html" class="btn btn-glass magnetic-btn" id="navLoginBtn">
                 <i class="bx bxs-lock-open-alt"></i> Login
             </a>
@@ -978,7 +993,7 @@
                             ctx.beginPath();
                             ctx.moveTo(p.x, p.y);
                             ctx.lineTo(p2.x, p2.y);
-                            ctx.strokeStyle = `rgba(255, 110, 60, ${alpha.toFixed(3)})`;
+                            ctx.strokeStyle = document.body.classList.contains('light-theme') ? `rgba(99, 102, 241, ${alpha.toFixed(3)})` : `rgba(255, 110, 60, ${alpha.toFixed(3)})`;
                             ctx.lineWidth = 0.8;
                             ctx.stroke();
                         }
@@ -994,7 +1009,7 @@
                             ctx.beginPath();
                             ctx.moveTo(p.x, p.y);
                             ctx.lineTo(mouse.x, mouse.y);
-                            ctx.strokeStyle = `rgba(255, 94, 54, ${alpha.toFixed(3)})`;
+                            ctx.strokeStyle = document.body.classList.contains('light-theme') ? `rgba(99, 102, 241, ${alpha.toFixed(3)})` : `rgba(255, 94, 54, ${alpha.toFixed(3)})`;
                             ctx.lineWidth = 1;
                             ctx.stroke();
                         }
@@ -1204,6 +1219,49 @@
             });
         }
 
+        // 8.9 Theme Toggle Engine (Light / Dark Mode)
+        function initTheme() {
+            const savedTheme = localStorage.getItem('mindhelix_theme') || 
+                (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+            applyTheme(savedTheme);
+        }
+
+        function applyTheme(theme) {
+            const icon = document.getElementById('themeIcon');
+            const toggleBtn = document.getElementById('themeToggleBtn');
+            
+            if (theme === 'light') {
+                document.documentElement.setAttribute('data-theme', 'light');
+                document.body.classList.add('light-theme');
+                if (icon) {
+                    icon.className = 'bx bx-moon';
+                    icon.style.transform = 'rotate(360deg)';
+                }
+                if (toggleBtn) {
+                    toggleBtn.title = 'Switch to Dark Mode';
+                    toggleBtn.setAttribute('aria-label', 'Switch to Dark Mode');
+                }
+            } else {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                document.body.classList.remove('light-theme');
+                if (icon) {
+                    icon.className = 'bx bx-sun';
+                    icon.style.transform = 'rotate(0deg)';
+                }
+                if (toggleBtn) {
+                    toggleBtn.title = 'Switch to Light Mode';
+                    toggleBtn.setAttribute('aria-label', 'Switch to Light Mode');
+                }
+            }
+            localStorage.setItem('mindhelix_theme', theme);
+        }
+
+        function toggleTheme() {
+            const currentTheme = document.body.classList.contains('light-theme') ? 'light' : 'dark';
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            applyTheme(newTheme);
+        }
+
         // Master Animation Initialization
         function initAnimations() {
             initNeuralCanvas();
@@ -1214,6 +1272,7 @@
             initTiltCards();
             initMagneticButtons();
             initButtonRipples();
+            initTheme();
         }
 
         if (document.readyState === 'loading') {
