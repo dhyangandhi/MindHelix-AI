@@ -1,0 +1,13 @@
+node_modules
+.git
+.github
+tmp_code_runs
+.env
+.env.local
+*.log
+npm-debug.log*
+.DS_Store
+dist
+android
+build
+

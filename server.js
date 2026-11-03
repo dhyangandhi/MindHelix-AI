@@ -883,6 +883,18 @@ app.post("/api/run-code", async (req, res) => {
             fs.writeFileSync(filePath, code, "utf8");
             cmd = process.platform === "win32" ? "python" : "python3";
             args = [filePath];
+        } else if (lang === "bash" || lang === "sh" || lang === "shell") {
+            if (process.platform === "win32") {
+                filePath = path.join(tmpDir, `run_${Date.now()}_${Math.random().toString(36).substring(7)}.bat`);
+                fs.writeFileSync(filePath, "@echo off\r\n" + code, "utf8");
+                cmd = "cmd.exe";
+                args = ["/c", filePath];
+            } else {
+                filePath = path.join(tmpDir, `run_${Date.now()}_${Math.random().toString(36).substring(7)}.sh`);
+                fs.writeFileSync(filePath, "#!/bin/bash\n" + code, "utf8");
+                cmd = "bash";
+                args = [filePath];
+            }
         } else {
             return res.json({
                 success: true,
