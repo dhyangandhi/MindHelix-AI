@@ -58,6 +58,40 @@
                     </div>
                 </div>
 
+                <!-- CENTER NAVBAR OPTIONS BAR -->
+                <div class="advanced-ai-bar navbar-ai-bar" id="advancedAiBar">
+                    <div class="opt-group">
+                        <span class="opt-label"><i class="fa-solid fa-brain"></i> MODEL:</span>
+                        <select class="opt-select" id="aiModelSelect" onchange="handleModelChange()">
+                            <option value="nvidia/nemotron-3.5-super-vl:free">⚡ Nemotron 3.5 Super VL (Free)</option>
+                            <option value="deepseek/deepseek-r1:free">🧠 DeepSeek R1 Reasoning (Free)</option>
+                            <option value="meta-llama/llama-3.3-70b-instruct:free">🦙 Meta Llama 3.3 70B (Free)</option>
+                            <option value="qwen/qwen-2.5-coder-32b-instruct:free">💻 Qwen 2.5 Coder 32B (Free)</option>
+                            <option value="mistralai/mistral-nemo:free">💎 Mistral Nemo 12B (Free)</option>
+                        </select>
+                    </div>
+                    <div class="opt-group">
+                        <span class="opt-label"><i class="fa-solid fa-user-gear"></i> SPECIALIST:</span>
+                        <select class="opt-select" id="aiPersonaSelect" onchange="handlePersonaChange()">
+                            <option value="architect">🚀 Full-Stack Architect</option>
+                            <option value="security">🛡️ Cyber Security & WAF</option>
+                            <option value="datascience">📊 Data Science & Python</option>
+                            <option value="general">🤖 General Intelligence</option>
+                        </select>
+                    </div>
+                    <div class="opt-group">
+                        <span class="opt-label"><i class="fa-solid fa-sliders"></i> CREATIVITY:</span>
+                        <select class="opt-select" id="aiCreativitySelect">
+                            <option value="0.2">🎯 Precise (0.2)</option>
+                            <option value="0.7" selected>⚖️ Balanced (0.7)</option>
+                            <option value="1.0">✨ Creative (1.0)</option>
+                        </select>
+                    </div>
+                    <button type="button" class="live-sandbox-quick-btn" onclick="openLiveServerModal()" title="Open Interactive Live Server & noVNC Sandbox">
+                        <i class="fa-solid fa-server"></i> <span>Live Sandbox</span>
+                    </button>
+                </div>
+
                 <div class="nav-actions">
                     <!-- TRIAL COUNTDOWN BADGE -->
                     <div id="trialCountdownBadge" class="trial-countdown-badge" style="display: none;">
@@ -71,6 +105,10 @@
                         <i class="fa-solid fa-robot"></i> Try AI Assistant (2 Min Free)
                     </button>
 
+                    <button class="nav-btn live-server-nav-btn" onclick="openLiveServerModal()" title="Live Server & noVNC Sandbox">
+                        <i class="fa-solid fa-server"></i>
+                        <span>Live Server / noVNC</span>
+                    </button>
                     <button class="nav-btn clear-btn" onclick="clearChat()" title="Clear Current Chat">
                         <i class="fa-solid fa-trash-can"></i>
                         Clear Chat
@@ -80,6 +118,10 @@
                         <span id="authNavBtnText">Sign Out</span>
                     </button>
                 </div>
+                <!-- CENTER NAVBAR MINIMIZE TAB -->
+                <button type="button" class="navbar-minimize-tab" id="navbarMinimizeBtn" onclick="toggleNavbarMinimize()" title="Minimize Navigation Header" aria-label="Minimize Navigation Header">
+                    <i class="fa-solid fa-caret-up" id="navbarMinimizeIcon"></i>
+                </button>
             </nav>
 
             <!-- TRIAL TIMELIMIT STATUS BAR -->
@@ -181,6 +223,44 @@
                             title="AI Video Studio (4K 60FPS Cinematic Motion)">
                             <i class="fa-solid fa-film"></i> <span>Video Studio</span>
                         </button>
+                        <button class="studio-tab-btn liveserver-tab" id="tabLiveServer" onclick="openLiveServerModal()" title="Interactive Live Server & noVNC Sandbox">
+                            <i class="fa-solid fa-server"></i> <span>Live Server / noVNC</span>
+                        </button>
+                    </div>
+
+                    <!-- ADVANCED AI OPTIONS BAR (CHAT MODE) -->
+                    <!-- (Options bar hosted in navbar) -->
+                    <div style="display: none;">
+                        <div class="opt-group">
+                            <span class="opt-label"><i class="fa-solid fa-brain"></i> Model:</span>
+                            <select class="opt-select" id="aiModelSelect" onchange="handleModelChange()">
+                                <option value="nvidia/nemotron-3.5-super-vl:free">⚡ Nemotron 3.5 Super VL (Free)</option>
+                                <option value="deepseek/deepseek-r1:free">🧠 DeepSeek R1 Reasoning (Free)</option>
+                                <option value="meta-llama/llama-3.3-70b-instruct:free">🦙 Meta Llama 3.3 70B (Free)</option>
+                                <option value="qwen/qwen-2.5-coder-32b-instruct:free">💻 Qwen 2.5 Coder 32B (Free)</option>
+                                <option value="mistralai/mistral-nemo:free">💎 Mistral Nemo 12B (Free)</option>
+                            </select>
+                        </div>
+                        <div class="opt-group">
+                            <span class="opt-label"><i class="fa-solid fa-user-gear"></i> Specialist:</span>
+                            <select class="opt-select" id="aiPersonaSelect" onchange="handlePersonaChange()">
+                                <option value="architect">🚀 Full-Stack Architect</option>
+                                <option value="security">🛡️ Cyber Security & WAF</option>
+                                <option value="datascience">📊 Data Science & Python</option>
+                                <option value="general">🤖 General Intelligence</option>
+                            </select>
+                        </div>
+                        <div class="opt-group">
+                            <span class="opt-label"><i class="fa-solid fa-sliders"></i> Creativity:</span>
+                            <select class="opt-select" id="aiCreativitySelect">
+                                <option value="0.2">🎯 Precise (0.2)</option>
+                                <option value="0.7" selected>⚖️ Balanced (0.7)</option>
+                                <option value="1.0">✨ Creative (1.0)</option>
+                            </select>
+                        </div>
+                        <button class="live-sandbox-quick-btn" onclick="openLiveServerModal()" title="Open Interactive Live Server & noVNC Sandbox">
+                            <i class="fa-solid fa-server"></i> <span>Live Sandbox</span>
+                        </button>
                     </div>
 
                     <!-- IMAGE OPTIONS BAR -->
@@ -273,6 +353,230 @@
                         <button class="send-btn" onclick="sendMessage()" id="sendBtn" title="Send Message">
                             <i class="fa-solid fa-paper-plane"></i>
                         </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- LIVE SERVER & noVNC EXECUTION WORKBENCH MODAL -->
+    <div class="live-server-modal" id="liveServerModal" style="display: none;">
+        <div class="live-server-backdrop" onclick="closeLiveServerModal()"></div>
+        <div class="live-server-dialog">
+            <!-- HEADER -->
+            <div class="ls-header">
+                <div class="ls-header-left">
+                    <div class="ls-badge-icon">
+                        <i class="fa-solid fa-server"></i>
+                    </div>
+                    <div>
+                        <h3 class="ls-title">MindHelix Live Server & noVNC Sandbox</h3>
+                        <p class="ls-subtitle">Multi-runtime code execution, live DOM web preview & HTML5 noVNC desktop</p>
+                    </div>
+                </div>
+                <div class="ls-header-right">
+                    <div class="ls-status-pill ready" id="lsStatusPill">
+                        <span class="ls-status-dot"></span>
+                        <span id="lsStatusText">Engine Ready</span>
+                    </div>
+                    <button class="ls-close-btn" onclick="closeLiveServerModal()" title="Close Sandbox">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- WORKBENCH TABS -->
+            <div class="ls-tabs-bar">
+                <button class="ls-tab-btn active" id="lsTabWebBtn" onclick="switchLsTab('web')">
+                    <i class="fa-solid fa-globe"></i> <span>Live Web Server</span>
+                </button>
+                <button class="ls-tab-btn" id="lsTabBackendBtn" onclick="switchLsTab('backend')">
+                    <i class="fa-solid fa-terminal"></i> <span>Backend Terminal Runner</span>
+                </button>
+                <button class="ls-tab-btn" id="lsTabVncBtn" onclick="switchLsTab('vnc')">
+                    <i class="fa-solid fa-display"></i> <span>noVNC Remote Desktop</span>
+                </button>
+                <button class="ls-tab-btn" id="lsTabGuideBtn" onclick="switchLsTab('guide')">
+                    <i class="fa-solid fa-book-bookmark"></i> <span>Setup & Docker Guide</span>
+                </button>
+            </div>
+
+            <!-- TAB 1: LIVE WEB SERVER -->
+            <div class="ls-tab-content active" id="lsTabWebContent">
+                <div class="ls-web-workbench">
+                    <div class="ls-editor-pane">
+                        <div class="ls-pane-header">
+                            <span><i class="fa-solid fa-code"></i> HTML / CSS / JS Editor</span>
+                            <div class="ls-pane-actions">
+                                <button class="ls-tool-btn" onclick="formatWebEditorCode()" title="Format Code"><i class="fa-solid fa-wand-magic-sparkles"></i> Format</button>
+                                <button class="ls-tool-btn ls-primary" onclick="runWebPreview()" title="Run Code in Live Server"><i class="fa-solid fa-play"></i> Run Code</button>
+                                <button class="ls-tool-btn" onclick="clearWebEditor()" title="Clear Editor"><i class="fa-solid fa-eraser"></i> Clear</button>
+                            </div>
+                        </div>
+                        <textarea class="ls-code-textarea" id="lsWebCodeTextarea" placeholder="Enter HTML, CSS & JavaScript or click 'Live Server' on any AI code block..." spellcheck="false"></textarea>
+                    </div>
+
+                    <div class="ls-preview-pane">
+                        <div class="ls-pane-header">
+                            <div class="ls-viewport-controls">
+                                <span><i class="fa-solid fa-laptop-code"></i> Live Preview</span>
+                                <div class="ls-device-selector">
+                                    <button class="ls-device-btn active" onclick="setPreviewDevice('desktop', this)" title="Desktop (100%)"><i class="fa-solid fa-desktop"></i></button>
+                                    <button class="ls-device-btn" onclick="setPreviewDevice('tablet', this)" title="Tablet (768px)"><i class="fa-solid fa-tablet-screen-button"></i></button>
+                                    <button class="ls-device-btn" onclick="setPreviewDevice('mobile', this)" title="Mobile (375px)"><i class="fa-solid fa-mobile-screen"></i></button>
+                                </div>
+                            </div>
+                            <div class="ls-pane-actions">
+                                <button class="ls-tool-btn" onclick="reloadWebPreview()" title="Reload Preview"><i class="fa-solid fa-rotate-right"></i></button>
+                                <button class="ls-tool-btn" onclick="openWebPreviewNewTab()" title="Open in New Tab"><i class="fa-solid fa-arrow-up-right-from-square"></i></button>
+                            </div>
+                        </div>
+                        <div class="ls-preview-viewport-wrapper" id="lsPreviewViewportWrapper">
+                            <iframe id="lsWebPreviewIframe" class="ls-preview-iframe" sandbox="allow-scripts allow-modals allow-same-origin"></iframe>
+                        </div>
+                        <div class="ls-console-drawer">
+                            <div class="ls-console-header">
+                                <span><i class="fa-solid fa-terminal"></i> Browser Console</span>
+                                <button class="ls-console-clear" onclick="clearWebConsole()"><i class="fa-solid fa-trash-can"></i> Clear</button>
+                            </div>
+                            <div class="ls-console-body" id="lsWebConsoleBody">
+                                <div class="ls-console-line info">[Live Server] Console active. Logs will appear here.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 2: BACKEND TERMINAL RUNNER -->
+            <div class="ls-tab-content" id="lsTabBackendContent">
+                <div class="ls-backend-workbench">
+                    <div class="ls-editor-pane">
+                        <div class="ls-pane-header">
+                            <div class="ls-lang-select-group">
+                                <span><i class="fa-solid fa-file-code"></i> Language:</span>
+                                <select class="ls-select-input" id="lsBackendLangSelect">
+                                    <option value="javascript">JavaScript (Node.js)</option>
+                                    <option value="python">Python 3</option>
+                                    <option value="bash">Shell / Bash</option>
+                                </select>
+                            </div>
+                            <div class="ls-pane-actions">
+                                <button class="ls-tool-btn ls-primary" onclick="runBackendCode()" id="lsBackendRunBtn"><i class="fa-solid fa-play"></i> Execute Script</button>
+                                <button class="ls-tool-btn" onclick="sendActiveCodeToVnc()"><i class="fa-solid fa-paper-plane"></i> Send to noVNC</button>
+                            </div>
+                        </div>
+                        <textarea class="ls-code-textarea" id="lsBackendCodeTextarea" placeholder="// Write Node.js, Python or Shell code here..." spellcheck="false"></textarea>
+                        <div class="ls-stdin-row">
+                            <label><i class="fa-solid fa-keyboard"></i> Stdin (Optional input):</label>
+                            <input type="text" id="lsBackendStdinInput" placeholder="Standard input passed to process...">
+                        </div>
+                    </div>
+
+                    <div class="ls-terminal-pane">
+                        <div class="ls-pane-header">
+                            <span><i class="fa-solid fa-square-terminal"></i> Terminal Output</span>
+                            <div class="ls-pane-actions">
+                                <span class="ls-exec-badge" id="lsExecTimeBadge"><i class="fa-solid fa-stopwatch"></i> 0ms</span>
+                                <button class="ls-tool-btn" onclick="copyBackendOutput()"><i class="fa-regular fa-copy"></i> Copy</button>
+                                <button class="ls-tool-btn" onclick="clearBackendTerminal()"><i class="fa-solid fa-eraser"></i> Clear</button>
+                            </div>
+                        </div>
+                        <div class="ls-terminal-screen" id="lsTerminalScreen">
+                            <pre class="ls-term-out" id="lsTermOut">MindHelix Terminal Sandbox v2.5
+Press 'Execute Script' or type code to run.
+$ </pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 3: noVNC REMOTE DESKTOP & CLOUD SERVER -->
+            <div class="ls-tab-content" id="lsTabVncContent">
+                <div class="ls-vnc-workbench">
+                    <div class="ls-vnc-toolbar">
+                        <div class="ls-vnc-field">
+                            <label><i class="fa-solid fa-network-wired"></i> VNC Host:</label>
+                            <input type="text" id="vncHostInput" value="localhost:6080" placeholder="host:port (e.g. localhost:6080)">
+                        </div>
+                        <div class="ls-vnc-field">
+                            <label><i class="fa-solid fa-folder-tree"></i> Path:</label>
+                            <input type="text" id="vncPathInput" value="websockify" placeholder="websockify">
+                        </div>
+                        <div class="ls-vnc-field">
+                            <label><i class="fa-solid fa-key"></i> Password:</label>
+                            <input type="password" id="vncPasswordInput" placeholder="Optional password">
+                        </div>
+                        <div class="ls-vnc-field ls-checkbox-field">
+                            <label><input type="checkbox" id="vncWssToggle"> WSS (SSL)</label>
+                        </div>
+                        <div class="ls-vnc-actions">
+                            <button class="ls-btn-vnc-connect" id="vncConnectBtn" onclick="toggleVncConnection()">
+                                <i class="fa-solid fa-plug"></i> <span id="vncConnectBtnText">Connect noVNC</span>
+                            </button>
+                            <button class="ls-tool-btn" onclick="sendVncCtrlAltDel()" title="Send Ctrl+Alt+Del"><i class="fa-solid fa-keyboard"></i> CAD</button>
+                            <button class="ls-tool-btn" onclick="sendActiveCodeToVncClipboard()" title="Push AI Code to Remote Desktop Clipboard"><i class="fa-solid fa-clipboard-check"></i> Paste AI Code</button>
+                            <button class="ls-tool-btn" onclick="toggleVncScale()" id="vncScaleBtn" title="Toggle Scaling"><i class="fa-solid fa-maximize"></i> Scale</button>
+                            <button class="ls-tool-btn" onclick="toggleVncFullscreen()" title="Fullscreen Screen"><i class="fa-solid fa-expand"></i></button>
+                        </div>
+                    </div>
+
+                    <div class="ls-vnc-viewport-container" id="vncViewportContainer">
+                        <div id="noVNC_screen" class="novnc-canvas-wrapper">
+                            <div class="vnc-simulated-terminal" id="vncSimulatedTerminal">
+                                <div class="vnc-sim-header">
+                                    <div class="vnc-sim-dots">
+                                        <span class="vnc-dot red"></span>
+                                        <span class="vnc-dot yellow"></span>
+                                        <span class="vnc-dot green"></span>
+                                    </div>
+                                    <span class="vnc-sim-title">MindHelix Live Server & Terminal (Local Sandbox Active)</span>
+                                    <span class="vnc-sim-status"><i class="fa-solid fa-circle-check"></i> Sandbox Ready</span>
+                                </div>
+                                <div class="vnc-sim-body" id="vncSimBody" onclick="focusSimulatedInput()">
+                                    <div class="vnc-sim-log" id="vncSimLog">Welcome to MindHelix AI Live Sandbox Environment!
+Type any bash command or run code directly. (Type 'help' for commands)
+To connect to an external VNC GUI desktop, click 'Connect noVNC' above.</div>
+                                    <div class="vnc-sim-prompt-row">
+                                        <span class="vnc-prompt-label">root@mindhelix-sandbox:~# </span>
+                                        <input type="text" id="vncSimInput" class="vnc-prompt-input" autocomplete="off" spellcheck="false" onkeydown="handleSimInputKey(event)">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 4: SETUP & DOCKER GUIDE -->
+            <div class="ls-tab-content" id="lsTabGuideContent">
+                <div class="ls-guide-container">
+                    <div class="ls-guide-card">
+                        <h4><i class="fa-brands fa-docker" style="color: #38bdf8;"></i> 1-Command Linux Desktop + noVNC Container</h4>
+                        <p>Run a full Ubuntu Desktop with pre-installed Python, Node.js, and websockify in seconds:</p>
+                        <div class="ls-cmd-box">
+                            <code>docker run -d -p 6080:80 -e RESOLUTION=1280x720 dorowu/ubuntu-desktop-lxde-vnc</code>
+                            <button class="ls-copy-cmd-btn" onclick="copyCmdText(this)"><i class="fa-regular fa-copy"></i> Copy</button>
+                        </div>
+                        <p class="ls-guide-tip"><i class="fa-solid fa-lightbulb" style="color: #f59e0b;"></i> Once started, click <strong>'Connect noVNC'</strong> in Tab 3 with host <code>localhost:6080</code> to view the full desktop.</p>
+                    </div>
+
+                    <div class="ls-guide-card">
+                        <h4><i class="fa-solid fa-terminal" style="color: #a855f7;"></i> Websockify Bridge for Local VNC Server</h4>
+                        <p>If you already have a VNC server running on port 5900 (TightVNC, UltraVNC, TigerVNC):</p>
+                        <div class="ls-cmd-box">
+                            <code>websockify 6080 localhost:5900</code>
+                            <button class="ls-copy-cmd-btn" onclick="copyCmdText(this)"><i class="fa-regular fa-copy"></i> Copy</button>
+                        </div>
+                    </div>
+
+                    <div class="ls-guide-card">
+                        <h4><i class="fa-solid fa-bolt" style="color: #10b981;"></i> Zero-Install Interactive Live Server</h4>
+                        <p>No Docker or VNC installed? No problem! MindHelix provides built-in client-side and backend runners:</p>
+                        <ul class="ls-guide-list">
+                            <li><strong>Live Web Server:</strong> Instantly renders HTML/CSS/JavaScript with responsive preview & live DOM inspection.</li>
+                            <li><strong>Backend Runner:</strong> Executes Node.js, Python, and Shell scripts with captured stdout, stderr, and timings.</li>
+                            <li><strong>Live Chat Code Blocks:</strong> Click <em>'Live Server'</em> on any generated code block in the chat to open and run immediately!</li>
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -819,6 +1123,8 @@
             const vidBar = document.getElementById("videoOptionsBar");
             if (imgBar) imgBar.classList.toggle("active", mode === 'image');
             if (vidBar) vidBar.classList.toggle("active", mode === 'video');
+            const advBar = document.getElementById("advancedAiBar");
+            if (advBar) advBar.classList.toggle("active", mode === 'chat');
 
             // Mode toggle button updates
             const modeBtn = document.getElementById("modeToggleBtn");
@@ -2086,7 +2392,13 @@
                     headers: {
                         "Content-Type": "application/json"
                     },
-                    body: JSON.stringify({ message }),
+                    body: JSON.stringify({
+                        message,
+                        model: document.getElementById("aiModelSelect") ? document.getElementById("aiModelSelect").value : "nvidia/nemotron-3.5-super-vl:free",
+                        persona: document.getElementById("aiPersonaSelect") ? document.getElementById("aiPersonaSelect").value : "architect",
+                        temperature: document.getElementById("aiCreativitySelect") ? parseFloat(document.getElementById("aiCreativitySelect").value) : 0.7,
+                        history: getRecentConversationHistory()
+                    }),
                     signal: currentAbortController.signal
                 });
 
@@ -2102,6 +2414,7 @@
                         <i class="fa-solid fa-robot"></i>
                     </div>
                     <div class="message-content-wrapper">
+                        ${data.model ? `<div class="ai-model-tag"><i class="fa-solid fa-brain"></i> ${escapeHtml(data.model.replace(':free', ''))}</div>` : ''}
                         <div class="message">${formatBotResponse(data.reply)}</div>
                         <div class="message-actions">
                             <button class="copy-msg-btn" onclick="copyMessageText(this)" title="Copy Message">
@@ -2270,7 +2583,13 @@
                     headers: {
                         "Content-Type": "application/json"
                     },
-                    body: JSON.stringify({ message: newText }),
+                    body: JSON.stringify({
+                        message: newText,
+                        model: document.getElementById("aiModelSelect") ? document.getElementById("aiModelSelect").value : "nvidia/nemotron-3.5-super-vl:free",
+                        persona: document.getElementById("aiPersonaSelect") ? document.getElementById("aiPersonaSelect").value : "architect",
+                        temperature: document.getElementById("aiCreativitySelect") ? parseFloat(document.getElementById("aiCreativitySelect").value) : 0.7,
+                        history: getRecentConversationHistory()
+                    }),
                     signal: currentAbortController.signal
                 });
 
@@ -2285,6 +2604,7 @@
                         <i class="fa-solid fa-robot"></i>
                     </div>
                     <div class="message-content-wrapper">
+                        ${data.model ? `<div class="ai-model-tag"><i class="fa-solid fa-brain"></i> ${escapeHtml(data.model.replace(':free', ''))}</div>` : ''}
                         <div class="message">${formatBotResponse(data.reply)}</div>
                         <div class="message-actions">
                             <button class="copy-msg-btn" onclick="copyMessageText(this)" title="Copy Message">
@@ -2379,6 +2699,9 @@
                         <div class="code-header-actions">
                             <button class="edit-code-btn" onclick="toggleEditCodeBlock(this)" title="Edit Code">
                                 <i class="fa-solid fa-pen-to-square"></i> Edit
+                            </button>
+                            <button class="open-liveserver-btn" onclick="openCodeInLiveServer(this)" title="Open in Live Server & noVNC Sandbox">
+                                <i class="fa-solid fa-server"></i> Live Server
                             </button>
                             <button class="run-code-btn" onclick="runCodeBlock(this)" title="Run Code">
                                 <i class="fa-solid fa-play"></i> Run Code
@@ -3048,8 +3371,660 @@
                 }
             } else if (e.key === "user") {
                 initTrialController();
+                initNavbarMinimize();
+                initAdvancedAiSelectors();
             }
         });
+
+        // NAVBAR MINIMIZE / COLLAPSE ENGINE
+        function toggleNavbarMinimize() {
+            const navbar = document.querySelector('.navbar');
+            const btn = document.getElementById('navbarMinimizeBtn');
+            if (!navbar) return;
+            const isMin = navbar.classList.toggle('navbar-minimized');
+            if (btn) {
+                btn.title = isMin ? 'Expand Navigation Header' : 'Minimize Navigation Header';
+                btn.setAttribute('aria-label', btn.title);
+                const icon = document.getElementById('navbarMinimizeIcon');
+                if (icon) icon.className = isMin ? 'fa-solid fa-caret-down' : 'fa-solid fa-caret-up';
+            }
+            try {
+                localStorage.setItem('ai_navbar_minimized', isMin ? 'true' : 'false');
+            } catch (e) {}
+        }
+
+        function initNavbarMinimize() {
+            try {
+                if (localStorage.getItem('ai_navbar_minimized') === 'true') {
+                    const navbar = document.querySelector('.navbar');
+                    const btn = document.getElementById('navbarMinimizeBtn');
+                    if (navbar) {
+                        navbar.classList.add('navbar-minimized');
+                        if (btn) {
+                            btn.title = 'Expand Navigation Header';
+                            btn.setAttribute('aria-label', 'Expand Navigation Header');
+                            const icon = document.getElementById('navbarMinimizeIcon');
+                            if (icon) icon.className = 'fa-solid fa-caret-down';
+                        }
+                    }
+                }
+            } catch (e) {}
+        }
+
+        // ==========================================
+        // ADVANCED AI ENGINE & CONVERSATION HISTORY
+        // ==========================================
+        function initAdvancedAiSelectors() {
+            try {
+                const savedModel = localStorage.getItem("mindhelix_ai_model");
+                const savedPersona = localStorage.getItem("mindhelix_ai_persona");
+                const savedCreativity = localStorage.getItem("mindhelix_ai_creativity");
+                if (savedModel && document.getElementById("aiModelSelect")) {
+                    document.getElementById("aiModelSelect").value = savedModel;
+                }
+                if (savedPersona && document.getElementById("aiPersonaSelect")) {
+                    document.getElementById("aiPersonaSelect").value = savedPersona;
+                }
+                if (savedCreativity && document.getElementById("aiCreativitySelect")) {
+                    document.getElementById("aiCreativitySelect").value = savedCreativity;
+                }
+            } catch (e) {}
+        }
+
+        function handleModelChange() {
+            const sel = document.getElementById("aiModelSelect");
+            if (sel) {
+                try { localStorage.setItem("mindhelix_ai_model", sel.value); } catch(e) {}
+            }
+        }
+
+        function handlePersonaChange() {
+            const sel = document.getElementById("aiPersonaSelect");
+            if (sel) {
+                try { localStorage.setItem("mindhelix_ai_persona", sel.value); } catch(e) {}
+            }
+        }
+
+        function getRecentConversationHistory() {
+            const history = [];
+            try {
+                const chatBox = document.getElementById("chatBox");
+                if (!chatBox) return history;
+                const rows = chatBox.querySelectorAll('.message-row');
+                rows.forEach(r => {
+                    if (r.id && r.id.startsWith("typing_")) return;
+                    const isUser = r.classList.contains("user");
+                    const isBot = r.classList.contains("bot");
+                    if (!isUser && !isBot) return;
+                    const msg = r.querySelector(".message");
+                    if (!msg) return;
+                    const text = (msg.innerText || msg.textContent || '').trim();
+                    if (!text || text.includes("interrupted") || text.includes("Session Locked")) return;
+                    history.push({
+                        role: isUser ? "user" : "assistant",
+                        content: text.slice(0, 1500)
+                    });
+                });
+            } catch (e) {}
+            return history.slice(-6);
+        }
+
+        // ==========================================
+        // LIVE SERVER & noVNC EXECUTION WORKBENCH
+        // ==========================================
+        let vncRfb = null;
+        let vncConnecting = false;
+        let vncConnected = false;
+        let vncScaleMode = false;
+        let activeWorkbenchTab = 'web';
+
+        function openLiveServerModal(initialCode, initialLang) {
+            const modal = document.getElementById("liveServerModal");
+            if (!modal) return;
+            modal.style.display = "flex";
+            document.body.style.overflow = "hidden";
+
+            if (initialCode) {
+                const lang = (initialLang || "").toLowerCase().trim();
+                const isHtml = lang === "html" || lang === "htm" || initialCode.includes("<html") || initialCode.includes("<!DOCTYPE") || initialCode.includes("<div") || initialCode.includes("<style");
+                if (isHtml) {
+                    const webArea = document.getElementById("lsWebCodeTextarea");
+                    if (webArea) webArea.value = initialCode;
+                    switchLsTab('web');
+                    runWebPreview();
+                } else {
+                    const backendArea = document.getElementById("lsBackendCodeTextarea");
+                    const langSelect = document.getElementById("lsBackendLangSelect");
+                    if (backendArea) backendArea.value = initialCode;
+                    if (langSelect) {
+                        if (lang.includes("py")) langSelect.value = "python";
+                        else if (lang.includes("sh") || lang.includes("bash")) langSelect.value = "bash";
+                        else langSelect.value = "javascript";
+                    }
+                    switchLsTab('backend');
+                }
+            } else {
+                const webArea = document.getElementById("lsWebCodeTextarea");
+                if (webArea && !webArea.value.trim()) {
+                    webArea.value = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>MindHelix Live Server</title>
+  <style>
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(circle at center, #1e1b4b 0%, #090d16 100%);
+      color: #f8fafc;
+      font-family: system-ui, sans-serif;
+      text-align: center;
+    }
+    .card {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      padding: 32px 40px;
+      border-radius: 16px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+    }
+    h1 { margin: 0 0 10px; color: #a855f7; }
+    p { margin: 0 0 20px; color: #94a3b8; }
+    button {
+      background: linear-gradient(135deg, #6366f1, #a855f7);
+      color: white;
+      border: none;
+      padding: 10px 22px;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+    button:hover { transform: scale(1.05); }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>🚀 Live Server Active</h1>
+    <p>Render dynamic DOM components with console capture!</p>
+    <button onclick="console.log('Button clicked at ' + new Date().toLocaleTimeString()); alert('Live Server Executed!')">Test Interaction</button>
+  </div>
+</body>
+</html>`;
+                    runWebPreview();
+                }
+            }
+        }
+
+        function closeLiveServerModal() {
+            const modal = document.getElementById("liveServerModal");
+            if (modal) modal.style.display = "none";
+            document.body.style.overflow = "";
+        }
+
+        function switchLsTab(tabName) {
+            activeWorkbenchTab = tabName;
+            const tabs = ['web', 'backend', 'vnc', 'guide'];
+            tabs.forEach(t => {
+                const btn = document.getElementById(`lsTab${t.charAt(0).toUpperCase() + t.slice(1)}Btn`);
+                const content = document.getElementById(`lsTab${t.charAt(0).toUpperCase() + t.slice(1)}Content`);
+                if (btn) btn.classList.toggle("active", t === tabName);
+                if (content) content.classList.toggle("active", t === tabName);
+            });
+
+            if (tabName === 'vnc') {
+                setTimeout(focusSimulatedInput, 100);
+            }
+        }
+
+        function openCodeInLiveServer(button) {
+            const codeBlock = button.closest(".code-block");
+            if (!codeBlock) return;
+            const codeElem = codeBlock.querySelector("pre code");
+            const langElem = codeBlock.querySelector(".code-header span");
+            const rawLang = langElem ? langElem.textContent.trim().toLowerCase().replace(/[^a-z0-9#+]/g, '') : 'javascript';
+            const code = codeElem ? decodeHtml(codeElem.innerText || codeElem.textContent) : '';
+            openLiveServerModal(code, rawLang);
+        }
+
+        // ======================
+        // LIVE WEB SERVER (HTML/CSS/JS) RUNNER
+        // ======================
+        function runWebPreview() {
+            const textarea = document.getElementById("lsWebCodeTextarea");
+            const iframe = document.getElementById("lsWebPreviewIframe");
+            if (!textarea || !iframe) return;
+
+            let code = (textarea.value || '').trim();
+            if (!code) {
+                iframe.srcdoc = '<!DOCTYPE html><html><head><style>body{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;background:#090d16;color:#94a3b8;font-family:sans-serif;text-align:center;padding:20px;box-sizing:border-box;}h3{color:#a855f7;margin:0 0 8px;}</style></head><body><div><h3>🚀 Live Web Server Ready</h3><p>Enter HTML/CSS/JS in editor or click "Live Server" on any code block to preview.</p></div></body></html>';
+                return;
+            }
+            const _scStart = '<' + 'script>';
+            const _scEnd = '<' + '/script>';
+            const _baseStyle = '<' + 'style>html,body{background-color:#090d16;color:#f8fafc;font-family:system-ui,sans-serif;margin:0;padding:16px;box-sizing:border-box;}<' + '/style>';
+
+            const consoleBridge = _scStart + `
+// console bridge
+(function() {
+  const origLog = console.log;
+  const origWarn = console.warn;
+  const origErr = console.error;
+  function sendToParent(type, args) {
+    try {
+      window.parent.postMessage({
+        type: 'MINDHELIX_CONSOLE',
+        level: type,
+        message: Array.from(args).map(a => typeof a === 'object' ? JSON.stringify(a) : String(a)).join(' ')
+      }, '*');
+    } catch(e) {}
+  }
+  console.log = function(...args) { sendToParent('log', args); origLog.apply(console, args); };
+  console.warn = function(...args) { sendToParent('warn', args); origWarn.apply(console, args); };
+  console.error = function(...args) { sendToParent('error', args); origErr.apply(console, args); };
+  window.onerror = function(msg, url, line) {
+    sendToParent('error', ['[Error Line ' + line + ']: ' + msg]);
+  };
+})();
+` + _scEnd;
+
+            let fullDoc = code;
+            if (fullDoc.includes("<head>")) {
+                fullDoc = fullDoc.replace("<head>", "<head>" + _baseStyle + consoleBridge);
+            } else {
+                fullDoc = '<!DOCTYPE html><html><head>' + _baseStyle + consoleBridge + '</head><body>' + fullDoc + '</body></html>';
+            }
+
+            iframe.srcdoc = fullDoc;
+            appendWebConsoleLine("info", `[Live Server] Code compiled & reloaded at ${new Date().toLocaleTimeString()}`);
+        }
+
+        function reloadWebPreview() {
+            runWebPreview();
+        }
+
+        function setPreviewDevice(device, btn) {
+            const wrapper = document.getElementById("lsPreviewViewportWrapper");
+            const btns = document.querySelectorAll(".ls-device-btn");
+            btns.forEach(b => b.classList.remove("active"));
+            if (btn) btn.classList.add("active");
+
+            if (!wrapper) return;
+            wrapper.classList.remove("viewport-desktop", "viewport-tablet", "viewport-mobile");
+            if (device === "mobile") {
+                wrapper.classList.add("viewport-mobile");
+            } else if (device === "tablet") {
+                wrapper.classList.add("viewport-tablet");
+            } else {
+                wrapper.classList.add("viewport-desktop");
+            }
+        }
+
+        function openWebPreviewNewTab() {
+            const textarea = document.getElementById("lsWebCodeTextarea");
+            if (!textarea) return;
+            const blob = new Blob([textarea.value], { type: "text/html;charset=utf-8" });
+            const url = URL.createObjectURL(blob);
+            window.open(url, "_blank");
+        }
+
+        function clearWebEditor() {
+            const textarea = document.getElementById("lsWebCodeTextarea");
+            if (textarea) textarea.value = "";
+            const iframe = document.getElementById("lsWebPreviewIframe");
+            if (iframe) iframe.srcdoc = "";
+            clearWebConsole();
+        }
+
+        function formatWebEditorCode() {
+            const textarea = document.getElementById("lsWebCodeTextarea");
+            if (!textarea) return;
+            let val = textarea.value.trim();
+            textarea.value = val;
+            appendWebConsoleLine("info", "[Live Server] Code formatted");
+        }
+
+        function clearWebConsole() {
+            const body = document.getElementById("lsWebConsoleBody");
+            if (body) body.innerHTML = '<div class="ls-console-line info">[Live Server] Console cleared.</div>';
+        }
+
+        function appendWebConsoleLine(level, msg) {
+            const body = document.getElementById("lsWebConsoleBody");
+            if (!body) return;
+            const line = document.createElement("div");
+            line.className = `ls-console-line ${level}`;
+            line.textContent = msg;
+            body.appendChild(line);
+            body.scrollTop = body.scrollHeight;
+        }
+
+        window.addEventListener("message", (event) => {
+            if (event.data && event.data.type === "MINDHELIX_CONSOLE") {
+                appendWebConsoleLine(event.data.level || "log", event.data.message || "");
+            }
+        });
+
+        // ======================
+        // BACKEND RUNNER (NODE.JS, PYTHON, SHELL)
+        // ======================
+        async function runBackendCode() {
+            const codeArea = document.getElementById("lsBackendCodeTextarea");
+            const langSelect = document.getElementById("lsBackendLangSelect");
+            const stdinInput = document.getElementById("lsBackendStdinInput");
+            const termOut = document.getElementById("lsTermOut");
+            const execBadge = document.getElementById("lsExecTimeBadge");
+            const runBtn = document.getElementById("lsBackendRunBtn");
+
+            if (!codeArea || !termOut) return;
+            const code = codeArea.value.trim();
+            if (!code) {
+                termOut.textContent = "Error: Please enter some code to execute.\n$ ";
+                return;
+            }
+
+            const language = langSelect ? langSelect.value : "javascript";
+            const stdin = stdinInput ? stdinInput.value : "";
+
+            if (runBtn) {
+                runBtn.disabled = true;
+                runBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Executing...';
+            }
+            termOut.textContent = `[MindHelix Live Runner] Executing ${language} script...\n`;
+
+            try {
+                const res = await fetch("/api/run-code", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ code, language, stdin })
+                });
+
+                const data = await res.json();
+                if (execBadge && data.executionTimeMs !== undefined) {
+                    execBadge.innerHTML = `<i class="fa-solid fa-stopwatch"></i> ${data.executionTimeMs}ms`;
+                }
+
+                let outputText = "";
+                if (data.stdout) outputText += data.stdout;
+                if (data.stderr) outputText += (outputText ? "\n" : "") + `[STDERR]:\n${data.stderr}`;
+                if (data.error) outputText += (outputText ? "\n" : "") + `[ERROR]: ${data.error}`;
+                if (!outputText && data.success) outputText = "Program exited successfully with code 0 (no output).";
+
+                termOut.textContent = outputText + "\n$ ";
+            } catch (err) {
+                termOut.textContent = `[Connection Error]: ${err.message}\n$ `;
+            } finally {
+                if (runBtn) {
+                    runBtn.disabled = false;
+                    runBtn.innerHTML = '<i class="fa-solid fa-play"></i> Execute Script';
+                }
+            }
+        }
+
+        async function copyBackendOutput() {
+            const termOut = document.getElementById("lsTermOut");
+            if (!termOut) return;
+            try {
+                await navigator.clipboard.writeText(termOut.textContent);
+                const badge = document.getElementById("lsExecTimeBadge");
+                if (badge) {
+                    const orig = badge.innerHTML;
+                    badge.innerHTML = '<i class="fa-solid fa-check"></i> Copied!';
+                    setTimeout(() => { badge.innerHTML = orig; }, 1800);
+                }
+            } catch (e) {}
+        }
+
+        function clearBackendTerminal() {
+            const termOut = document.getElementById("lsTermOut");
+            if (termOut) termOut.textContent = "$ ";
+        }
+
+        // ======================
+        // noVNC HTML5 CLOUD DESKTOP ENGINE
+        // ======================
+        async function toggleVncConnection() {
+            if (vncConnected || vncConnecting) {
+                disconnectVnc();
+                return;
+            }
+            await connectVnc();
+        }
+
+        async function connectVnc() {
+            const hostInput = document.getElementById("vncHostInput");
+            const pathInput = document.getElementById("vncPathInput");
+            const passInput = document.getElementById("vncPasswordInput");
+            const wssToggle = document.getElementById("vncWssToggle");
+            const connectBtn = document.getElementById("vncConnectBtn");
+            const connectBtnText = document.getElementById("vncConnectBtnText");
+            const statusPill = document.getElementById("lsStatusPill");
+            const statusText = document.getElementById("lsStatusText");
+            const container = document.getElementById("noVNC_screen");
+
+            const host = hostInput ? hostInput.value.trim() : "localhost:6080";
+            const path = pathInput ? pathInput.value.trim() : "websockify";
+            const password = passInput ? passInput.value : "";
+            const isWss = wssToggle ? wssToggle.checked : false;
+
+            const protocol = isWss ? "wss" : "ws";
+            const wsUrl = `${protocol}://${host}/${path}`;
+
+            vncConnecting = true;
+            if (connectBtn) connectBtn.className = "ls-btn-vnc-connect connecting";
+            if (connectBtnText) connectBtnText.textContent = "Connecting...";
+            if (statusPill) statusPill.className = "ls-status-pill connecting";
+            if (statusText) statusText.textContent = "Connecting noVNC...";
+
+            appendSimLog(`[noVNC] Attempting RFB WebSocket handshake to: ${wsUrl}`);
+
+            try {
+                const { default: RFB } = await import("https://cdn.jsdelivr.net/npm/@novnc/novnc@1.5.0/core/rfb.js");
+
+                const simTerminal = document.getElementById("vncSimulatedTerminal");
+                if (simTerminal) simTerminal.style.display = "none";
+
+                vncRfb = new RFB(container, wsUrl, {
+                    credentials: { password: password }
+                });
+
+                vncRfb.addEventListener("connect", () => {
+                    vncConnecting = false;
+                    vncConnected = true;
+                    if (connectBtn) connectBtn.className = "ls-btn-vnc-connect connected";
+                    if (connectBtnText) connectBtnText.textContent = "Disconnect";
+                    if (statusPill) statusPill.className = "ls-status-pill online";
+                    if (statusText) statusText.textContent = "noVNC Online";
+                    appendSimLog("[noVNC] Remote Desktop Connected Successfully!");
+                });
+
+                vncRfb.addEventListener("disconnect", (e) => {
+                    handleVncDisconnected(e.detail && e.detail.clean ? "Disconnected" : "Server closed connection");
+                });
+
+                vncRfb.addEventListener("securityfailure", () => {
+                    handleVncDisconnected("Authentication / Security handshake failed. Check password.");
+                });
+
+            } catch (err) {
+                console.warn("noVNC load error:", err);
+                handleVncDisconnected(`Connection refused to ${wsUrl}. Verify websockify or Docker container is active.`);
+            }
+        }
+
+        function handleVncDisconnected(reason) {
+            vncConnected = false;
+            vncConnecting = false;
+            const connectBtn = document.getElementById("vncConnectBtn");
+            const connectBtnText = document.getElementById("vncConnectBtnText");
+            const statusPill = document.getElementById("lsStatusPill");
+            const statusText = document.getElementById("lsStatusText");
+            const simTerminal = document.getElementById("vncSimulatedTerminal");
+
+            if (connectBtn) connectBtn.className = "ls-btn-vnc-connect";
+            if (connectBtnText) connectBtnText.textContent = "Connect noVNC";
+            if (statusPill) statusPill.className = "ls-status-pill ready";
+            if (statusText) statusText.textContent = "Engine Ready";
+
+            if (simTerminal) simTerminal.style.display = "flex";
+            appendSimLog(`[noVNC Notice]: ${reason || 'Disconnected'}`);
+            appendSimLog("Tip: Switch to 'Setup & Docker Guide' tab to start a noVNC Linux container with 1 command!");
+        }
+
+        function disconnectVnc() {
+            if (vncRfb) {
+                try { vncRfb.disconnect(); } catch (e) {}
+                vncRfb = null;
+            }
+            handleVncDisconnected("Disconnected by user");
+        }
+
+        function sendVncCtrlAltDel() {
+            if (vncRfb && vncConnected) {
+                vncRfb.sendCtrlAltDel();
+                appendSimLog("[noVNC] Sent Ctrl+Alt+Del signal");
+            } else {
+                appendSimLog("[Sandbox] Ctrl+Alt+Del triggered");
+            }
+        }
+
+        async function sendActiveCodeToVncClipboard() {
+            const backendArea = document.getElementById("lsBackendCodeTextarea");
+            const webArea = document.getElementById("lsWebCodeTextarea");
+            const code = (activeWorkbenchTab === 'backend' && backendArea) 
+                ? backendArea.value 
+                : (webArea ? webArea.value : "");
+
+            if (!code) {
+                appendSimLog("[Clipboard] No active code to copy.");
+                return;
+            }
+
+            try {
+                await navigator.clipboard.writeText(code);
+                if (vncRfb && vncConnected) {
+                    vncRfb.clipboardPasteFrom(code);
+                }
+                appendSimLog(`[noVNC] Code (${code.length} chars) copied to clipboard! Paste directly in desktop terminal.`);
+            } catch (e) {
+                appendSimLog(`[Clipboard Error]: ${e.message}`);
+            }
+        }
+
+        function sendActiveCodeToVnc() {
+            switchLsTab('vnc');
+            sendActiveCodeToVncClipboard();
+        }
+
+        function toggleVncScale() {
+            vncScaleMode = !vncScaleMode;
+            if (vncRfb) {
+                vncRfb.scaleViewport = vncScaleMode;
+            }
+            const btn = document.getElementById("vncScaleBtn");
+            if (btn) btn.classList.toggle("active", vncScaleMode);
+        }
+
+        function toggleVncFullscreen() {
+            const container = document.getElementById("vncViewportContainer");
+            if (!container) return;
+            if (!document.fullscreenElement) {
+                container.requestFullscreen().catch(() => {});
+            } else {
+                document.exitFullscreen().catch(() => {});
+            }
+        }
+
+        // ======================
+        // INTERACTIVE SIMULATED LINUX SANDBOX TERMINAL
+        // ======================
+        function focusSimulatedInput() {
+            const input = document.getElementById("vncSimInput");
+            if (input) input.focus();
+        }
+
+        function appendSimLog(text) {
+            const log = document.getElementById("vncSimLog");
+            if (!log) return;
+            log.textContent += "\n" + text;
+            const body = document.getElementById("vncSimBody");
+            if (body) body.scrollTop = body.scrollHeight;
+        }
+
+        async function handleSimInputKey(e) {
+            if (e.key === "Enter") {
+                const input = document.getElementById("vncSimInput");
+                if (!input) return;
+                const cmd = input.value.trim();
+                input.value = "";
+                if (!cmd) return;
+
+                appendSimLog(`root@mindhelix-sandbox:~# ${cmd}`);
+
+                const parts = cmd.split(" ");
+                const baseCmd = parts[0].toLowerCase();
+
+                if (baseCmd === "help") {
+                    appendSimLog("MindHelix Sandbox Commands:\n  run            - Execute code currently in Backend Runner\n  node <expr>    - Execute inline JavaScript\n  python <expr>  - Execute inline Python code\n  ls             - List sandbox workspace files\n  clear          - Clear terminal screen\n  connect        - Trigger noVNC WebSocket connection\n  guide          - Open Setup & Docker Guide\n  status         - Show engine and network status");
+                } else if (baseCmd === "clear") {
+                    const log = document.getElementById("vncSimLog");
+                    if (log) log.textContent = "";
+                } else if (baseCmd === "ls") {
+                    appendSimLog("index.html   server.js   app.py   package.json   styles.css   Dockerfile");
+                } else if (baseCmd === "connect") {
+                    toggleVncConnection();
+                } else if (baseCmd === "guide") {
+                    switchLsTab("guide");
+                } else if (baseCmd === "status") {
+                    appendSimLog(`Engine: MindHelix v2.5 Sandbox\nActive Tab: ${activeWorkbenchTab}\nnoVNC Connection: ${vncConnected ? 'Connected' : 'Offline'}`);
+                } else if (baseCmd === "run") {
+                    const backendArea = document.getElementById("lsBackendCodeTextarea");
+                    if (backendArea && backendArea.value.trim()) {
+                        appendSimLog("[Executing active backend script...]");
+                        runBackendCode();
+                    } else {
+                        appendSimLog("No script in Backend Runner. Enter code in Tab 2 or click 'Live Server' on any chat block.");
+                    }
+                } else if (baseCmd === "python" || baseCmd === "node") {
+                    const inlineCode = parts.slice(1).join(" ");
+                    if (!inlineCode) {
+                        appendSimLog(`Usage: ${baseCmd} <code> (e.g. ${baseCmd} print(1+1))`);
+                        return;
+                    }
+                    try {
+                        const lang = baseCmd === "python" ? "python" : "javascript";
+                        const res = await fetch("/api/run-code", {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({ code: inlineCode, language: lang })
+                        });
+                        const data = await res.json();
+                        if (data.stdout) appendSimLog(data.stdout.trim());
+                        if (data.stderr) appendSimLog("[ERR]: " + data.stderr.trim());
+                    } catch (err) {
+                        appendSimLog(`[Execution Error]: ${err.message}`);
+                    }
+                } else {
+                    appendSimLog(`bash: ${baseCmd}: command not found. Type 'help' for command list.`);
+                }
+            }
+        }
+
+        function copyCmdText(btn) {
+            const card = btn.closest(".ls-cmd-box") || btn.parentElement;
+            if (!card) return;
+            const code = card.querySelector("code");
+            if (!code) return;
+            navigator.clipboard.writeText(code.textContent.trim()).then(() => {
+                const orig = btn.innerHTML;
+                btn.innerHTML = '<i class="fa-solid fa-check"></i> Copied!';
+                setTimeout(() => { btn.innerHTML = orig; }, 2000);
+            });
+        }
 
         // INITIALIZE CHAT SESSIONS INSTANTLY ON LOAD/REFRESH
         function startInit() {
@@ -3057,6 +4032,8 @@
                 isInitialized = true;
                 initSessions();
                 initTrialController();
+                initNavbarMinimize();
+                initAdvancedAiSelectors();
             }
         }
         if (document.readyState === "complete" || document.readyState === "interactive") {

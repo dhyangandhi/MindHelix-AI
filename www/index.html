@@ -89,6 +89,7 @@
             <li class="nav-link"><a href="#features">Features</a></li>
             <li class="nav-link"><a href="#how-it-works">How It Works</a></li>
             <li class="nav-link"><a href="#demo">AI Demo</a></li>
+            <li class="nav-link"><a href="ai.html"><i class="fa-solid fa-server" style="color: #a855f7; margin-right: 4px;"></i> Live Studio</a></li>
             <li class="nav-link"><a href="Contact.html">Contact</a></li>
         </ul>
 
@@ -104,6 +105,10 @@
                 <i class="bx bxs-user-plus"></i> Get Started
             </a>
         </div>
+        <!-- CENTER NAVBAR MINIMIZE TAB -->
+        <button type="button" class="navbar-minimize-tab" id="navbarMinimizeBtn" onclick="toggleNavbarMinimize()" title="Minimize Navigation Header" aria-label="Minimize Navigation Header">
+            <i class="fa-solid fa-caret-up" id="navbarMinimizeIcon"></i>
+        </button>
     </nav>
 
     <!-- HERO SECTION -->
@@ -1262,6 +1267,41 @@
             applyTheme(newTheme);
         }
 
+        // 8.10 Center Navbar Minimize / Expand Engine
+        function toggleNavbarMinimize() {
+            const navbar = document.querySelector('.navbar');
+            const btn = document.getElementById('navbarMinimizeBtn');
+            if (!navbar) return;
+            const isMin = navbar.classList.toggle('navbar-minimized');
+            if (btn) {
+                btn.title = isMin ? 'Expand Navigation Header' : 'Minimize Navigation Header';
+                btn.setAttribute('aria-label', btn.title);
+                const icon = document.getElementById('navbarMinimizeIcon');
+                if (icon) icon.className = isMin ? 'fa-solid fa-caret-down' : 'fa-solid fa-caret-up';
+            }
+            try {
+                localStorage.setItem('landing_navbar_minimized', isMin ? 'true' : 'false');
+            } catch (e) {}
+        }
+
+        function initNavbarMinimize() {
+            try {
+                if (localStorage.getItem('landing_navbar_minimized') === 'true') {
+                    const navbar = document.querySelector('.navbar');
+                    const btn = document.getElementById('navbarMinimizeBtn');
+                    if (navbar) {
+                        navbar.classList.add('navbar-minimized');
+                        if (btn) {
+                            btn.title = 'Expand Navigation Header';
+                            btn.setAttribute('aria-label', 'Expand Navigation Header');
+                            const icon = document.getElementById('navbarMinimizeIcon');
+                            if (icon) icon.className = 'fa-solid fa-caret-down';
+                        }
+                    }
+                }
+            } catch (e) {}
+        }
+
         // Master Animation Initialization
         function initAnimations() {
             initNeuralCanvas();
@@ -1273,6 +1313,7 @@
             initMagneticButtons();
             initButtonRipples();
             initTheme();
+            initNavbarMinimize();
         }
 
         if (document.readyState === 'loading') {

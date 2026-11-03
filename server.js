@@ -693,14 +693,14 @@ app.get("/chat", (req, res) => {
 
 
 // ======================
-// OPENROUTER AI CHAT
+// OPENROUTER AI CHAT - ADVANCED ENGINE
 // ======================
 
 app.post("/chat", async (req, res) => {
 
     try {
 
-        const { message } = req.body;
+        const { message, model, persona = "architect", temperature = 0.7, history = [] } = req.body;
 
         if (!message) {
 
@@ -722,7 +722,7 @@ app.post("/chat", async (req, res) => {
         }
 
         const apiKey = process.env.OPENROUTER_API_KEY;
-        const requestedModel = process.env.OPENROUTER_MODEL || "nvidia/nemotron-3.5-super-vl:free";
+        const requestedModel = model || process.env.OPENROUTER_MODEL || "nvidia/nemotron-3.5-super-vl:free";
 
         if (!apiKey) {
             return res.status(400).json({
@@ -734,11 +734,38 @@ app.post("/chat", async (req, res) => {
             requestedModel,
             "nvidia/nemotron-3.5-super-vl:free",
             "nvidia/nemotron-3.5-lightning:free",
+            "deepseek/deepseek-r1:free",
+            "meta-llama/llama-3.3-70b-instruct:free",
+            "qwen/qwen-2.5-coder-32b-instruct:free",
+            "mistralai/mistral-nemo:free",
             "nvidia/nemotron-3-ultra-550b-a55b:free"
         ])).filter(Boolean);
 
         let reply = "";
         let lastError = null;
+
+        const AI_PERSONA_PROMPTS = {
+            architect: "You are an elite Senior Full-Stack Software Architect and Systems Engineer. Always write clean, production-ready code with complete implementations (HTML, CSS, JavaScript, Python, Bash). When providing web applications or components, provide complete and runnable code that runs seamlessly in MindHelix Live Server and noVNC sandbox. Follow clean architecture principles.",
+            security: "You are a Senior Cyber Defense & Ethical Penetration Testing Specialist for MindHelix AI. Analyze architectures and code for security vulnerabilities, injection vectors, OWASP Top 10 risks, and suggest hardened, defense-in-depth mitigations and firewall configurations.",
+            datascience: "You are an expert Data Scientist and Algorithmic Computing Specialist. Provide mathematically sound Python/NumPy/Pandas implementations, statistical insights, data visualizations, and optimized algorithms.",
+            general: "You are MindHelix AI, an advanced intelligent AI assistant powered by state-of-the-art neural models. Provide articulate, well-structured, insightful, and helpful answers."
+        };
+
+        const systemPrompt = AI_PERSONA_PROMPTS[persona] || AI_PERSONA_PROMPTS.architect;
+        const chatMessages = [{ role: "system", content: systemPrompt }];
+
+        if (Array.isArray(history)) {
+            for (const h of history.slice(-8)) {
+                if (h && (h.role === "user" || h.role === "assistant") && h.content) {
+                    chatMessages.push({
+                        role: h.role,
+                        content: String(h.content).slice(0, 4000)
+                    });
+                }
+            }
+        }
+        chatMessages.push({ role: "user", content: message });
+        let usedModel = requestedModel;
 
         for (const m of models) {
             try {
@@ -754,7 +781,9 @@ app.post("/chat", async (req, res) => {
                         },
                         body: JSON.stringify({
                             model: m,
-                            messages: [
+                            messages: chatMessages,
+                            temperature: typeof temperature === 'number' ? Math.max(0, Math.min(1.5, temperature)) : 0.7,
+                            _legacyMessages: [
                                 {
                                     role: "user",
                                     content: message
@@ -769,7 +798,7 @@ app.post("/chat", async (req, res) => {
 
                 if (data.choices && Array.isArray(data.choices) && data.choices.length > 0) {
                     reply = data.choices[0].message?.content || "";
-                    if (reply) break;
+                    if (reply) { usedModel = m; break; }
                 } else if (data.error) {
                     lastError = data.error.metadata?.raw || data.error.message;
                 }
@@ -786,7 +815,9 @@ app.post("/chat", async (req, res) => {
         const safeReply = firewall.scrubAIResponse(reply);
 
         res.json({
-            reply: safeReply
+            reply: safeReply,
+            model: usedModel,
+            persona: persona
         });
 
     } catch (error) {
@@ -802,6 +833,159 @@ app.post("/chat", async (req, res) => {
                 "AI server error"
         });
     }
+});
+
+// ======================
+// Also alias /api/chat to /chat
+app.post("/api/chat", (req, res, next) => {
+    req.url = "/chat";
+    app.handle(req, res, next);
+});
+
+// ======================
+// LIVE SERVER & RUN CODE EXECUTION ENGINE
+// ======================
+
+app.post("/api/run-code", async (req, res) => {
+    try {
+        const { code, language = "javascript", stdin = "" } = req.body;
+        if (!code || typeof code !== "string" || !code.trim()) {
+            return res.status(400).json({ success: false, error: "Code content is required." });
+        }
+
+        // Firewall inspection to prevent host system compromise
+        const promptCheck = firewall.inspectAIPrompt(code, firewall.getClientIP(req));
+        if (!promptCheck.safe) {
+            return res.status(400).json({
+                success: false,
+                error: `🛡️ MindHelix Firewall: Execution blocked - ${promptCheck.message}`
+            });
+        }
+
+        const lang = (language || "").toLowerCase().trim();
+        const startTime = Date.now();
+        const tmpDir = path.join(__dirname, "tmp_code_runs");
+        if (!fs.existsSync(tmpDir)) {
+            try { fs.mkdirSync(tmpDir, { recursive: true }); } catch (e) {}
+        }
+
+        let cmd = "";
+        let args = [];
+        let filePath = "";
+
+        if (lang === "javascript" || lang === "js" || lang === "node") {
+            filePath = path.join(tmpDir, `run_${Date.now()}_${Math.random().toString(36).substring(7)}.js`);
+            fs.writeFileSync(filePath, code, "utf8");
+            cmd = "node";
+            args = [filePath];
+        } else if (lang === "python" || lang === "py" || lang === "python3") {
+            filePath = path.join(tmpDir, `run_${Date.now()}_${Math.random().toString(36).substring(7)}.py`);
+            fs.writeFileSync(filePath, code, "utf8");
+            cmd = process.platform === "win32" ? "python" : "python3";
+            args = [filePath];
+        } else {
+            return res.json({
+                success: true,
+                stdout: "",
+                stderr: "",
+                info: `Language '${lang}' ready for Live Server or noVNC terminal sandbox.`,
+                executionTimeMs: 0
+            });
+        }
+
+        const { spawn } = require("child_process");
+        const child = spawn(cmd, args, {
+            timeout: 8000,
+            windowsHide: true
+        });
+
+        let stdout = "";
+        let stderr = "";
+
+        if (stdin) {
+            try {
+                child.stdin.write(stdin);
+                child.stdin.end();
+            } catch (e) {}
+        }
+
+        child.stdout.on("data", (data) => {
+            if (stdout.length < 50000) stdout += data.toString();
+        });
+
+        child.stderr.on("data", (data) => {
+            if (stderr.length < 50000) stderr += data.toString();
+        });
+
+        let finished = false;
+        const cleanup = () => {
+            if (filePath && fs.existsSync(filePath)) {
+                try { fs.unlinkSync(filePath); } catch (e) {}
+            }
+        };
+
+        const timer = setTimeout(() => {
+            if (!finished) {
+                finished = true;
+                try { child.kill(); } catch (e) {}
+                cleanup();
+                res.json({
+                    success: false,
+                    error: "Execution timed out (Limit: 8 seconds)",
+                    stdout,
+                    stderr,
+                    executionTimeMs: 8000
+                });
+            }
+        }, 8000);
+
+        child.on("close", (code) => {
+            if (finished) return;
+            finished = true;
+            clearTimeout(timer);
+            cleanup();
+            res.json({
+                success: code === 0,
+                exitCode: code,
+                stdout,
+                stderr,
+                executionTimeMs: Date.now() - startTime
+            });
+        });
+
+        child.on("error", (err) => {
+            if (finished) return;
+            finished = true;
+            clearTimeout(timer);
+            cleanup();
+            res.json({
+                success: false,
+                error: `Runner error: ${err.message}`,
+                stdout,
+                stderr,
+                executionTimeMs: Date.now() - startTime
+            });
+        });
+
+    } catch (err) {
+        res.status(500).json({ success: false, error: err.message });
+    }
+});
+
+// ======================
+// noVNC LIVE SERVER CONFIG & STATUS
+// ======================
+app.get("/api/vnc-config", (req, res) => {
+    res.json({
+        defaultHost: "localhost",
+        defaultPort: 6080,
+        defaultPath: "websockify",
+        quickCommands: {
+            docker: "docker run -d -p 6080:80 -e RESOLUTION=1280x720 dorowu/ubuntu-desktop-lxde-vnc",
+            websockify: "websockify 6080 localhost:5900"
+        },
+        status: "ready"
+    });
 });
 
 // ======================

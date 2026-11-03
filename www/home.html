@@ -23,8 +23,8 @@
     <script src="responsive.js" defer></script>
     <!-- Immediate theme initialization to prevent flash -->
     <script>
-        (function() {
-            const savedTheme = localStorage.getItem('mindhelix_theme') || 
+        (function () {
+            const savedTheme = localStorage.getItem('mindhelix_theme') ||
                 (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
             if (savedTheme === 'light') {
                 document.documentElement.setAttribute('data-theme', 'light');
@@ -89,12 +89,15 @@
             <li class="nav-link"><a href="#features">Features</a></li>
             <li class="nav-link"><a href="#how-it-works">How It Works</a></li>
             <li class="nav-link"><a href="#demo">AI Demo</a></li>
+            <li class="nav-link"><a href="ai.html"><i class="fa-solid fa-server"
+                        style="color: #a855f7; margin-right: 4px;"></i> Live Studio</a></li>
             <li class="nav-link"><a href="Contact.html">Contact</a></li>
         </ul>
 
         <div class="nav-actions">
             <!-- LIGHT / DARK MODE TOGGLE BUTTON -->
-            <button type="button" class="theme-toggle-btn magnetic-btn" id="themeToggleBtn" onclick="toggleTheme()" aria-label="Toggle Light and Dark Mode" title="Switch Theme">
+            <button type="button" class="theme-toggle-btn magnetic-btn" id="themeToggleBtn" onclick="toggleTheme()"
+                aria-label="Toggle Light and Dark Mode" title="Switch Theme">
                 <i class="bx bx-sun" id="themeIcon"></i>
             </button>
             <a href="login.html" class="btn btn-glass magnetic-btn" id="navLoginBtn">
@@ -104,6 +107,11 @@
                 <i class="bx bxs-user-plus"></i> Get Started
             </a>
         </div>
+        <!-- CENTER NAVBAR MINIMIZE TAB -->
+        <button type="button" class="navbar-minimize-tab" id="navbarMinimizeBtn" onclick="toggleNavbarMinimize()"
+            title="Minimize Navigation Header" aria-label="Minimize Navigation Header">
+            <i class="fa-solid fa-caret-up" id="navbarMinimizeIcon"></i>
+        </button>
     </nav>
 
     <!-- HERO SECTION -->
@@ -116,7 +124,8 @@
             </div>
 
             <h1 class="hero-title">
-                Transform Your Work with <span class="animated-word-wrapper"><span class="gradient-text animated-word" id="animatedWord">Intelligent AI</span></span>
+                Transform Your Work with <span class="animated-word-wrapper"><span class="gradient-text animated-word"
+                        id="animatedWord">Intelligent AI</span></span>
             </h1>
 
             <p class="hero-description">
@@ -133,7 +142,8 @@
                     <i class="bx bxs-user-plus"></i> Create Free Account
                 </a>
                 <span class="cta-or">OR</span>
-                <a href="ai.html" id="tryAiAssistantBtn" class="btn btn-glow btn-lg magnetic-btn" onclick="handleTryAiClick(event)">
+                <a href="ai.html" id="tryAiAssistantBtn" class="btn btn-glow btn-lg magnetic-btn"
+                    onclick="handleTryAiClick(event)">
                     <i class="fa-solid fa-robot"></i> Try AI Assistant Now
                 </a>
             </div>
@@ -223,7 +233,8 @@
                 <span class="marquee-item"><i class="fa-solid fa-shield-halved"></i> 4-Layer Defense Guard</span>
                 <span class="marquee-item"><i class="fa-solid fa-lock"></i> Zero-Plaintext AES-256</span>
                 <span class="marquee-item"><i class="fa-solid fa-network-wired"></i> Distributed WebSockets</span>
-                <span class="marquee-item"><i class="fa-solid fa-wand-magic-sparkles"></i> Autonomous AI Workflows</span>
+                <span class="marquee-item"><i class="fa-solid fa-wand-magic-sparkles"></i> Autonomous AI
+                    Workflows</span>
                 <span class="marquee-item"><i class="fa-solid fa-code"></i> Developer API & SDK</span>
             </div>
             <div class="marquee-content" aria-hidden="true">
@@ -232,7 +243,8 @@
                 <span class="marquee-item"><i class="fa-solid fa-shield-halved"></i> 4-Layer Defense Guard</span>
                 <span class="marquee-item"><i class="fa-solid fa-lock"></i> Zero-Plaintext AES-256</span>
                 <span class="marquee-item"><i class="fa-solid fa-network-wired"></i> Distributed WebSockets</span>
-                <span class="marquee-item"><i class="fa-solid fa-wand-magic-sparkles"></i> Autonomous AI Workflows</span>
+                <span class="marquee-item"><i class="fa-solid fa-wand-magic-sparkles"></i> Autonomous AI
+                    Workflows</span>
                 <span class="marquee-item"><i class="fa-solid fa-code"></i> Developer API & SDK</span>
             </div>
         </div>
@@ -367,13 +379,18 @@
             <div class="demo-info">
                 <span class="section-subtitle"><i class="fa-solid fa-bolt"></i> Interactive Playground</span>
                 <h3>Ready to Experience MindHelix AI?</h3>
-                <p>Try our neural interactive interface below. Select an intelligent prompt or type your custom instruction to test live streaming generation.</p>
+                <p>Try our neural interactive interface below. Select an intelligent prompt or type your custom
+                    instruction to test live streaming generation.</p>
 
                 <div class="demo-prompt-chips">
-                    <button type="button" class="prompt-chip" onclick="runDemoPrompt('summarize')"><i class="fa-solid fa-chart-pie"></i> Summarize Metrics</button>
-                    <button type="button" class="prompt-chip" onclick="runDemoPrompt('pipeline')"><i class="fa-solid fa-code-merge"></i> Neural Pipeline</button>
-                    <button type="button" class="prompt-chip" onclick="runDemoPrompt('security')"><i class="fa-solid fa-shield-halved"></i> Security Audit</button>
-                    <button type="button" class="prompt-chip" onclick="runDemoPrompt('pitch')"><i class="fa-solid fa-lightbulb"></i> Product Pitch</button>
+                    <button type="button" class="prompt-chip" onclick="runDemoPrompt('summarize')"><i
+                            class="fa-solid fa-chart-pie"></i> Summarize Metrics</button>
+                    <button type="button" class="prompt-chip" onclick="runDemoPrompt('pipeline')"><i
+                            class="fa-solid fa-code-merge"></i> Neural Pipeline</button>
+                    <button type="button" class="prompt-chip" onclick="runDemoPrompt('security')"><i
+                            class="fa-solid fa-shield-halved"></i> Security Audit</button>
+                    <button type="button" class="prompt-chip" onclick="runDemoPrompt('pitch')"><i
+                            class="fa-solid fa-lightbulb"></i> Product Pitch</button>
                 </div>
 
                 <ul class="demo-list">
@@ -394,8 +411,10 @@
 
             <div class="demo-preview-card tilt-card" id="demoPreviewCard">
                 <div class="preview-tabs">
-                    <button type="button" class="tab-btn active" id="tabBtnChat" onclick="switchTab(this, 'chat')"><i class="fa-solid fa-message"></i> Neural Assistant</button>
-                    <button type="button" class="tab-btn" id="tabBtnSec" onclick="switchTab(this, 'security')"><i class="fa-solid fa-shield-halved"></i> Security Shield</button>
+                    <button type="button" class="tab-btn active" id="tabBtnChat" onclick="switchTab(this, 'chat')"><i
+                            class="fa-solid fa-message"></i> Neural Assistant</button>
+                    <button type="button" class="tab-btn" id="tabBtnSec" onclick="switchTab(this, 'security')"><i
+                            class="fa-solid fa-shield-halved"></i> Security Shield</button>
                     <div class="preview-badge"><span class="live-dot"></span> LIVE TELEMETRY</div>
                 </div>
 
@@ -406,19 +425,25 @@
                         </div>
                         <div class="chat-bubble ai" id="demoAiBubble">
                             <i class="fa-solid fa-sparkles" style="color: #ff5e36; margin-right: 6px;"></i>
-                            <span id="demoAiText">MindHelix AI combines ultra-fast neural models, glassmorphic design elegance, and robust 4-layer server security in one unified platform!</span>
+                            <span id="demoAiText">MindHelix AI combines ultra-fast neural models, glassmorphic design
+                                elegance, and robust 4-layer server security in one unified platform!</span>
                         </div>
                     </div>
 
                     <div class="demo-metrics-bar" id="demoMetricsBar">
                         <span><i class="fa-solid fa-bolt"></i> Latency: <strong id="demoLatency">18ms</strong></span>
-                        <span><i class="fa-solid fa-microchip"></i> Engine: <strong>MindHelix Neural v2.5</strong></span>
-                        <button type="button" onclick="copyDemoResponse()" style="background: transparent; border: none; color: #ff8a65; cursor: pointer; font-size: 11px; display: inline-flex; align-items: center; gap: 4px;" id="copyBtn"><i class="fa-solid fa-copy"></i> Copy</button>
+                        <span><i class="fa-solid fa-microchip"></i> Engine: <strong>MindHelix Neural
+                                v2.5</strong></span>
+                        <button type="button" onclick="copyDemoResponse()"
+                            style="background: transparent; border: none; color: #ff8a65; cursor: pointer; font-size: 11px; display: inline-flex; align-items: center; gap: 4px;"
+                            id="copyBtn"><i class="fa-solid fa-copy"></i> Copy</button>
                     </div>
 
                     <form class="prompt-bar" id="demoPromptForm" onsubmit="handleDemoSubmit(event)">
-                        <input type="text" id="demoPromptInput" placeholder="Ask MindHelix AI anything or click a prompt above..." autocomplete="off">
-                        <button type="submit" class="send-icon" aria-label="Send prompt"><i class="fa-solid fa-paper-plane"></i></button>
+                        <input type="text" id="demoPromptInput"
+                            placeholder="Ask MindHelix AI anything or click a prompt above..." autocomplete="off">
+                        <button type="submit" class="send-icon" aria-label="Send prompt"><i
+                                class="fa-solid fa-paper-plane"></i></button>
                     </form>
                 </div>
             </div>
@@ -705,7 +730,7 @@
                     copyBtn.innerHTML = '<i class="fa-solid fa-check" style="color: #34d399;"></i> Copied!';
                     setTimeout(() => { copyBtn.innerHTML = original; }, 2000);
                 }
-            }).catch(() => {});
+            }).catch(() => { });
         }
 
         function runSecuritySimulation() {
@@ -1204,7 +1229,7 @@
         // 8.8 Button Click Ripple Animation
         function initButtonRipples() {
             document.querySelectorAll('.btn').forEach(btn => {
-                btn.addEventListener('click', function(e) {
+                btn.addEventListener('click', function (e) {
                     const rect = btn.getBoundingClientRect();
                     const circle = document.createElement('span');
                     circle.classList.add('btn-ripple');
@@ -1221,7 +1246,7 @@
 
         // 8.9 Theme Toggle Engine (Light / Dark Mode)
         function initTheme() {
-            const savedTheme = localStorage.getItem('mindhelix_theme') || 
+            const savedTheme = localStorage.getItem('mindhelix_theme') ||
                 (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
             applyTheme(savedTheme);
         }
@@ -1229,7 +1254,7 @@
         function applyTheme(theme) {
             const icon = document.getElementById('themeIcon');
             const toggleBtn = document.getElementById('themeToggleBtn');
-            
+
             if (theme === 'light') {
                 document.documentElement.setAttribute('data-theme', 'light');
                 document.body.classList.add('light-theme');
@@ -1262,6 +1287,41 @@
             applyTheme(newTheme);
         }
 
+        // 8.10 Center Navbar Minimize / Expand Engine
+        function toggleNavbarMinimize() {
+            const navbar = document.querySelector('.navbar');
+            const btn = document.getElementById('navbarMinimizeBtn');
+            if (!navbar) return;
+            const isMin = navbar.classList.toggle('navbar-minimized');
+            if (btn) {
+                btn.title = isMin ? 'Expand Navigation Header' : 'Minimize Navigation Header';
+                btn.setAttribute('aria-label', btn.title);
+                const icon = document.getElementById('navbarMinimizeIcon');
+                if (icon) icon.className = isMin ? 'fa-solid fa-caret-down' : 'fa-solid fa-caret-up';
+            }
+            try {
+                localStorage.setItem('landing_navbar_minimized', isMin ? 'true' : 'false');
+            } catch (e) { }
+        }
+
+        function initNavbarMinimize() {
+            try {
+                if (localStorage.getItem('landing_navbar_minimized') === 'true') {
+                    const navbar = document.querySelector('.navbar');
+                    const btn = document.getElementById('navbarMinimizeBtn');
+                    if (navbar) {
+                        navbar.classList.add('navbar-minimized');
+                        if (btn) {
+                            btn.title = 'Expand Navigation Header';
+                            btn.setAttribute('aria-label', 'Expand Navigation Header');
+                            const icon = document.getElementById('navbarMinimizeIcon');
+                            if (icon) icon.className = 'fa-solid fa-caret-down';
+                        }
+                    }
+                }
+            } catch (e) { }
+        }
+
         // Master Animation Initialization
         function initAnimations() {
             initNeuralCanvas();
@@ -1273,6 +1333,7 @@
             initMagneticButtons();
             initButtonRipples();
             initTheme();
+            initNavbarMinimize();
         }
 
         if (document.readyState === 'loading') {
