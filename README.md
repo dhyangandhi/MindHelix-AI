@@ -4,7 +4,7 @@
 > **Last Updated:** September 2026  
 > **Target Platforms:** Web (Vercel / Node.js), Mobile (Capacitor Android), Desktop (Electron), Edge (Cloudflare Workers)  
 > **Status:** Fully Integrated & Active  
-> **Core Architecture Blueprint:** [ARCHITECTURE.md](ARCHITECTURE.md)
+> **System Workflows & Diagrams:** [WORKFLOW.md](WORKFLOW.md) | **Architecture Blueprint:** [ARCHITECTURE.md](ARCHITECTURE.md)
 
 ---
 

@@ -246,7 +246,7 @@ body {
 }
 
 .navbar.navbar-minimized .navbar-minimize-tab i {
-  transform: rotate(180deg);
+  /* caret orientation handled by class */
 }
 
 /* Light Theme overrides for the minimize tab */

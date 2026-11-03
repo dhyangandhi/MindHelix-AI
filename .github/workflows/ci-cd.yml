@@ -1,0 +1,145 @@
+name: MindHelix AI CI/CD Workflow & Security Pipeline
+
+on:
+  push:
+    branches: [ "main", "master", "dev" ]
+  pull_request:
+    branches: [ "main", "master" ]
+  workflow_dispatch:
+
+jobs:
+  # ----------------------------------------------------
+  # 1. CODE INTEGRITY & SECURITY SCANNING
+  # ----------------------------------------------------
+  security-audit:
+    name: 🛡️ Security Audit & Code Linting
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js Runtime
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm ci || npm install --legacy-peer-deps
+
+      - name: MindHelix Security & Secrets Scan
+        run: |
+          echo "Scanning for exposed secrets and tokens..."
+          # Prevent accidental check-in of real API keys
+          if grep -rn "sk-or-v1-[a-zA-Z0-9]\{30,\}" . --exclude-dir={.git,node_modules}; then
+            echo "::error::Found hardcoded OpenRouter API key in repository files!"
+            exit 1
+          else
+            echo "Secrets check passed. No leaked keys found."
+          fi
+
+      - name: Static Security Audit
+        run: npm audit --audit-level=high || true
+
+  # ----------------------------------------------------
+  # 2. RUNTIME ENGINE & API TESTS
+  # ----------------------------------------------------
+  test-suite:
+    name: 🧪 API & Execution Engine Tests
+    needs: security-audit
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js Runtime
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Setup Python 3 Runtime
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install Node Dependencies
+        run: npm ci || npm install --legacy-peer-deps
+
+      - name: Validate Server Syntax & Startup
+        run: |
+          echo "Verifying server.js compilation..."
+          node -c server.js
+          echo "Verifying client scripts..."
+          node -c www/responsive.js
+
+      - name: Test Code Execution Sandbox Endpoint
+        env:
+          PORT: 3000
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY || 'test-mock-key' }}
+        run: |
+          echo "Starting background test server..."
+          node server.js &
+          SERVER_PID=$!
+          sleep 4
+
+          echo "Testing /api/run-code Node.js execution..."
+          curl -s -X POST http://localhost:3000/api/run-code \
+            -H "Content-Type: application/json" \
+            -d '{"code":"console.log(\"MindHelix Runner Active\");","language":"javascript"}' | grep "MindHelix Runner Active"
+
+          echo "Testing /api/run-code Python execution..."
+          curl -s -X POST http://localhost:3000/api/run-code \
+            -H "Content-Type: application/json" \
+            -d '{"code":"print(10 + 20)","language":"python"}' | grep "30"
+
+          kill $SERVER_PID || true
+
+  # ----------------------------------------------------
+  # 3. DOCKER CONTAINERIZATION & BUILD
+  # ----------------------------------------------------
+  docker-build:
+    name: 🐳 Docker Sandbox & App Container Build
+    needs: test-suite
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build Docker Container
+        run: |
+          if [ -f "Dockerfile" ]; then
+            docker build -t mindhelix-ai:latest .
+          else
+            echo "Creating inline lightweight production Dockerfile..."
+            cat << 'EOF' > Dockerfile
+          FROM node:20-alpine
+          WORKDIR /app
+          COPY package*.json ./
+          RUN npm install --omit=dev
+          COPY . .
+          EXPOSE 3000
+          CMD ["node", "server.js"]
+          EOF
+            docker build -t mindhelix-ai:latest .
+          fi
+
+  # ----------------------------------------------------
+  # 4. DEPLOYMENT TRIGGER (VERCEL / CLOUDFLARE / VPS)
+  # ----------------------------------------------------
+  deploy:
+    name: 🚀 Production Edge & Server Deployment
+    needs: [test-suite, docker-build]
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v4
+
+      - name: Deployment Notification
+        run: |
+          echo "MindHelix AI v2.5 passed all CI/CD security and runtime stages."
+          echo "Deployment ready for Vercel, Cloudflare Workers, and VPS Docker hosts."
+

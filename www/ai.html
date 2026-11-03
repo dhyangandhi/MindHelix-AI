@@ -432,7 +432,7 @@
                             </div>
                         </div>
                         <div class="ls-preview-viewport-wrapper" id="lsPreviewViewportWrapper">
-                            <iframe id="lsWebPreviewIframe" class="ls-preview-iframe" sandbox="allow-scripts allow-modals allow-same-origin"></iframe>
+                            <iframe id="lsWebPreviewIframe" class="ls-preview-iframe" sandbox="allow-scripts allow-modals allow-same-origin" style="background-color: #090d16; color-scheme: dark;"></iframe>
                         </div>
                         <div class="ls-console-drawer">
                             <div class="ls-console-header">
@@ -3606,7 +3606,7 @@ To connect to an external VNC GUI desktop, click 'Connect noVNC' above.</div>
             }
             const _scStart = '<' + 'script>';
             const _scEnd = '<' + '/script>';
-            const _baseStyle = '<' + 'style>html,body{background-color:#090d16;color:#f8fafc;font-family:system-ui,sans-serif;margin:0;padding:16px;box-sizing:border-box;}<' + '/style>';
+            const _baseStyle = '<' + 'style>html,body{background-color:#090d16;color:#f8fafc;font-family:system-ui,sans-serif;margin:0;padding:16px;box-sizing:border-box;color-scheme:dark;}<' + '/style>';
 
             const consoleBridge = _scStart + `
 // console bridge
@@ -3633,8 +3633,12 @@ To connect to an external VNC GUI desktop, click 'Connect noVNC' above.</div>
 ` + _scEnd;
 
             let fullDoc = code;
-            if (fullDoc.includes("<head>")) {
-                fullDoc = fullDoc.replace("<head>", "<head>" + _baseStyle + consoleBridge);
+            if (fullDoc.toLowerCase().includes("<head>")) {
+                fullDoc = fullDoc.replace(/<head>/i, "<head>" + _baseStyle + consoleBridge);
+            } else if (fullDoc.toLowerCase().includes("<html")) {
+                fullDoc = fullDoc.replace(/<html[^>]*>/i, "$&<head>" + _baseStyle + consoleBridge + "</head>");
+            } else if (fullDoc.toLowerCase().includes("<body")) {
+                fullDoc = "<!DOCTYPE html><html><head>" + _baseStyle + consoleBridge + "</head>" + fullDoc + "</html>";
             } else {
                 fullDoc = '<!DOCTYPE html><html><head>' + _baseStyle + consoleBridge + '</head><body>' + fullDoc + '</body></html>';
             }
