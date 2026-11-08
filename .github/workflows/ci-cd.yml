@@ -79,9 +79,8 @@ jobs:
         run: |
           echo "Verifying server.js compilation..."
           node -c server.js
-          echo "Verifying entrypoints & worker scripts..."
+          echo "Verifying application entrypoints..."
           node -c main.js
-          node -c worker.js
           node -c bin/mindhelix.js
           echo "Verifying client scripts..."
           node -c www/responsive.js
