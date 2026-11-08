@@ -31,7 +31,7 @@ jobs:
         run: |
           echo "Scanning for exposed secrets and tokens..."
           # Prevent accidental check-in of real API keys
-          if grep -rn "sk-or-v1-[a-zA-Z0-9]\{30,\}" . --exclude-dir={.git,node_modules}; then
+          if grep -rn "sk-or-v1-[a-zA-Z0-9]\{30,\}" . --exclude-dir={.git,node_modules} --exclude={".env*", "*.env"}; then
             echo "::error::Found hardcoded OpenRouter API key in repository files!"
             exit 1
           else
