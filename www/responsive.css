@@ -128,6 +128,8 @@ button, a, input, select, textarea, label {
     position: fixed !important;
     top: 0 !important;
     right: -100% !important;
+    left: auto !important;
+    transform: none !important;
     width: 280px !important;
     max-width: 85vw !important;
     height: 100vh !important;
@@ -505,3 +507,408 @@ form#registerForm {
     color: #000 !important;
   }
 }
+
+
+/* ==========================================================================
+   9. MINDHELIX AI NAVBAR & AI BAR PRECISION ALIGNMENT & RESPONSIVE FIX
+   ========================================================================== */
+
+/* Base Navbar Flex Protection */
+.navbar {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  gap: 12px !important;
+  padding: 8px 18px !important;
+  min-width: 0 !important;
+  position: relative !important;
+  overflow: visible !important;
+  box-sizing: border-box !important;
+}
+
+.brand-section {
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  flex-shrink: 0 !important;
+  min-width: 0 !important;
+  white-space: nowrap !important;
+}
+
+.brand-info h1 {
+  font-size: 17px !important;
+  white-space: nowrap !important;
+  margin: 0 !important;
+}
+
+/* Master Navbar AI Bar Capsule */
+.navbar-ai-bar {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  padding: 4px 12px !important;
+  height: 44px !important;
+  box-sizing: border-box !important;
+  background: rgba(13, 20, 36, 0.92) !important;
+  border: 1px solid rgba(99, 102, 241, 0.4) !important;
+  border-radius: 14px !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
+  backdrop-filter: blur(16px) !important;
+  -webkit-backdrop-filter: blur(16px) !important;
+  flex-shrink: 0 !important;
+  margin: 0 auto !important;
+  z-index: 10 !important;
+  transition: all 0.25s ease !important;
+  white-space: nowrap !important;
+}
+
+/* Each Option Group: Icon Badge + Select Dropdown */
+.navbar-ai-bar .opt-group {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  height: 34px !important;
+  box-sizing: border-box !important;
+  flex-shrink: 0 !important;
+  white-space: nowrap !important;
+  position: relative !important;
+}
+
+/* Subtle Vertical Divider between groups */
+.navbar-ai-bar .opt-group:not(:last-of-type) {
+  padding-right: 10px !important;
+  border-right: 1px solid rgba(255, 255, 255, 0.12) !important;
+}
+
+/* Distinct Icon Badges */
+.navbar-ai-bar .opt-label {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 28px !important;
+  height: 28px !important;
+  border-radius: 7px !important;
+  background: rgba(99, 102, 241, 0.14) !important;
+  border: 1px solid rgba(99, 102, 241, 0.3) !important;
+  color: #a5b4fc !important;
+  font-size: 13px !important;
+  flex-shrink: 0 !important;
+  box-sizing: border-box !important;
+  line-height: 1 !important;
+}
+
+.navbar-ai-bar .opt-label i {
+  color: #818cf8 !important;
+  font-size: 13px !important;
+  line-height: 1 !important;
+}
+
+/* Select Dropdown Styling */
+.navbar-ai-bar .opt-select {
+  height: 34px !important;
+  line-height: 34px !important;
+  background: rgba(22, 30, 48, 0.95) !important;
+  border: 1px solid rgba(255, 255, 255, 0.16) !important;
+  border-radius: 8px !important;
+  color: #f8fafc !important;
+  padding: 0 10px !important;
+  max-width: 250px !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  outline: none !important;
+  cursor: pointer !important;
+  box-sizing: border-box !important;
+  text-overflow: ellipsis !important;
+  overflow: hidden !important;
+  white-space: nowrap !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  vertical-align: middle !important;
+  transition: border-color 0.2s, background 0.2s, box-shadow 0.2s !important;
+}
+
+.navbar-ai-bar .opt-select:hover,
+.navbar-ai-bar .opt-select:focus {
+  border-color: #818cf8 !important;
+  background: rgba(28, 38, 62, 1) !important;
+  box-shadow: 0 0 12px rgba(99, 102, 241, 0.3) !important;
+}
+
+/* Nav Actions (Right side: Clear Chat, Sign Out) */
+.nav-actions {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  margin-left: auto !important;
+  flex-shrink: 0 !important;
+  white-space: nowrap !important;
+}
+
+.nav-btn {
+  height: 34px !important;
+  line-height: 34px !important;
+  box-sizing: border-box !important;
+  padding: 0 14px !important;
+  font-size: 12.5px !important;
+  font-weight: 600 !important;
+  border-radius: 8px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  cursor: pointer !important;
+  white-space: nowrap !important;
+}
+
+/* ==========================================================================
+   RESPONSIVE TUNING ACROSS RESOLUTIONS
+   ========================================================================== */
+
+/* Laptops & Standard Desktops (1181px - 1420px) */
+@media (max-width: 1420px) {
+  .navbar-ai-bar .opt-label .label-txt {
+    display: none !important;
+  }
+  .navbar-ai-bar .opt-select {
+    max-width: 240px !important;
+    font-size: 11.5px !important;
+  }
+}
+
+/* Medium Screens & Small Laptops (981px - 1180px) */
+@media (max-width: 1180px) {
+  .brand-section .badge {
+    display: none !important;
+  }
+  .navbar-ai-bar {
+    gap: 8px !important;
+    padding: 4px 8px !important;
+    margin: 0 6px !important;
+  }
+  .navbar-ai-bar .opt-group:not(:last-of-type) {
+    padding-right: 8px !important;
+  }
+  .navbar-ai-bar .opt-select {
+    max-width: 200px !important;
+    font-size: 11px !important;
+    padding: 0 6px !important;
+  }
+  .nav-btn.clear-btn .btn-text {
+    display: none !important;
+  }
+  .nav-btn.logout-btn #authNavBtnText {
+    display: none !important;
+  }
+  .nav-btn {
+    width: 34px !important;
+    height: 34px !important;
+    padding: 0 !important;
+    justify-content: center !important;
+  }
+}
+
+/* Tablets (769px - 980px) */
+@media (max-width: 980px) {
+  .navbar-ai-bar .opt-group:nth-child(3) {
+    display: none !important; /* Hide Creativity on tight tablet screens to keep Model & Specialist rock-solid */
+  }
+  .navbar-ai-bar .opt-select {
+    max-width: 240px !important;
+  }
+}
+
+/* Mobile Devices (<= 768px) */
+@media (max-width: 768px) {
+  .navbar-ai-bar {
+    display: none !important;
+  }
+  .navbar {
+    padding: 8px 12px !important;
+  }
+  .brand-info h1 {
+    font-size: 16px !important;
+  }
+  .brand-logo {
+    width: 36px !important;
+    height: 36px !important;
+  }
+}
+
+
+/* =========================================================
+   10. SIDEBAR HEADER & NEW CHAT BUTTON LEFT ALIGNMENT
+   ========================================================= */
+.sidebar-header {
+  width: 100% !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  margin: 0 !important;
+  margin-left: 0 !important;
+  padding: 16px !important;
+  box-sizing: border-box !important;
+  border-bottom: 1px solid var(--border-color) !important;
+}
+
+.new-chat-btn {
+  flex: 1 !important;
+  width: 100% !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  text-align: left !important;
+  gap: 10px !important;
+  padding: 10px 18px !important;
+  box-sizing: border-box !important;
+}
+
+.new-chat-btn i {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: 14px !important;
+  line-height: 1 !important;
+  margin-right: 2px !important;
+}
+
+.session-title-wrapper {
+  margin-left: 0 !important;
+}
+
+/* =========================================================
+   11. LIVE SERVER AUTO-FIX & LINE JUMP ENHANCEMENTS
+   ========================================================= */
+.ls-editor-pos-badge {
+  font-family: 'Fira Code', Consolas, monospace;
+  font-size: 11px;
+  color: #94a3b8;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 4px 8px;
+  border-radius: 6px;
+  margin-right: 4px;
+  user-select: none;
+}
+
+.ls-fix-btn {
+  background: linear-gradient(135deg, rgba(234, 179, 8, 0.2), rgba(245, 158, 11, 0.25)) !important;
+  color: #fbbf24 !important;
+  border-color: rgba(245, 158, 11, 0.4) !important;
+}
+
+.ls-fix-btn:hover {
+  background: linear-gradient(135deg, rgba(234, 179, 8, 0.35), rgba(245, 158, 11, 0.45)) !important;
+  color: #fef08a !important;
+  border-color: rgba(245, 158, 11, 0.7) !important;
+  transform: translateY(-1px);
+}
+
+.ls-console-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: 10px;
+  vertical-align: middle;
+}
+
+.ls-err-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: rgba(239, 68, 68, 0.15);
+  color: #f87171;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  padding: 2px 7px;
+  border-radius: 4px;
+  font-weight: 600;
+  font-size: 11px;
+  font-family: 'Fira Code', monospace;
+}
+
+.ls-err-jump-btn {
+  background: rgba(99, 102, 241, 0.2);
+  color: #c7d2fe;
+  border: 1px solid rgba(99, 102, 241, 0.4);
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-family: inherit;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: all 0.2s ease;
+}
+
+.ls-err-jump-btn:hover {
+  background: rgba(99, 102, 241, 0.4);
+  color: #ffffff;
+  border-color: #818cf8;
+}
+
+.ls-err-jump-btn.ls-fix-pill {
+  background: rgba(245, 158, 11, 0.2);
+  color: #fde68a;
+  border-color: rgba(245, 158, 11, 0.4);
+}
+
+.ls-err-jump-btn.ls-fix-pill:hover {
+  background: rgba(245, 158, 11, 0.4);
+  color: #ffffff;
+  border-color: #fbbf24;
+}
+
+/* =========================================================
+   12. NAVBAR TRUE CENTER ALIGNMENT (NAV-LINKS & AI-BAR)
+   ========================================================= */
+@media (min-width: 901px) {
+  .navbar,
+  #navbar {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+  }
+
+  .navbar .brand,
+  .navbar .brand-section {
+    position: relative !important;
+    z-index: 2 !important;
+  }
+
+  .navbar .nav-links {
+    position: absolute !important;
+    left: 50% !important;
+    top: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: clamp(14px, 2vw, 32px) !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    list-style: none !important;
+    z-index: 1 !important;
+    pointer-events: auto !important;
+    width: max-content !important;
+  }
+
+  .navbar .navbar-ai-bar,
+  #advancedAiBar {
+    position: absolute !important;
+    left: 50% !important;
+    top: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    margin: 0 !important;
+    z-index: 10 !important;
+  }
+
+  .navbar .nav-actions {
+    position: relative !important;
+    margin-left: auto !important;
+    z-index: 2 !important;
+  }
+}
+
+

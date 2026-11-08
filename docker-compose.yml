@@ -1,0 +1,29 @@
+version: "3.9"
+
+services:
+  mindhelix-ai:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: mindhelix-ai-app
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
+      - NODE_ENV=production
+      - OPENROUTER_API_KEY=${OPENROUTER_API_KEY:-}
+      - ENCRYPTION_KEY=${ENCRYPTION_KEY:-mindhelix-default-encryption-secret-key-32}
+    volumes:
+      - ./tmp_code_runs:/app/tmp_code_runs
+
+  # Optional noVNC Linux Desktop Container for Tab 3 Cloud Desktop
+  novnc-desktop:
+    image: dorowu/ubuntu-desktop-lxde-vnc:latest
+    container_name: mindhelix-novnc-sandbox
+    restart: unless-stopped
+    ports:
+      - "6080:80"
+    environment:
+      - RESOLUTION=1280x720
+    shm_size: 512m

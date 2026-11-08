@@ -38,6 +38,16 @@ jobs:
             echo "Secrets check passed. No leaked keys found."
           fi
 
+      - name: Build & Compile 4-Layer Security Firewall
+        run: |
+          echo "Compiling security firewall rule matrix..."
+          node bin/firewall.js --build
+
+      - name: Execute 4-Layer Security Penetration Test Suite
+        run: |
+          echo "Running defense-in-depth penetration and WAF tests..."
+          node bin/firewall.js --test
+
       - name: Static Security Audit
         run: npm audit --audit-level=high || true
 
@@ -69,6 +79,10 @@ jobs:
         run: |
           echo "Verifying server.js compilation..."
           node -c server.js
+          echo "Verifying entrypoints & worker scripts..."
+          node -c main.js
+          node -c worker.js
+          node -c bin/mindhelix.js
           echo "Verifying client scripts..."
           node -c www/responsive.js
 

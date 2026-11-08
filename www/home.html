@@ -21,6 +21,43 @@
     <link rel="stylesheet" href="home.css">
     <link rel="stylesheet" href="responsive.css">
     <script src="responsive.js" defer></script>
+    <style>
+        /* Precision Center Alignment for Desktop Navbar Links */
+        @media (min-width: 901px) {
+            .navbar,
+            #navbar {
+                position: fixed !important;
+                display: flex !important;
+                align-items: center !important;
+                justify-content: space-between !important;
+            }
+            .navbar .brand {
+                position: relative !important;
+                z-index: 2 !important;
+            }
+            .navbar .nav-links {
+                position: absolute !important;
+                left: 50% !important;
+                top: 50% !important;
+                transform: translate(-50%, -50%) !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                gap: clamp(14px, 2vw, 32px) !important;
+                list-style: none !important;
+                z-index: 1 !important;
+                pointer-events: auto !important;
+                width: max-content !important;
+            }
+            .navbar .nav-actions {
+                position: relative !important;
+                margin-left: auto !important;
+                z-index: 2 !important;
+            }
+        }
+    </style>
     <!-- Immediate theme initialization to prevent flash -->
     <script>
         (function () {

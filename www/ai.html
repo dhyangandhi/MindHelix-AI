@@ -15,6 +15,38 @@
     <link rel="stylesheet" href="ai.css">
     <link rel="stylesheet" href="responsive.css">
     <script src="responsive.js" defer></script>
+    <style>
+        /* Precision Center Alignment for AI Model Selector Bar */
+        @media (min-width: 769px) {
+            .navbar {
+                position: relative !important;
+                display: flex !important;
+                align-items: center !important;
+                justify-content: space-between !important;
+            }
+            .navbar .brand-section {
+                position: relative !important;
+                z-index: 2 !important;
+            }
+            .navbar .navbar-ai-bar,
+            #advancedAiBar {
+                position: absolute !important;
+                left: 50% !important;
+                top: 50% !important;
+                transform: translate(-50%, -50%) !important;
+                margin: 0 !important;
+                z-index: 10 !important;
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+            }
+            .navbar .nav-actions {
+                position: relative !important;
+                margin-left: auto !important;
+                z-index: 2 !important;
+            }
+        }
+    </style>
 </head>
 
 <body>
@@ -59,9 +91,9 @@
                 </div>
 
                 <!-- CENTER NAVBAR OPTIONS BAR -->
-                <div class="advanced-ai-bar navbar-ai-bar" id="advancedAiBar">
+                <div class="navbar-ai-bar" id="advancedAiBar">
                     <div class="opt-group">
-                        <span class="opt-label"><i class="fa-solid fa-brain"></i> MODEL:</span>
+                        <span class="opt-label" title="AI Model"><i class="fa-solid fa-brain"></i> <span class="label-txt">MODEL:</span></span>
                         <select class="opt-select" id="aiModelSelect" onchange="handleModelChange()">
                             <option value="nvidia/nemotron-3.5-super-vl:free">⚡ Nemotron 3.5 Super VL (Free)</option>
                             <option value="deepseek/deepseek-r1:free">🧠 DeepSeek R1 Reasoning (Free)</option>
@@ -70,26 +102,6 @@
                             <option value="mistralai/mistral-nemo:free">💎 Mistral Nemo 12B (Free)</option>
                         </select>
                     </div>
-                    <div class="opt-group">
-                        <span class="opt-label"><i class="fa-solid fa-user-gear"></i> SPECIALIST:</span>
-                        <select class="opt-select" id="aiPersonaSelect" onchange="handlePersonaChange()">
-                            <option value="architect">🚀 Full-Stack Architect</option>
-                            <option value="security">🛡️ Cyber Security & WAF</option>
-                            <option value="datascience">📊 Data Science & Python</option>
-                            <option value="general">🤖 General Intelligence</option>
-                        </select>
-                    </div>
-                    <div class="opt-group">
-                        <span class="opt-label"><i class="fa-solid fa-sliders"></i> CREATIVITY:</span>
-                        <select class="opt-select" id="aiCreativitySelect">
-                            <option value="0.2">🎯 Precise (0.2)</option>
-                            <option value="0.7" selected>⚖️ Balanced (0.7)</option>
-                            <option value="1.0">✨ Creative (1.0)</option>
-                        </select>
-                    </div>
-                    <button type="button" class="live-sandbox-quick-btn" onclick="openLiveServerModal()" title="Open Interactive Live Server & noVNC Sandbox">
-                        <i class="fa-solid fa-server"></i> <span>Live Sandbox</span>
-                    </button>
                 </div>
 
                 <div class="nav-actions">
@@ -105,13 +117,9 @@
                         <i class="fa-solid fa-robot"></i> Try AI Assistant (2 Min Free)
                     </button>
 
-                    <button class="nav-btn live-server-nav-btn" onclick="openLiveServerModal()" title="Live Server & noVNC Sandbox">
-                        <i class="fa-solid fa-server"></i>
-                        <span>Live Server / noVNC</span>
-                    </button>
                     <button class="nav-btn clear-btn" onclick="clearChat()" title="Clear Current Chat">
                         <i class="fa-solid fa-trash-can"></i>
-                        Clear Chat
+                        <span class="btn-text">Clear Chat</span>
                     </button>
                     <button class="nav-btn logout-btn" id="authNavBtn" onclick="handleAuthNavClick()" title="Sign Out">
                         <i class="fa-solid fa-right-from-bracket"></i>
@@ -233,7 +241,7 @@
                     <div style="display: none;">
                         <div class="opt-group">
                             <span class="opt-label"><i class="fa-solid fa-brain"></i> Model:</span>
-                            <select class="opt-select" id="aiModelSelect" onchange="handleModelChange()">
+                            <select class="opt-select" id="aiModelSelectHidden" onchange="handleModelChange()">
                                 <option value="nvidia/nemotron-3.5-super-vl:free">⚡ Nemotron 3.5 Super VL (Free)</option>
                                 <option value="deepseek/deepseek-r1:free">🧠 DeepSeek R1 Reasoning (Free)</option>
                                 <option value="meta-llama/llama-3.3-70b-instruct:free">🦙 Meta Llama 3.3 70B (Free)</option>
@@ -259,7 +267,7 @@
                             </select>
                         </div>
                         <button class="live-sandbox-quick-btn" onclick="openLiveServerModal()" title="Open Interactive Live Server & noVNC Sandbox">
-                            <i class="fa-solid fa-server"></i> <span>Live Sandbox</span>
+                            <i class="fa-solid fa-server"></i> <span class="btn-text">Live Sandbox</span>
                         </button>
                     </div>
 
@@ -408,12 +416,14 @@
                         <div class="ls-pane-header">
                             <span><i class="fa-solid fa-code"></i> HTML / CSS / JS Editor</span>
                             <div class="ls-pane-actions">
-                                <button class="ls-tool-btn" onclick="formatWebEditorCode()" title="Format Code"><i class="fa-solid fa-wand-magic-sparkles"></i> Format</button>
+                                <span id="lsEditorPosBadge" class="ls-editor-pos-badge" title="Cursor Line and Column">Ln 1, Col 1</span>
+                                <button class="ls-tool-btn ls-fix-btn" onclick="autoFixWebEditorSyntax()" title="Auto-Fix Syntax Errors"><i class="fa-solid fa-wand-magic-sparkles"></i> Auto-Fix</button>
+                                <button class="ls-tool-btn" onclick="formatWebEditorCode()" title="Format Code"><i class="fa-solid fa-align-left"></i> Format</button>
                                 <button class="ls-tool-btn ls-primary" onclick="runWebPreview()" title="Run Code in Live Server"><i class="fa-solid fa-play"></i> Run Code</button>
                                 <button class="ls-tool-btn" onclick="clearWebEditor()" title="Clear Editor"><i class="fa-solid fa-eraser"></i> Clear</button>
                             </div>
                         </div>
-                        <textarea class="ls-code-textarea" id="lsWebCodeTextarea" placeholder="Enter HTML, CSS & JavaScript or click 'Live Server' on any AI code block..." spellcheck="false"></textarea>
+                        <textarea class="ls-code-textarea" id="lsWebCodeTextarea" placeholder="Enter HTML, CSS & JavaScript or click 'Live Server' on any AI code block..." spellcheck="false" onkeyup="updateEditorCursorPos()" onmouseup="updateEditorCursorPos()" onclick="updateEditorCursorPos()"></textarea>
                     </div>
 
                     <div class="ls-preview-pane">
@@ -2802,7 +2812,7 @@ To connect to an external VNC GUI desktop, click 'Connect noVNC' above.</div>
             let rawLang = langSpan ? langSpan.textContent.trim().toLowerCase() : 'javascript';
             rawLang = rawLang.replace(/[^a-z0-9#+]/g, '');
 
-            const code = decodeHtml(codeElement.innerText || codeElement.textContent);
+            const code = codeElement.textContent || codeElement.innerText;
 
             let outputPanel = codeBlock.querySelector('.output-panel');
             if (!outputPanel) {
@@ -2946,7 +2956,7 @@ To connect to an external VNC GUI desktop, click 'Connect noVNC' above.</div>
             if (editor) {
                 textToCopy = editor.value;
             } else if (codeElement) {
-                textToCopy = decodeHtml(codeElement.innerText || codeElement.textContent);
+                textToCopy = codeElement.textContent || codeElement.innerText;
             }
 
             if (!textToCopy) return;
@@ -3485,17 +3495,23 @@ To connect to an external VNC GUI desktop, click 'Connect noVNC' above.</div>
             document.body.style.overflow = "hidden";
 
             if (initialCode) {
+                let cleanCode = initialCode.trim();
+                if (/^```[a-zA-Z0-9_-]*\s*\n/.test(cleanCode) && /\n```\s*$/.test(cleanCode)) {
+                    cleanCode = cleanCode.replace(/^```[a-zA-Z0-9_-]*\s*\n/, '').replace(/\n```\s*$/, '').trim();
+                }
                 const lang = (initialLang || "").toLowerCase().trim();
-                const isHtml = lang === "html" || lang === "htm" || initialCode.includes("<html") || initialCode.includes("<!DOCTYPE") || initialCode.includes("<div") || initialCode.includes("<style");
+                const isBackendLang = ["python", "py", "bash", "sh"].includes(lang);
+                const isHtml = !isBackendLang && (lang === "html" || lang === "htm" || cleanCode.includes("<html") || cleanCode.includes("<!DOCTYPE") || cleanCode.includes("<div") || cleanCode.includes("<style"));
                 if (isHtml) {
                     const webArea = document.getElementById("lsWebCodeTextarea");
-                    if (webArea) webArea.value = initialCode;
+                    if (webArea) webArea.value = cleanCode;
                     switchLsTab('web');
                     runWebPreview();
+                    updateEditorCursorPos();
                 } else {
                     const backendArea = document.getElementById("lsBackendCodeTextarea");
                     const langSelect = document.getElementById("lsBackendLangSelect");
-                    if (backendArea) backendArea.value = initialCode;
+                    if (backendArea) backendArea.value = cleanCode;
                     if (langSelect) {
                         if (lang.includes("py")) langSelect.value = "python";
                         else if (lang.includes("sh") || lang.includes("bash")) langSelect.value = "bash";
@@ -3587,8 +3603,117 @@ To connect to an external VNC GUI desktop, click 'Connect noVNC' above.</div>
             const codeElem = codeBlock.querySelector("pre code");
             const langElem = codeBlock.querySelector(".code-header span");
             const rawLang = langElem ? langElem.textContent.trim().toLowerCase().replace(/[^a-z0-9#+]/g, '') : 'javascript';
-            const code = codeElem ? decodeHtml(codeElem.innerText || codeElem.textContent) : '';
+            const code = codeElem ? (codeElem.textContent || codeElem.innerText) : '';
             openLiveServerModal(code, rawLang);
+        }
+
+        function updateEditorCursorPos() {
+            const textarea = document.getElementById("lsWebCodeTextarea");
+            const badge = document.getElementById("lsEditorPosBadge");
+            if (!textarea || !badge) return;
+            const pos = textarea.selectionStart || 0;
+            const textBefore = textarea.value.substring(0, pos);
+            const lines = textBefore.split("\n");
+            const lineNum = lines.length;
+            const colNum = lines[lines.length - 1].length + 1;
+            badge.textContent = `Ln ${lineNum}, Col ${colNum}`;
+        }
+
+        function jumpToEditorLine(lineNum) {
+            const textarea = document.getElementById("lsWebCodeTextarea");
+            if (!textarea) return;
+            const lines = textarea.value.split("\n");
+            const targetLine = Math.max(1, Math.min(lineNum, lines.length));
+            let charStart = 0;
+            for (let i = 0; i < targetLine - 1; i++) {
+                charStart += lines[i].length + 1;
+            }
+            const lineContent = lines[targetLine - 1] || "";
+            const charEnd = charStart + lineContent.length;
+
+            textarea.focus();
+            textarea.setSelectionRange(charStart, charEnd);
+
+            const totalLines = lines.length;
+            const scrollRatio = (targetLine - 1) / Math.max(1, totalLines);
+            textarea.scrollTop = scrollRatio * Math.max(0, textarea.scrollHeight - textarea.clientHeight);
+            updateEditorCursorPos();
+        }
+
+        function autoFixWebEditorSyntax() {
+            const textarea = document.getElementById("lsWebCodeTextarea");
+            if (!textarea) return;
+            let code = textarea.value;
+            if (!code.trim()) return;
+
+            let fixCount = 0;
+
+            // 1. Strip accidental markdown code block fences
+            if (/^```[a-zA-Z0-9_-]*\s*\n/.test(code)) {
+                code = code.replace(/^```[a-zA-Z0-9_-]*\s*\n/, '');
+                fixCount++;
+            }
+            if (/\n```\s*$/.test(code)) {
+                code = code.replace(/\n```\s*$/, '');
+                fixCount++;
+            }
+
+            // 2. Scan and repair <script> blocks
+            code = code.replace(/(<script\b[^>]*>)([\s\S]*?)(<\/script>)/gi, (match, openTag, scriptContent, closeTag) => {
+                let fixedScript = scriptContent;
+
+                if (/&(lt|gt|amp|quot|#039);/i.test(fixedScript)) {
+                    fixedScript = fixedScript
+                        .replace(/&lt;/g, '<')
+                        .replace(/&gt;/g, '>')
+                        .replace(/&amp;/g, '&')
+                        .replace(/&quot;/g, '"')
+                        .replace(/&#039;/g, "'");
+                    fixCount++;
+                }
+
+                const scriptLines = fixedScript.split('\n');
+                const sanitizedLines = scriptLines.map(line => {
+                    const trimmed = line.trim();
+                    if (!trimmed || trimmed.startsWith('//') || trimmed.startsWith('/*') || trimmed.startsWith('*')) {
+                        return line;
+                    }
+                    const startsWithEnglishWord = /^(you\b|here\b|note:|note\b|to\b|please\b|this\b|we\b|make\b|ensure\b|now\b|then\b|also\b|in\b|step\b|output\b)/i.test(trimmed);
+                    const hasJsSyntax = /^(const|let|var|function|class|import|export|if|else|for|while|do|switch|case|default|return|try|catch|finally|throw|async|await|window|document|console|debugger|\{|\}|\$|\(|\)|;|\[|\])/.test(trimmed);
+                    const containsUnquotedYou = /\byou\b/i.test(trimmed) && !trimmed.includes('"') && !trimmed.includes("'") && !trimmed.includes('`');
+
+                    if ((startsWithEnglishWord && !hasJsSyntax) || containsUnquotedYou) {
+                        fixCount++;
+                        return '// [Auto-Fix] ' + line;
+                    }
+                    return line;
+                });
+
+                return openTag + sanitizedLines.join('\n') + closeTag;
+            });
+
+            // 3. If raw JS without <script> tag, check lines as well
+            if (!/<script/i.test(code) && !/<html/i.test(code) && !/<div/i.test(code)) {
+                const rawLines = code.split('\n');
+                const sanitized = rawLines.map(line => {
+                    const trimmed = line.trim();
+                    if (!trimmed || trimmed.startsWith('//') || trimmed.startsWith('/*') || trimmed.startsWith('*')) return line;
+                    const startsWithEnglish = /^(you\b|here\b|note:|note\b|to\b|please\b|this\b|we\b|make\b|ensure\b|now\b|then\b|also\b|in\b|step\b|output\b)/i.test(trimmed);
+                    const hasJsSyntax = /^(const|let|var|function|class|import|export|if|else|for|while|do|switch|case|default|return|try|catch|finally|throw|async|await|window|document|console|debugger|\{|\}|\$|\(|\)|;|\[|\])/.test(trimmed);
+                    const containsUnquotedYou = /\byou\b/i.test(trimmed) && !trimmed.includes('"') && !trimmed.includes("'") && !trimmed.includes('`');
+                    if ((startsWithEnglish && !hasJsSyntax) || containsUnquotedYou) {
+                        fixCount++;
+                        return '// [Auto-Fix] ' + line;
+                    }
+                    return line;
+                });
+                code = sanitized.join('\n');
+            }
+
+            textarea.value = code;
+            updateEditorCursorPos();
+            appendWebConsoleLine("info", `[Live Server] Auto-Fix applied: fixed ${fixCount} syntax/comment anomaly(s). Compiling preview...`);
+            runWebPreview();
         }
 
         // ======================
@@ -3604,47 +3729,35 @@ To connect to an external VNC GUI desktop, click 'Connect noVNC' above.</div>
                 iframe.srcdoc = '<!DOCTYPE html><html><head><style>body{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;background:#090d16;color:#94a3b8;font-family:sans-serif;text-align:center;padding:20px;box-sizing:border-box;}h3{color:#a855f7;margin:0 0 8px;}</style></head><body><div><h3>🚀 Live Web Server Ready</h3><p>Enter HTML/CSS/JS in editor or click "Live Server" on any code block to preview.</p></div></body></html>';
                 return;
             }
-            const _scStart = '<' + 'script>';
-            const _scEnd = '<' + '/script>';
-            const _baseStyle = '<' + 'style>html,body{background-color:#090d16;color:#f8fafc;font-family:system-ui,sans-serif;margin:0;padding:16px;box-sizing:border-box;color-scheme:dark;}<' + '/style>';
 
-            const consoleBridge = _scStart + `
-// console bridge
-(function() {
-  const origLog = console.log;
-  const origWarn = console.warn;
-  const origErr = console.error;
-  function sendToParent(type, args) {
-    try {
-      window.parent.postMessage({
-        type: 'MINDHELIX_CONSOLE',
-        level: type,
-        message: Array.from(args).map(a => typeof a === 'object' ? JSON.stringify(a) : String(a)).join(' ')
-      }, '*');
-    } catch(e) {}
-  }
-  console.log = function(...args) { sendToParent('log', args); origLog.apply(console, args); };
-  console.warn = function(...args) { sendToParent('warn', args); origWarn.apply(console, args); };
-  console.error = function(...args) { sendToParent('error', args); origErr.apply(console, args); };
-  window.onerror = function(msg, url, line) {
-    sendToParent('error', ['[Error Line ' + line + ']: ' + msg]);
-  };
-})();
-` + _scEnd;
+            // Zero-newline console bridge preserves exact 1:1 editor-to-browser line parity
+            const _baseStyle = '<style>html,body{background-color:#090d16;color:#f8fafc;font-family:system-ui,sans-serif;margin:0;padding:16px;box-sizing:border-box;color-scheme:dark;}</style>';
+            const consoleBridge = '<script>(function(){const oL=console.log,oW=console.warn,oE=console.error;function s(t,a){try{window.parent.postMessage({type:"MINDHELIX_CONSOLE",level:t,message:Array.from(a).map(x=>typeof x==="object"?JSON.stringify(x):String(x)).join(" ")},"*");}catch(e){}}console.log=function(...a){s("log",a);oL.apply(console,a);};console.warn=function(...a){s("warn",a);oW.apply(console,a);};console.error=function(...a){s("error",a);oE.apply(console,a);};window.onerror=function(m,u,l){s("error",["[Error Line "+l+"]: "+m]);};window.addEventListener("unhandledrejection",function(e){s("error",["[Promise Rejection]: "+(e.reason&&e.reason.message?e.reason.message:String(e.reason))]);});})();<' + '/script>';
 
             let fullDoc = code;
-            if (fullDoc.toLowerCase().includes("<head>")) {
-                fullDoc = fullDoc.replace(/<head>/i, "<head>" + _baseStyle + consoleBridge);
-            } else if (fullDoc.toLowerCase().includes("<html")) {
-                fullDoc = fullDoc.replace(/<html[^>]*>/i, "$&<head>" + _baseStyle + consoleBridge + "</head>");
-            } else if (fullDoc.toLowerCase().includes("<body")) {
-                fullDoc = "<!DOCTYPE html><html><head>" + _baseStyle + consoleBridge + "</head>" + fullDoc + "</html>";
+            const hasHtml = /<html/i.test(fullDoc);
+            const hasHead = /<head/i.test(fullDoc);
+            const hasBody = /<body/i.test(fullDoc);
+            const hasScript = /<script/i.test(fullDoc);
+            const isPureCode = !hasHtml && !hasBody && !hasScript && !/<(div|p|span|button|section|main|article|h[1-6]|ul|ol|table|form|input|style)\b/i.test(fullDoc);
+
+            if (isPureCode) {
+                fullDoc = '<script>' + fullDoc + '<' + '/script>';
+            }
+
+            if (hasHead) {
+                fullDoc = fullDoc.replace(/<head[^>]*>/i, `$&${_baseStyle}${consoleBridge}`);
+            } else if (hasHtml) {
+                fullDoc = fullDoc.replace(/<html[^>]*>/i, `$&<head>${_baseStyle}${consoleBridge}</head>`);
+            } else if (hasBody) {
+                fullDoc = `<head>${_baseStyle}${consoleBridge}</head>${fullDoc}`;
             } else {
-                fullDoc = '<!DOCTYPE html><html><head>' + _baseStyle + consoleBridge + '</head><body>' + fullDoc + '</body></html>';
+                fullDoc = `<head>${_baseStyle}${consoleBridge}</head><body>${fullDoc}</body>`;
             }
 
             iframe.srcdoc = fullDoc;
             appendWebConsoleLine("info", `[Live Server] Code compiled & reloaded at ${new Date().toLocaleTimeString()}`);
+            updateEditorCursorPos();
         }
 
         function reloadWebPreview() {
@@ -3682,6 +3795,7 @@ To connect to an external VNC GUI desktop, click 'Connect noVNC' above.</div>
             const iframe = document.getElementById("lsWebPreviewIframe");
             if (iframe) iframe.srcdoc = "";
             clearWebConsole();
+            updateEditorCursorPos();
         }
 
         function formatWebEditorCode() {
@@ -3690,6 +3804,7 @@ To connect to an external VNC GUI desktop, click 'Connect noVNC' above.</div>
             let val = textarea.value.trim();
             textarea.value = val;
             appendWebConsoleLine("info", "[Live Server] Code formatted");
+            updateEditorCursorPos();
         }
 
         function clearWebConsole() {
@@ -3702,7 +3817,42 @@ To connect to an external VNC GUI desktop, click 'Connect noVNC' above.</div>
             if (!body) return;
             const line = document.createElement("div");
             line.className = `ls-console-line ${level}`;
-            line.textContent = msg;
+
+            const match = typeof msg === "string" ? msg.match(/\[Error Line\s+(\d+)\]:\s*(.*)/i) : null;
+            if (match) {
+                const lineNum = parseInt(match[1], 10);
+                const errDetail = match[2];
+
+                const badge = document.createElement("span");
+                badge.className = "ls-err-badge";
+                badge.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> Line ${lineNum}`;
+
+                const textSpan = document.createElement("span");
+                textSpan.className = "ls-err-msg";
+                textSpan.textContent = " " + errDetail;
+
+                const actionWrap = document.createElement("span");
+                actionWrap.className = "ls-console-actions";
+
+                const jumpBtn = document.createElement("button");
+                jumpBtn.className = "ls-err-jump-btn";
+                jumpBtn.innerHTML = `<i class="fa-solid fa-arrow-turn-down"></i> Jump to Ln ${lineNum}`;
+                jumpBtn.onclick = () => jumpToEditorLine(lineNum);
+                actionWrap.appendChild(jumpBtn);
+
+                const fixBtn = document.createElement("button");
+                fixBtn.className = "ls-err-jump-btn ls-fix-pill";
+                fixBtn.innerHTML = `<i class="fa-solid fa-wand-magic-sparkles"></i> Auto-Fix`;
+                fixBtn.onclick = () => autoFixWebEditorSyntax();
+                actionWrap.appendChild(fixBtn);
+
+                line.appendChild(badge);
+                line.appendChild(textSpan);
+                line.appendChild(actionWrap);
+            } else {
+                line.textContent = msg;
+            }
+
             body.appendChild(line);
             body.scrollTop = body.scrollHeight;
         }
