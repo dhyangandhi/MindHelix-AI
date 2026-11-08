@@ -35,11 +35,10 @@ flowchart TB
     %% ==========================================
     %% TOP NAVBAR & INTERACTION TIER
     %% ==========================================
-    subgraph NavbarTier["🎛️ Header Navigation & Control Drawer"]
-        NavBrand["MindHelix Brand & Status Dot"]
-        ModelSelector["🧠 Model Selector (Nemotron / DeepSeek / Llama / Qwen / Mistral)"]
-        PersonaSelector["👥 Specialist Persona (Architect / Security / DataScience / General)"]
-        CreativitySelector["🎛️ Creativity Slider (0.2 / 0.7 / 1.0)"]
+    subgraph NavbarTier["🎛️ Header Navigation & Control Tier"]
+        NavBrand["MindHelix Brand & Online Status Dot"]
+        ModelSelector["🧠 Centered AI Model Selector (Nemotron / DeepSeek / Llama / Qwen / Mistral)"]
+        NavActions["⚡ Trial Countdown, Clear Chat & Sign Out"]
         MinimizeTab["▲ Center Minimize Tab (Smooth Collapse Engine)"]
     end
 
@@ -93,11 +92,11 @@ flowchart TB
 
 ## 🔄 2. GitHub CI/CD Automation Pipeline
 
-MindHelix AI utilizes an automated GitHub Actions pipeline (`.github/workflows/ci-cd.yml`) to ensure rigorous security audits, zero-leak API token checks, multi-runtime code execution testing, and automated Docker compilation.
+MindHelix AI utilizes an automated GitHub Actions pipeline (`.github/workflows/ci-cd.yml`) to ensure rigorous security audits, zero-leak API token checks, 4-layer firewall compilation, multi-runtime code execution testing, and automated Docker compilation.
 
 ```mermaid
 flowchart LR
-    PushEvent(["Git Push / PR\n(main/master/dev)"]) --> SecAudit["🛡️ Stage 1: Security Audit\n- API Key Regex Scan\n- Dependency Audit\n- Code Linting"]
+    PushEvent(["Git Push / PR\n(main / master / dev)"]) --> SecAudit["🛡️ Stage 1: Security Audit\n- API Key Regex Scan\n- Dependency Audit\n- node bin/firewall.js --build\n- node bin/firewall.js --test"]
     
     SecAudit -->|Passed| TestSuite["🧪 Stage 2: Runtime Tests\n- Node.js Syntax Verification\n- Python 3 Engine Check\n- /api/run-code Smoke Tests"]
     
@@ -105,7 +104,7 @@ flowchart LR
     
     DockerBuild -->|Passed| DeployStage["🚀 Stage 4: Production Deploy\n- Vercel Serverless Sync\n- Cloudflare Edge Sync\n- VPS Container Deployment"]
 
-    SecAudit -.->|Key Leak Detected| FailFast["❌ Build Aborted\nSecurity Alert Dispatched"]
+    SecAudit -.->|Key Leak / Sec Fail| FailFast["❌ Build Aborted\nSecurity Alert Dispatched"]
     TestSuite -.->|Test Failure| FailFast
 ```
 
@@ -177,11 +176,70 @@ sequenceDiagram
     end
 ```
 
+### 4.1 Live Server Compiler & Auto-Fix Architecture
+
+The Live Web Server integrates a single-line console bridge to guarantee **1:1 line number parity** and features an automated syntax resolution engine:
+
+```mermaid
+flowchart TD
+    subgraph EditorStage["1. Code Input & Preparation"]
+        InputCode["User Code in #lsWebCodeTextarea\n(or clicked from AI code block)"]
+        CleanCheck["Sanitize Code Block\nStrip markdown code fences (```html)"]
+        IsRawJS{"Pure JavaScript without HTML/Script tags?"}
+        WrapScript["Auto-wrap with <script> tag"]
+    end
+
+    subgraph CompilerStage["2. Zero-Line-Offset Injection Engine"]
+        SingleLineBridge["Inject 1-line consoleBridge + baseStyle\n(0 newlines added -> 100% 1:1 line parity)"]
+        IframeCompile["Compile to iframe.srcdoc\n(sandbox: allow-scripts, allow-modals, allow-same-origin)"]
+    end
+
+    subgraph RuntimeStage["3. Sandboxed Browser Runtime"]
+        DOMExec["Browser executes script inside iframe"]
+        ConsolePostMsg["Intercept console.log / warn / error\npostMessage({type: 'MINDHELIX_CONSOLE'})"]
+        ErrorCapture["window.onerror triggers on syntax/runtime error\nsends [Error Line X]: message"]
+    end
+
+    subgraph ErrorResolution["4. Interactive Error Handling & Auto-Fix"]
+        ConsoleDrawer["Append Line to #lsWebConsoleBody"]
+        HasLineErr{"Contains [Error Line X]?"}
+        RenderJump["Render [Jump to Ln X] Pill\nFocus & scroll editor to exact line"]
+        RenderAutoFix["Render [Auto-Fix] Pill\nClick to trigger auto-repair engine"]
+        AutoFixEngine["autoFixWebEditorSyntax()\n- Decode stray HTML entities\n- Prefix unquoted commentary with // [Auto-Fix]\n- Recompile preview cleanly"]
+    end
+
+    InputCode --> CleanCheck
+    CleanCheck --> IsRawJS
+    IsRawJS -->|Yes| WrapScript --> SingleLineBridge
+    IsRawJS -->|No| SingleLineBridge
+    SingleLineBridge --> IframeCompile
+    IframeCompile --> DOMExec
+    DOMExec --> ConsolePostMsg --> ConsoleDrawer
+    DOMExec --> ErrorCapture --> ConsoleDrawer
+    ConsoleDrawer --> HasLineErr
+    HasLineErr -->|Yes| RenderJump & RenderAutoFix
+    RenderAutoFix --> AutoFixEngine
+    AutoFixEngine -->|Updates code| InputCode
+```
+
 ---
 
-## 🎛️ 5. Navbar UI Controls & Minimize State Machine
+## 🎛️ 5. Navbar UI Controls & Centering Architecture
 
-The top navigation bar provides instant access to model controls and a smooth minimize/expand drawer:
+The navigation bar implements precision mathematical centering with responsive adaptive behaviors:
+
+```mermaid
+flowchart LR
+    subgraph NavbarLayout["📐 Precision Mathematical Centering (Desktop >= 901px)"]
+        BrandLeft["Left (Start)\n.brand / .brand-section\nz-index: 2"]
+        CenterGroup["Center (Dead 50%)\nposition: absolute; left: 50%;\ntransform: translate(-50%, -50%);\nwidth: max-content;\nz-index: 10;\n(Model Selector / Nav Links)"]
+        ActionsRight["Right (End)\n.nav-actions\nmargin-left: auto;\nz-index: 2"]
+    end
+
+    BrandLeft --- CenterGroup --- ActionsRight
+```
+
+### Navbar Minimize & State Machine
 
 ```mermaid
 stateDiagram-v2
@@ -191,9 +249,7 @@ stateDiagram-v2
         [*] --> Idle
         Idle --> ChangingModel: Select Model Dropdown
         ChangingModel --> Idle: Persisted to LocalStorage
-        Idle --> ChangingPersona: Select Specialist Dropdown
-        ChangingPersona --> Idle: Persisted to LocalStorage
-        Idle --> LaunchSandbox: Click "Live Sandbox"
+        Idle --> LaunchSandbox: Click "Live Server"
         LaunchSandbox --> Idle: Modal Opened
     }
 
@@ -202,7 +258,7 @@ stateDiagram-v2
         - translateY(-100%)
         - margin-bottom: -74px (No whitespace)
         - Tab hangs down with ▼ Caret Down
-        - Full-screen distraction-free chat
+        - Full-screen distraction-free workspace
     end note
 
     NavbarMinimized --> NavbarExpanded: Click Center Tab (▼ Caret Down)
